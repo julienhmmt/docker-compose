@@ -1,0 +1,76 @@
+  traefik:
+    image: traefik:chevrotin
+    restart: unless-stopped
+    ports:
+      - 53:53/udp
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+
+  sqlwp:
+    image: mariadb:latest
+    restart: unless-stopped
+    command: --sql-mode=""
+    volumes:
+      - datasqlwp:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1'
+      MYSQL_USER: 'wpsqluser'
+      MYSQL_PASSWORD: 'sqlpassword'
+      MYSQL_DATABASE: 'wpdb'
+    labels:
+      traefik.enable: false
+ 
+   nginx:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - datawp:/var/www/html
+      - datanginxlogs:/var/log/nginx/
+      - ./conf/nginx-wp:/etc/nginx/conf.d
+    links:
+      - wp
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginxwp-http.rule: Host(`wp.czs.local`)
+      traefik.http.routers.nginxwp-http.entrypoints: web
+      traefik.http.routers.nginxwp-http.middlewares: compression@file, security@file
+
+  wp:
+    image: wordpress:5.4-php7.4-fpm-alpine
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - datawp:/var/www/html
+    depends_on:
+      - sqlwp
+    environment:
+      WORDPRESS_DB_HOST: 'sqlwp'
+      WORDPRESS_DB_USER: 'wpsqluser'
+      WORDPRESS_DB_PASSWORD: 'sqlpassword'
+      WORDPRESS_DB_NAME: 'wpdb'
+      WORDPRESS_TABLE_PREFIX: lkEZKOl
+    labels:
+      traefik.enable: false
+
+  redis:
+    image: redis:5-alpine
+    restart: unless-stopped
+    volumes:
+      - dataredis:/data
+    labels:
+      traefik.enable: false
+
+volumes:
+  datasqlwp:
+  datanginx:
+  datanginxlogs:
+  datawp:
+  dataredis:
