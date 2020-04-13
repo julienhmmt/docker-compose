@@ -1,3 +1,4 @@
+---
 version: '3.7'
 services:
   traefik:
@@ -39,3 +40,7 @@ services:
       traefik.udp.routers.pihole-udp.entrypoints: udpdns
       traefik.udp.routers.pihole-udp.service: pihole
       traefik.udp.services.pihole.loadbalancer.server.port: 53
+
+volumes:
+  datapihole:
+  datadnsmasqd:
