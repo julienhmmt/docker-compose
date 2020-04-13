@@ -4,7 +4,6 @@ services:
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
-      - 53:53/udp
       - 80:80
       - 443:443
       - 8080:8080
