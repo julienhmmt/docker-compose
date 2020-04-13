@@ -1,3 +1,5 @@
+version: '3.7'
+services:
   traefik:
     image: traefik:chevrotin
     restart: unless-stopped
@@ -25,7 +27,7 @@
     labels:
       traefik.enable: false
  
-   nginx:
+  nginx:
     image: nginx:1.17-alpine
     restart: unless-stopped
     volumes:

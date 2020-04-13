@@ -14,7 +14,6 @@ services:
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
       - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
       - ./acme.json:/acme.json
-
   nginxnextcloud:
     image: nginx:1.17-alpine
     restart: unless-stopped
@@ -31,7 +30,6 @@ services:
       traefik.http.routers.nginxnextcloud-http.rule: Host(`nextcloud.czs.local`)
       traefik.http.routers.nginxnextcloud-http.entrypoints: web
       traefik.http.routers.nginxnextcloud-http.middlewares: compression@file
-
   nextcloud:
     image: nextcloud:18-fpm-alpine
     restart: unless-stopped
@@ -50,7 +48,6 @@ services:
       traefik.http.routers.nextcloud-http.rule: Host(`nextcloud.czs.local`)
       traefik.http.routers.nextcloud-http.entrypoints: web
       traefik.http.routers.nextcloud-http.middlewares: compression@file
-
   dbnginx:
     image: mariadb:bionic
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
@@ -64,7 +61,6 @@ services:
       MYSQL_USER: nextcloudsqluser
     labels:
       traefik.enable: false
-
   redisnextcloud:
     image: redis:5-alpine
     restart: unless-stopped
@@ -72,7 +68,6 @@ services:
       - dataredisnextcloud:/data
     labels:
       traefik.enable: false
-
 volumes:
   datanextcloud:
   datadbnextcloud:
