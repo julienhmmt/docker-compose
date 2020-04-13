@@ -1,0 +1,79 @@
+---
+version: '3.7'
+services:
+  traefik:
+    image: traefik:chevrotin
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./acme.json:/acme.json
+
+  nginxmatomo:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - datamatomo:/var/www/html
+      - datanginxmatomologs:/var/log/nginx/
+      - ./conf/nginx-matomo:/etc/nginx/conf.d
+    links:
+      - matomo
+    networks:
+      - oueb
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginxmatomo-http.rule: Host(`matomo.czs.local`)
+      traefik.http.routers.nginxmatomo-http.entrypoints: web
+      traefik.http.routers.nginxmatomo-http.middlewares: https-redirect@file
+      traefik.http.routers.nginxmatomo-https.rule: Host(`matomo.czs.local`)
+      traefik.http.routers.nginxmatomo-https.entrypoints: websecure
+      traefik.http.routers.nginxmatomo-https.middlewares: compression@file, security@file
+      traefik.http.routers.nginxmatomo-https.tls: true
+
+  sqlmatomo:
+    image: mariadb:bionic
+    restart: unless-stopped
+    command: --sql-mode=""
+    networks:
+      - oueb
+    volumes:
+      - datasqlmatomo:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1'
+      MYSQL_USER: matomo-dbuser
+      MYSQL_PASSWORD: sqlpassword
+      MYSQL_DATABASE: db-matomo
+    labels:
+      traefik.enable: false
+
+  matomo:
+    image: matomo:3-fpm-alpine
+    restart: unless-stopped
+    networks:
+      - oueb
+    depends_on:
+      - sqlmatomo
+    environment:
+      MATOMO_DATABASE_HOST: sqlmatomo
+      MATOMO_DATABASE_TABLES_PREFIX: lkjFDZI
+      MATOMO_DATABASE_USERNAME: matomo-dbuser
+      MATOMO_DATABASE_PASSWORD: sqlpassword
+      MATOMO_DATABASE_DBNAME: db-matomo
+    volumes:
+      - datamatomo:/var/www/html
+    labels:
+      traefik.enable: false
+
+volumes:
+  datamatomo:
+  datanginxmatomologs:
+  datasqlmatomo:

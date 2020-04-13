@@ -1,0 +1,39 @@
+[global]
+  sendAnonymousUsage = false
+  checkNewVersion = false
+
+[api]
+  insecure = true
+  dashboard = true
+  #debug = true
+
+[log]
+  level = "WARNING"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedByDefault = false
+    watch = true
+    swarmMode = false
+
+  [providers.file]
+    filename = "/etc/traefik/traefik_dynamic.toml"
+    watch = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+[certificatesResolvers]
+  [certificatesResolvers.letsencrypt]
+    [certificatesResolvers.letsencrypt.acme]
+      email = "contact@czs.local"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+      storage = "acme.json"
+      keyType = "EC384"
+        [certificatesResolvers.letsencrypt.acme.httpChallenge]
+          entryPoint = "web"
