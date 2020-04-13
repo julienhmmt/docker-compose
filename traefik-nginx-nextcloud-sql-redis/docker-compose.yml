@@ -31,7 +31,12 @@ services:
       traefik.enable: true
       traefik.http.routers.nginxnextcloud-http.rule: Host(`nextcloud.czs.local`)
       traefik.http.routers.nginxnextcloud-http.entrypoints: web
-      traefik.http.routers.nginxnextcloud-http.middlewares: compression@file
+      traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
+      traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
+      traefik.http.routers.nginxnextcloud-https.middlewares: "security@file, compression@file"
+      traefik.http.routers.nginxnextcloud-https.service: "nginxnextcloud"
+      traefik.http.routers.nginxnextcloud-https.tls: "true"
+      traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"
 
   nextcloud:
     image: nextcloud:18-fpm-alpine
@@ -47,10 +52,7 @@ services:
       MYSQL_DATABASE: nextclouddb
       REDIS_HOST: redisnextcloud
     labels:
-      traefik.enable: true
-      traefik.http.routers.nextcloud-http.rule: Host(`nextcloud.czs.local`)
-      traefik.http.routers.nextcloud-http.entrypoints: web
-      traefik.http.routers.nextcloud-http.middlewares: compression@file
+      traefik.enable: false
 
   dbnginx:
     image: mariadb:bionic
