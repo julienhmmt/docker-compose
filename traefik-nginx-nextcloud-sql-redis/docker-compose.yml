@@ -1,0 +1,80 @@
+version: '3.7'
+services:
+  traefik:
+    image: traefik:chevrotin
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./acme.json:/acme.json
+
+  nginxnextcloud:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - datanextcloud:/var/www/html
+      - datanginxnextcloudlogs:/var/log/nginx/
+      - ./conf/nginx-nextcloud:/etc/nginx/conf.d
+    links:
+      - nextcloud
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginxnextcloud-http.rule: Host(`nextcloud.czs.local`)
+      traefik.http.routers.nginxnextcloud-http.entrypoints: web
+      traefik.http.routers.nginxnextcloud-http.middlewares: compression@file
+
+  nextcloud:
+    image: nextcloud:18-fpm-alpine
+    restart: unless-stopped
+    links:
+      - dbnginx
+    volumes:
+      - datanextcloud:/var/www/html
+    environment:
+      MYSQL_HOST: dbnginx
+      MYSQL_USER: nextcloudsqluser
+      MYSQL_PASSWORD: nextcloudsqlpassword
+      MYSQL_DATABASE: nextclouddb
+      REDIS_HOST: redisnextcloud
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nextcloud-http.rule: Host(`nextcloud.czs.local`)
+      traefik.http.routers.nextcloud-http.entrypoints: web
+      traefik.http.routers.nextcloud-http.middlewares: compression@file
+
+  dbnginx:
+    image: mariadb:bionic
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
+    volumes:
+      - dbnextcloud:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1'
+      MYSQL_PASSWORD: nextcloudsqlpassword
+      MYSQL_DATABASE: nextclouddb
+      MYSQL_USER: nextcloudsqluser
+    labels:
+      traefik.enable: false
+
+  redisnextcloud:
+    image: redis:5-alpine
+    restart: unless-stopped
+    volumes:
+      - dataredisnextcloud:/data
+    labels:
+      traefik.enable: false
+
+volumes:
+  datanextcloud:
+  datadbnextcloud:
+  datanginxnextcloudlogs:
+  dataredisnextcloud:
