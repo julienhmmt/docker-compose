@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  freeipa:
+    image: freeipa/freeipa-server:centos-8
+    restart: unless-stopped
+    hostname: freeipa.czs.local
+    environment:
+      - IPA_SERVER_HOSTNAME=freeipa.czs.local
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - datafreeipa:/data
+    sysctls:
+      - net.ipv6.conf.lo.disable_ipv6=0
+      - net.ipv6.conf.all.disable_ipv6=0
+    security_opt:
+      - "seccomp:unconfined"
+    command:
+      - -U
+      - --domain=czs.local
+      - --realm=czs.local
+      - --http-pin=UltraS3cure
+      - --dirsrv-pin=UltraS3cure
+      - --ds-password=UltraS3cure
+      - --admin-password=UltraS3cure
+      - --no-host-dns
+      #- --no-dnssec-validation
+      #- --setup-dns
+      #- --auto-forwarders
+      #- --allow-zone-overlap
+      - --unattended
+    ports:
+      #- "53:53/udp"
+      #- "53:53"
+      - "80:80"
+      - "443:443"
+      - "389:389"
+      - "636:636"
+      - "88:88"
+      - "464:464"
+      - "88:88/udp"
+      - "464:464/udp"
+      - "123:123/udp"
+      - "7389:7389"
+      - "9443:9443"
+      - "9444:9444"
+      - "9445:9445"
+
+volumes:
+  datafreeipa
