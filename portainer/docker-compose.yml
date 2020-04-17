@@ -1,0 +1,19 @@
+---
+version: '3.7'
+services:
+  portainer:
+    image: portainer/portainer:latest
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dataportainer:/data
+    
+    ## FACULTATIF - configuration à utiliser avec Traefik
+    #labels:
+      #traefik.enable: true
+      #traefik.http.routers.portainer.rule: Host(`portainer.czs.local`)
+ volumes:
+   dataportainer:
