@@ -27,8 +27,6 @@ services:
       - ./conf/nginx-matomo:/etc/nginx/conf.d
     links:
       - matomo
-    networks:
-      - oueb
     labels:
       traefik.enable: true
       traefik.http.routers.nginxmatomo-http.rule: Host(`matomo.czs.local`)
@@ -38,13 +36,12 @@ services:
       traefik.http.routers.nginxmatomo-https.entrypoints: websecure
       traefik.http.routers.nginxmatomo-https.middlewares: compression@file, security@file
       traefik.http.routers.nginxmatomo-https.tls: true
+      traefik.http.routers.nginxmatomo-https.tls.certresolver: "letsencrypt"
 
   sqlmatomo:
     image: mariadb:bionic
     restart: unless-stopped
     command: --sql-mode=""
-    networks:
-      - oueb
     volumes:
       - datasqlmatomo:/var/lib/mysql
     environment:
@@ -58,8 +55,6 @@ services:
   matomo:
     image: matomo:3-fpm-alpine
     restart: unless-stopped
-    networks:
-      - oueb
     depends_on:
       - sqlmatomo
     environment:
