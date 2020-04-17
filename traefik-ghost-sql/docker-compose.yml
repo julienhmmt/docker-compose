@@ -1,0 +1,53 @@
+---
+version: '3.7'
+services:
+  traefik:
+    image: traefik:chevrotin
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./conf/acme.json:/acme.json
+
+  sqlghost:
+    image: mariadb:bionic
+    restart: always
+    command: --sql-mode=""
+    volumes:
+      - datasqlghost:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1'
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: sqlghostuserpassword
+      MYSQL_DATABASE: ghost
+
+  ghost:
+    image: ghost:3
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - dataghost:/var/lib/ghost/content
+      - ./conf/config.production.json:/var/lib/ghost/config.production.json:ro
+    depends_on:
+      - sqlghost
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ghost-http.rule: Host(`ghost.czs.local`)
+      traefik.http.routers.ghost-http.entrypoints: web
+      traefik.http.services.ghost.loadbalancer.server.port: 2368
+      traefik.http.routers.ghost-http.middlewares: https-redirect@file
+      traefik.http.routers.ghost-https.rule: Host(`ghost.czs.local`)
+      traefik.http.routers.ghost-https.entrypoints: websecure
+      traefik.http.routers.ghost-https.middlewares: compression@file, security@file
+      traefik.http.routers.ghost-https.tls: true
+      traefik.http.routers.ghost-https.tls.certresolver: "letsencrypt"
+
+volumes:
+  datasqlghost:
+  dataghost:

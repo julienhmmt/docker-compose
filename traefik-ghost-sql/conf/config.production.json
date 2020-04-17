@@ -1,0 +1,17 @@
+{
+    "url": "https://ghost.czs.local",
+    "server": {
+      "port": 2368,
+      "host": "0.0.0.0"
+    },
+    "database": {
+      "client": "mysql",
+      "connection": {
+        "host": "sqlghost",
+        "user": "ghost",
+        "port": "3306",
+        "password": "sqlghostuserpassword",
+        "database": "ghost"
+      }
+    }
+  }
