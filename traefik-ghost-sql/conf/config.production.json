@@ -13,5 +13,12 @@
         "password": "sqlghostuserpassword",
         "database": "ghost"
       }
+    },
+    "privacy": {
+      "useUpdateCheck": false,
+      "useGravatar": false,
+      "useRpcPing": false,
+      "useStructuredData": true
     }
   }
+  
