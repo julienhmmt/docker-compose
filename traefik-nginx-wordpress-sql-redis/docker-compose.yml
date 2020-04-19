@@ -35,7 +35,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - datawp:/var/www/html
       - datanginxlogs:/var/log/nginx/
-      - ./conf/nginx-wp:/etc/nginx/conf.d
+      - ./conf/nginx-wp:/etc/nginx/
     links:
       - wp
     labels:
