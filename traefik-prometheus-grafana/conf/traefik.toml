@@ -1,0 +1,29 @@
+[global]
+  sendAnonymousUsage = false
+  checkNewVersion = false
+
+[api]
+  insecure = true
+  dashboard = true
+#  debug = true
+
+[log]
+  level = "WARNING"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedByDefault = false
+    watch = true
+    swarmMode = false
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.metrics]
+    address = ":8082"
+
+[metrics]
+  [metrics.prometheus]
+    buckets = [0.1,0.3,1.2,5.0]
+    entryPoint = "metrics"
