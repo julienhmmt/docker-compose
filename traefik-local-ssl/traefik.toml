@@ -1,0 +1,32 @@
+[global]
+  sendAnonymousUsage = false
+  checkNewVersion = false
+
+[api]
+  insecure = true
+  dashboard = true
+#  debug = true
+
+[log]
+  level = "WARNING"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedByDefault = false
+    watch = true
+    swarmMode = false
+    [docker.tls]
+      cert = "/etc/certs/local-cert.pem"
+      key = "/etc/certs/local-key.pem"
+
+
+  [providers.file]
+    filename = "/etc/traefik/traefik_dynamic.toml"
+    watch = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.websecure]
+    address = ":443"
