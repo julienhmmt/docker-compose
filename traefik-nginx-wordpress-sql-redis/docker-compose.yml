@@ -27,7 +27,7 @@ services:
     labels:
       traefik.enable: false
  
-  nginx:
+  nginxwp:
     image: nginx:1.17-alpine
     restart: unless-stopped
     volumes:
