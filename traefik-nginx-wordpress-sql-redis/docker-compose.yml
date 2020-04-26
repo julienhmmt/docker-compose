@@ -12,6 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
       - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./conf/acme.json:/acme.json
 
   sqlwp:
     image: mariadb:latest
@@ -45,7 +46,6 @@ services:
       traefik.http.routers.nginxwp-https.rule: "Host(`wp.czs.local`)"
       traefik.http.routers.nginxwp-https.entrypoints: "websecure"
       traefik.http.routers.nginxwp-https.middlewares: "security@file, compression@file"
-      traefik.http.routers.nginxwp-https.service: "nginx"
       traefik.http.routers.nginxwp-https.tls: "true"
       traefik.http.routers.nginxwp-https.tls.certresolver: "letsencrypt"
 
