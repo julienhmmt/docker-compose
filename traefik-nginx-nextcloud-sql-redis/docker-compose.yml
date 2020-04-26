@@ -14,7 +14,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
       - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
-      - ./acme.json:/acme.json
+      - ./conf/acme.json:/acme.json
 
   nginxnextcloud:
     image: nginx:1.17-alpine
@@ -34,7 +34,6 @@ services:
       traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
       traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
       traefik.http.routers.nginxnextcloud-https.middlewares: "security@file, compression@file"
-      traefik.http.routers.nginxnextcloud-https.service: "nginxnextcloud"
       traefik.http.routers.nginxnextcloud-https.tls: "true"
       traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"
 
