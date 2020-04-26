@@ -14,7 +14,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
       - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
-      - ./acme.json:/acme.json
+      - ./conf/acme.json:/acme.json
 
   nginxmatomo:
     image: nginx:1.17-alpine
