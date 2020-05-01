@@ -23,9 +23,9 @@ services:
       - datasqlwp:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_USER: 'wpsqluser'
-      MYSQL_PASSWORD: 'sqlpassword'
-      MYSQL_DATABASE: 'wpdb'
+      MYSQL_USER: wpsqluser
+      MYSQL_PASSWORD: "sqlpassword"
+      MYSQL_DATABASE: wpdb
     labels:
       traefik.enable: false
  
@@ -48,7 +48,7 @@ services:
       traefik.http.routers.nginxwp-https.entrypoints: "websecure"
       traefik.http.routers.nginxwp-https.middlewares: "security@file, compression@file"
       traefik.http.routers.nginxwp-https.tls: "true"
-      traefik.http.routers.nginxwp-https.tls.certresolver: "letsencrypt"
+      traefik.http.routers.nginxwp-https.tls.certresolver: letsencrypt
 
   wp:
     image: wordpress:5.4-php7.4-fpm-alpine
@@ -60,10 +60,10 @@ services:
     depends_on:
       - sqlwp
     environment:
-      WORDPRESS_DB_HOST: 'sqlwp'
-      WORDPRESS_DB_USER: 'wpsqluser'
-      WORDPRESS_DB_PASSWORD: 'sqlpassword'
-      WORDPRESS_DB_NAME: 'wpdb'
+      WORDPRESS_DB_HOST: sqlwp
+      WORDPRESS_DB_USER: wpsqluser
+      WORDPRESS_DB_PASSWORD: "sqlpassword"
+      WORDPRESS_DB_NAME: wpdb
       WORDPRESS_TABLE_PREFIX: lkEZKOl
     labels:
       traefik.enable: false
