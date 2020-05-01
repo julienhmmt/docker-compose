@@ -41,7 +41,6 @@ services:
   sqlmatomo:
     image: mariadb:bionic
     restart: unless-stopped
-    command: --sql-mode=""
     volumes:
       - datasqlmatomo:/var/lib/mysql
     environment:
