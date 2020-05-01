@@ -45,9 +45,9 @@ services:
       - datasqlmatomo:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_USER: matomo-dbuser
+      MYSQL_USER: matomodbuser
       MYSQL_PASSWORD: sqlpassword
-      MYSQL_DATABASE: db-matomo
+      MYSQL_DATABASE: matomodb
     labels:
       traefik.enable: false
 
@@ -59,9 +59,9 @@ services:
     environment:
       MATOMO_DATABASE_HOST: sqlmatomo
       MATOMO_DATABASE_TABLES_PREFIX: lkjFDZI
-      MATOMO_DATABASE_USERNAME: matomo-dbuser
+      MATOMO_DATABASE_USERNAME: matomodbuser
       MATOMO_DATABASE_PASSWORD: sqlpassword
-      MATOMO_DATABASE_DBNAME: db-matomo
+      MATOMO_DATABASE_DBNAME: matomodb
     volumes:
       - datamatomo:/var/www/html
     labels:
