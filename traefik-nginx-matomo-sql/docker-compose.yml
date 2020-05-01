@@ -36,7 +36,7 @@ services:
       traefik.http.routers.nginxmatomo-https.entrypoints: websecure
       traefik.http.routers.nginxmatomo-https.middlewares: compression@file, security@file
       traefik.http.routers.nginxmatomo-https.tls: true
-      traefik.http.routers.nginxmatomo-https.tls.certresolver: "letsencrypt"
+      traefik.http.routers.nginxmatomo-https.tls.certresolver: letsencrypt
 
   sqlmatomo:
     image: mariadb:bionic
