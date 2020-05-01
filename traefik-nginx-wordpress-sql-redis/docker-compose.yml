@@ -19,7 +19,6 @@ services:
   sqlwp:
     image: mariadb:latest
     restart: unless-stopped
-    command: --sql-mode=""
     volumes:
       - datasqlwp:/var/lib/mysql
     environment:
