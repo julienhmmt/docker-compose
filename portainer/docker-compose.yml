@@ -9,6 +9,8 @@ services:
       - 9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - dataportainer:/data
     
     ## FACULTATIF - configuration with Traefik
