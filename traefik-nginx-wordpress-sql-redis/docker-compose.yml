@@ -44,10 +44,10 @@ services:
       traefik.enable: true
       traefik.http.routers.nginxwp-http.rule: Host(`wp.czs.local`)
       traefik.http.routers.nginxwp-http.entrypoints: web
-      traefik.http.routers.nginxwp-https.rule: "Host(`wp.czs.local`)"
-      traefik.http.routers.nginxwp-https.entrypoints: "websecure"
-      traefik.http.routers.nginxwp-https.middlewares: "security@file, compression@file"
-      traefik.http.routers.nginxwp-https.tls: "true"
+      traefik.http.routers.nginxwp-https.rule: Host(`wp.czs.local`)
+      traefik.http.routers.nginxwp-https.entrypoints: websecure
+      traefik.http.routers.nginxwp-https.middlewares: security@file, compression@file
+      traefik.http.routers.nginxwp-https.tls: true
       traefik.http.routers.nginxwp-https.tls.certresolver: letsencrypt
 
   wp:
