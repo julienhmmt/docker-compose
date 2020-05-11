@@ -16,12 +16,11 @@ services:
 
   pihole:
     restart: unless-stopped
-    image: pihole/pihole:latest
+    image: pihole/pihole:v4.4
     environment:
       TZ: 'Europe/Paris'
       VIRTUAL_HOST: pihole.czs.local
       WEBPASSWORD: 'pouetpouet'
-      #ServerIP: 192.168.48.6
     volumes:
       - datapihole:/etc/pihole/
       - datadnsmasqd:/etc/dnsmasq.d/
