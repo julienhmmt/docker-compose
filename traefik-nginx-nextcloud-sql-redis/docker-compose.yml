@@ -31,6 +31,7 @@ services:
       traefik.enable: true
       traefik.http.routers.nginxnextcloud-http.rule: Host(`nextcloud.czs.local`)
       traefik.http.routers.nginxnextcloud-http.entrypoints: web
+      traefik.http.routers.nginxnextcloud-http.middlewares: https-redirect@file
       traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
       traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
       traefik.http.routers.nginxnextcloud-https.middlewares: "security@file, compression@file"
