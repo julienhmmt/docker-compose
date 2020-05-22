@@ -45,11 +45,11 @@ services:
     image: nextcloud:18-fpm-alpine
     restart: unless-stopped
     links:
-      - dbnginx
+      - dbnextcloud
     volumes:
       - datanextcloud:/var/www/html
     environment:
-      MYSQL_HOST: dbnginx
+      MYSQL_HOST: dbnextcloud
       MYSQL_USER: nextcloudsqluser
       MYSQL_PASSWORD: nextcloudsqlpassword
       MYSQL_DATABASE: nextclouddb
@@ -57,7 +57,7 @@ services:
     labels:
       traefik.enable: false
 
-  dbnginx:
+  dbnextcloud:
     container_name: sqlnextcloud
     image: mariadb:bionic
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
