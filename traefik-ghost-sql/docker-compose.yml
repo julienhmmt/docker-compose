@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -17,6 +18,7 @@ services:
       - ./conf/acme.json:/acme.json
 
   sqlghost:
+    container_name: sqlghost
     image: mariadb:bionic
     restart: always
     command: --sql-mode=""
@@ -29,6 +31,7 @@ services:
       MYSQL_DATABASE: ghost
 
   ghost:
+    container_name: cmsghost
     image: ghost:3
     restart: always
     volumes:
