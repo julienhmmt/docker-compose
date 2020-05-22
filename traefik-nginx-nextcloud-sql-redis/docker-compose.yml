@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -17,6 +18,7 @@ services:
       - ./conf/acme.json:/acme.json
 
   nginxnextcloud:
+    container_name: nginxfornextcloud
     image: nginx:1.17-alpine
     restart: unless-stopped
     volumes:
@@ -39,6 +41,7 @@ services:
       traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"
 
   nextcloud:
+    container_name: nextcloudapp
     image: nextcloud:18-fpm-alpine
     restart: unless-stopped
     links:
@@ -55,6 +58,7 @@ services:
       traefik.enable: false
 
   dbnginx:
+    container_name: sqlnextcloud
     image: mariadb:bionic
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
