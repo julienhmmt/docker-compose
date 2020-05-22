@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -17,6 +18,7 @@ services:
       - ./conf/acme.json:/acme.json
 
   sqlwp:
+    container_name: sqlwp
     image: mariadb:latest
     restart: unless-stopped
     volumes:
@@ -30,6 +32,7 @@ services:
       traefik.enable: false
  
   nginxwp:
+    container_name: nginxforwp
     image: nginx:1.17-alpine
     restart: unless-stopped
     volumes:
@@ -52,6 +55,7 @@ services:
       traefik.http.routers.nginxwp-https.tls.certresolver: letsencrypt
 
   wp:
+    container_name: wpapp
     image: wordpress:5.4-php7.4-fpm-alpine
     restart: unless-stopped
     volumes:
@@ -71,6 +75,7 @@ services:
       traefik.enable: false
 
   redis:
+    container_name: redis
     image: redis:5-alpine
     restart: unless-stopped
     volumes:
