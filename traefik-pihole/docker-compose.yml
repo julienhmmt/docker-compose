@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -15,6 +16,7 @@ services:
       - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
 
   pihole:
+    container_name: pihole
     restart: unless-stopped
     image: pihole/pihole:v4.4
     environment:
