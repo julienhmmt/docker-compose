@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -17,6 +18,7 @@ services:
       - ./conf/acme.json:/acme.json
 
   nginxmatomo:
+    container_name: nginxformatomo
     image: nginx:1.17-alpine
     restart: unless-stopped
     volumes:
@@ -39,6 +41,7 @@ services:
       traefik.http.routers.nginxmatomo-https.tls.certresolver: letsencrypt
 
   sqlmatomo:
+    container_name: sqlmatomo
     image: mariadb:bionic
     restart: unless-stopped
     volumes:
@@ -52,6 +55,7 @@ services:
       traefik.enable: false
 
   matomo:
+    container_name: matomoapp
     image: matomo:3-fpm-alpine
     restart: unless-stopped
     depends_on:
