@@ -19,6 +19,10 @@
       "useGravatar": false,
       "useRpcPing": false,
       "useStructuredData": true
+    },
+    "process": "systemd",
+    "paths": {
+      "contentPath": "/var/lib/ghost/content"
     }
   }
   
