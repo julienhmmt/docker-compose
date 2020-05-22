@@ -2,6 +2,7 @@
 version: '3.7'
 services:
   traefik:
+    container_name: traefik
     image: traefik:chevrotin
     restart: unless-stopped
     ports:
@@ -13,6 +14,7 @@ services:
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
 
   grafana:
+    container_name: grafana
     image: grafana/grafana:latest
     volumes:
       - datagrafana:/var/lib/grafana
@@ -24,6 +26,7 @@ services:
       traefik.http.services.grafana.loadbalancer.server.port: 3000
 
   prometheus:
+    container_name: prometheus
     image: prom/prometheus:latest
     command: --config.file=/etc/prometheus/prometheus.yml
     restart: unless-stopped
