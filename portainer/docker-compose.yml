@@ -1,7 +1,7 @@
 ---
-version: '3.7'
 services:
   portainer:
+    container_name: portainer
     image: portainer/portainer:latest
     restart: always
     command: -H unix:///var/run/docker.sock
