@@ -19,7 +19,7 @@ services:
 
   sqlwp:
     container_name: sqlwp
-    image: mariadb:latest
+    image: mariadb:bionic
     restart: unless-stopped
     volumes:
       - datasqlwp:/var/lib/mysql
@@ -33,7 +33,7 @@ services:
  
   nginxwp:
     container_name: nginxforwp
-    image: nginx:1.17-alpine
+    image: nginx:stable-alpine
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -56,7 +56,7 @@ services:
 
   wp:
     container_name: wpapp
-    image: wordpress:5.4-php7.4-fpm-alpine
+    image: wordpress:5-php7.4-fpm-alpine
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -76,7 +76,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:5-alpine
+    image: redis:6-alpine
     restart: unless-stopped
     volumes:
       - dataredis:/data
