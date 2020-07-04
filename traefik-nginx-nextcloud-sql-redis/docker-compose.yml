@@ -22,7 +22,7 @@ services:
 
   nginxnextcloud:
     container_name: nginxfornextcloud
-    image: nginx:1.17-alpine
+    image: nginx:stable-alpine
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -45,7 +45,7 @@ services:
 
   nextcloud:
     container_name: nextcloudapp
-    image: nextcloud:18-fpm-alpine
+    image: nextcloud:19-fpm-alpine
     restart: unless-stopped
     links:
       - dbnextcloud
@@ -76,7 +76,7 @@ services:
       traefik.enable: false
 
   redisnextcloud:
-    image: redis:5-alpine
+    image: redis:6
     restart: unless-stopped
     volumes:
       - dataredisnextcloud:/data
