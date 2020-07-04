@@ -7,37 +7,37 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
-      - 8080:8080
-      - 8082:8082
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
 
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    volumes:
-      - datagrafana:/var/lib/grafana
-    restart: unless-stopped
-    labels:
-      traefik.enable: true
-      traefik.http.routers.grafana-http.rule: Host(`grafana.czs.local`)
-      traefik.http.routers.grafana-http.entrypoints: web
-      traefik.http.services.grafana.loadbalancer.server.port: 3000
-
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
-    command: --config.file=/etc/prometheus/prometheus.yml
     restart: unless-stopped
     volumes:
-      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - dataprometheus:/prometheus
+      - dataprometheus:/etc/prometheus
     labels:
       traefik.enable: true
-      traefik.http.routers.prometheus-http.rule: Host(`prometheus.czs.local`)
-      traefik.http.routers.prometheus-http.entrypoints: web
-      traefik.http.services.prometheus.loadbalancer.server.port: 9090
+      traefik.http.routers.prometheus.entrypoints: web, websecure
+      traefik.http.routers.prometheus.rule: Host(`prometheus.czs.local`)
+      traefik.http.routers.prometheus.middlewares: authentification@file,to-https@file,security@file,compression@file
+      traefik.http.routers.prometheus.tls: true
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:7.0.4
+    restart: unless-stopped
+    volumes:
+      - datagrafana:/var/lib/grafana
+      - datagrafanalogs:/var/log/grafana
+    labels:
+      traefik.enable: true
+      traefik.http.routers.grafana.entrypoints: web, websecure
+      traefik.http.routers.grafana.rule: Host(`grafana.czs.local`)
+      traefik.http.routers.grafana.middlewares: to-https@file,security@file,compression@file
+      traefik.http.routers.grafana.tls: true
 
 volumes:
   dataprometheus:
