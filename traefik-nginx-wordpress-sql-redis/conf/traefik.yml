@@ -1,0 +1,41 @@
+global:
+  sendAnonymousUsage: false
+  checkNewVersion: false
+
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+log:
+#  filePath: "/etc/traefik/applog.log"
+#  format: json
+  level: WARNING
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    watch: true
+    swarmMode: false
+
+  file:
+    filename: /etc/traefik/traefik_dynamic.yml
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: contact@czs.local
+#      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      storage: acme.json
+      keyType: EC384
+      httpChallenge:
+        entryPoint: web
