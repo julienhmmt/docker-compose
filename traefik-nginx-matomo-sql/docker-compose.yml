@@ -22,7 +22,7 @@ services:
 
   nginxmatomo:
     container_name: nginxformatomo
-    image: nginx:1.17-alpine
+    image: nginx:stable-alpine
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
