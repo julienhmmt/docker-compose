@@ -1,0 +1,46 @@
+---
+version: '3.8'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:chevrotin
+    restart: unless-stopped
+    ports:
+      - 53:53/udp
+      - 53:53
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+
+  pihole:
+    container_name: pihole
+    restart: unless-stopped
+    image: pihole/pihole:v5.0
+    environment:
+      TZ: 'Europe/Paris'
+      VIRTUAL_HOST: pihole.czs.local
+      WEBPASSWORD: 'pouetpouet'
+    volumes:
+      - datapihole:/etc/pihole/
+      - datadnsmasqd:/etc/dnsmasq.d/
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    labels:
+      traefik.enable: true
+      traefik.http.routers.pihole-http.rule: Host(`pihole.czs.local`)
+      traefik.http.routers.pihole-http.entrypoints: web
+      traefik.http.services.pihole.loadbalancer.server.port: 80
+      traefik.tcp.routers.pihole-dns.entrypoints: dns
+      traefik.tcp.routers.pihole-dns.service: pihole
+      traefik.udp.routers.pihole-udp.entrypoints: udpdns
+      traefik.udp.routers.pihole-udp.service: pihole
+      traefik.udp.services.pihole.loadbalancer.server.port: 53
+
+volumes:
+  datapihole:
+  datadnsmasqd:
