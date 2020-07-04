@@ -21,7 +21,6 @@ services:
     container_name: sqlghost
     image: mariadb:bionic
     restart: always
-    command: --sql-mode=""
     volumes:
       - datasqlghost:/var/lib/mysql
     environment:
@@ -45,7 +44,6 @@ services:
       traefik.enable: true
       traefik.http.routers.ghost-http.rule: Host(`ghost.czs.local`)
       traefik.http.routers.ghost-http.entrypoints: web
-      traefik.http.services.ghost.loadbalancer.server.port: 2368
       traefik.http.routers.ghost-http.middlewares: https-redirect@file
       traefik.http.routers.ghost-https.rule: Host(`ghost.czs.local`)
       traefik.http.routers.ghost-https.entrypoints: websecure
