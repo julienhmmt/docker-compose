@@ -1,0 +1,43 @@
+[global]
+  sendAnonymousUsage = false
+  checkNewVersion = false
+
+[api]
+  #insecure = true
+  dashboard = true
+  #debug = true
+
+[log]
+  filePath = "/etc/traefik/applog.log"
+  level = "INFO"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedByDefault = false
+    watch = true
+    swarmMode = false
+
+  [providers.file]
+    filename = "/etc/traefik/traefik_dynamic.toml"
+    watch = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+[certificatesResolvers]
+  [certificatesResolvers.letsencrypt]
+    [certificatesResolvers.letsencrypt.acme]
+      email = "contact@domain.local"
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+      storage = "acme.json"
+      keyType = "EC384"
+        [certificatesResolvers.letsencrypt.acme.dnsChallenge]
+          provider = "gandiv5"
+          delayBeforeCheck = 0
+          resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
