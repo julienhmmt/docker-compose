@@ -1,0 +1,52 @@
+---
+version: '3.8'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.2.4
+    restart: unless-stopped
+    environment:
+      - "GANDIV5_API_KEY=<INSERT-WITHOUT-HOOK>"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yml:ro
+      - ./conf/acme.json:/acme.json
+      - ./logs/traefik.log:/etc/traefik/applog.log
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik-secure.entrypoints: websecure
+      traefik.http.routers.traefik-secure.rule: Host(`traefik.domain.local`)
+      traefik.http.routers.traefik-secure.middlewares: to-https@file, authentification@file
+      traefik.http.routers.traefik-secure.tls: true
+      traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
+      traefik.http.routers.traefik-secure.tls.domains[0].main: domain.local
+      traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.domain.local"
+      traefik.http.routers.traefik-secure.service: api@internal
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer:1.24.0
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - dataportainer:/data
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.entrypoints: web, websecure
+      traefik.http.routers.portainer.rule: Host(`portainer.domain.local`)
+      traefik.http.routers.portainer.middlewares: to-https@file, security@file
+      traefik.http.routers.portainer.tls: true
+
+volumes:
+  dataportainer:
