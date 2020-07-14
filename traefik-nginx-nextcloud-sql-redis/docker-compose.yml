@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:chevrotin
+    image: traefik:v2.2.1
     restart: unless-stopped
     ports:
       - 80:80
