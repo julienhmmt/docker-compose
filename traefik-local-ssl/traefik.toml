@@ -22,7 +22,7 @@
 
 
   [providers.file]
-    filename = "/etc/traefik/traefik_dynamic.toml"
+    directory = "/traefikdynamic"
     watch = true
 
 [entryPoints]
