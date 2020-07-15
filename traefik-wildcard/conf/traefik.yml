@@ -7,7 +7,7 @@ global:
 api:
   ##insecure: true
   dashboard: true
-  #debug: true
+  ##debug: true
 
 log:
   filePath: "/etc/traefik/applog.log"
