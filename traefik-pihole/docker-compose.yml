@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.1
+    image: traefik:v2.2.5
     restart: unless-stopped
     ports:
       - 53:53/udp
