@@ -15,9 +15,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       # Use either .toml files or .yml
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
-      - ./conf/traefikdynamic:/traefikdynamic:ro
       # - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      # - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./conf/acme.json:/acme.json
 
   sqlwp:
