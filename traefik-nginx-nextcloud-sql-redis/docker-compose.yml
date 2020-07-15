@@ -15,9 +15,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
       # Use either .toml files or .yml
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
-      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
       # - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      # - ./conf/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yml:ro
+      # - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./conf/acme.json:/acme.json
 
   nginxnextcloud:

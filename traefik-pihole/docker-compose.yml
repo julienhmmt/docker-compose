@@ -13,7 +13,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
-      - ./conf/traefik_dynamic.toml:/etc/traefik/traefik_dynamic.toml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
 
   pihole:
     container_name: pihole

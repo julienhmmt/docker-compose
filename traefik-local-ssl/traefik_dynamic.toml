@@ -25,9 +25,6 @@
   [http.middlewares.compression.compress]
     excludedContentTypes = ["text/event-stream"]
 
-  [http.middlewares.https-redirect.redirectScheme]
-    scheme = "https"
-    permanent = true
 
   [http.middlewares.security.headers]
     accessControlAllowMethods = ["GET", "OPTIONS", "PUT"]

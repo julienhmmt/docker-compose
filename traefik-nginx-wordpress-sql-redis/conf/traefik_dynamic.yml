@@ -24,11 +24,6 @@ http:
         excludedContentTypes:
           - text/event-stream
 
-    to-https:
-      redirectScheme:
-        scheme: https
-        permanent: true
-
     security:
       headers:
         accessControlAllowMethods:

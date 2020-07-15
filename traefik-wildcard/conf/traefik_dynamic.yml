@@ -20,11 +20,6 @@ tls:
 
 http:
   middlewares:
-    to-https:
-      redirectScheme:
-        scheme: https
-        permanent: true
-
     security:
       headers:
         accessControlAllowMethods:
