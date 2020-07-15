@@ -10,7 +10,7 @@ api:
 log:
 #  filePath: "/etc/traefik/applog.log"
 #  format: json
-  level: WARNING
+  level: INFO
 
 providers:
   docker:
