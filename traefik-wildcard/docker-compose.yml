@@ -15,14 +15,14 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./conf/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yml:ro
+      - ./conf/traefikdynamic:/traefik_dynamic.yml:ro
       - ./conf/acme.json:/acme.json
       - ./logs/traefik.log:/etc/traefik/applog.log
     labels:
       traefik.enable: true
       traefik.http.routers.traefik-secure.entrypoints: websecure
       traefik.http.routers.traefik-secure.rule: Host(`traefik.domain.local`)
-      traefik.http.routers.traefik-secure.middlewares: to-https@file, authentification@file
+      traefik.http.routers.traefik-secure.middlewares: authentification@file
       traefik.http.routers.traefik-secure.tls: true
       traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
       traefik.http.routers.traefik-secure.tls.domains[0].main: domain.local
@@ -43,9 +43,9 @@ services:
       - dataportainer:/data
     labels:
       traefik.enable: true
-      traefik.http.routers.portainer.entrypoints: web, websecure
+      traefik.http.routers.portainer.entrypoints: websecure
       traefik.http.routers.portainer.rule: Host(`portainer.domain.local`)
-      traefik.http.routers.portainer.middlewares: to-https@file, security@file
+      traefik.http.routers.portainer.middlewares: security@file
       traefik.http.routers.portainer.tls: true
 
 volumes:

@@ -44,5 +44,4 @@
       keyType = "EC256"
         [certificatesResolvers.letsencrypt.acme.dnsChallenge]
           provider = "gandiv5"
-          delayBeforeCheck = 0
           resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
