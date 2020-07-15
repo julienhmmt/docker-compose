@@ -3,7 +3,7 @@ global:
   checkNewVersion: false
 
 api:
-  #insecure! true
+  #insecure: true
   dashboard: true
   debug: true
 
