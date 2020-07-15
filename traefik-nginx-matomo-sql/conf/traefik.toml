@@ -34,6 +34,6 @@
       email = "contact@czs.local"
       caServer = "https://acme-v02.api.letsencrypt.org/directory"
       storage = "acme.json"
-      keyType = "EC384"
+      keyType = "EC256"
         [certificatesResolvers.letsencrypt.acme.httpChallenge]
           entryPoint = "web"

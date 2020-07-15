@@ -36,7 +36,7 @@
       #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       caServer = "https://acme-v02.api.letsencrypt.org/directory"
       storage = "acme.json"
-      keyType = "EC384"
+      keyType = "EC256"
         [certificatesResolvers.letsencrypt.acme.dnsChallenge]
           provider = "gandiv5"
           delayBeforeCheck = 0
