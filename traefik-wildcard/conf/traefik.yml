@@ -5,7 +5,7 @@ global:
   #insecureSNI: false
 
 api:
-  #insecure: true
+  ##insecure! true
   dashboard: true
   #debug: true
 
