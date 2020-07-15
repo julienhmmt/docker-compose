@@ -34,6 +34,9 @@ entryPoints:
   websecure:
     address: ":443"
 
+  metrics:
+    address: ":9090"
+
 certificatesResolvers:
   letsencrypt:
     acme:
@@ -47,6 +50,7 @@ certificatesResolvers:
 
 metrics:
   prometheus:
+    entryPoint: metrics
     addEntryPointsLabels: true
     addServicesLabels: true
     buckets:

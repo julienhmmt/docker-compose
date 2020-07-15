@@ -8,37 +8,87 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # Use either .toml files or .yml
       - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      # - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./conf/acme.json:/acme.json
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.19.2
     restart: unless-stopped
     volumes:
-      - dataprometheus:/etc/prometheus
+      - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./conf/prometheus/rules.yml:/etc/prometheus/rules.yml
+      - ./conf/prometheus/alerts.yml:/etc/prometheus/alerts.yml
     labels:
       traefik.enable: true
-      traefik.http.routers.prometheus.entrypoints: web, websecure
+      traefik.http.routers.prometheus.entrypoints: websecure
       traefik.http.routers.prometheus.rule: Host(`prometheus.czs.local`)
-      traefik.http.routers.prometheus.middlewares: authentification@file,to-https@file,security@file,compression@file
+      traefik.http.routers.prometheus.middlewares: authentification@file, security@file
       traefik.http.routers.prometheus.tls: true
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:v0.21.0
+    restart: unless-stopped
+    networks:
+      - oueb
+    volumes:
+      - dataalertmanager:/etc/alertmanager
+    labels:
+      traefik.enable: true
+      traefik.http.routers.alertmanager.entrypoints: websecure
+      traefik.http.routers.alertmanager.rule: Host(`alertmanager.czs.local`)
+      traefik.http.routers.alertmanager.middlewares: authentification@file, security@file
+      traefik.http.routers.alertmanager.tls: true
+
+  node-exporter:
+    image: prom/node-exporter:v1.0.1
+    container_name: node-exporter
+    restart: unless-stopped
+    networks:
+      - oueb
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    labels:
+      traefik.enable: false
 
   grafana:
     container_name: grafana
-    image: grafana/grafana:7.0.4
+    image: grafana/grafana:7.0.6
     restart: unless-stopped
+    networks:
+      - oueb
+    depends_on:
+      - prometheus
+      - node-exporter
+      - alertmanager
     volumes:
       - datagrafana:/var/lib/grafana
       - datagrafanalogs:/var/log/grafana
     labels:
       traefik.enable: true
-      traefik.http.routers.grafana.entrypoints: web, websecure
+      traefik.http.routers.grafana.entrypoints: websecure
       traefik.http.routers.grafana.rule: Host(`grafana.czs.local`)
-      traefik.http.routers.grafana.middlewares: to-https@file,security@file,compression@file
+      traefik.http.routers.grafana.middlewares: security@file, compression@file
       traefik.http.routers.grafana.tls: true
 
 volumes:
   dataprometheus:
+  dataalertmanager:
   datagrafana:
+  datagrafanalogs:
