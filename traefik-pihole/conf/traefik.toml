@@ -8,7 +8,7 @@
   #debug = true
 
 [log]
-  level = "WARNING"
+  level = "INFO"
 
 [providers]
   [providers.docker]
