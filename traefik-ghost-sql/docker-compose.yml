@@ -22,7 +22,7 @@ services:
   sqlghost:
     container_name: sqlghost
     image: mariadb:bionic
-    restart: always
+    restart: unless-stopped
     volumes:
       - datasqlghost:/var/lib/mysql
     environment:
@@ -34,7 +34,7 @@ services:
   ghost:
     container_name: cmsghost
     image: ghost:3
-    restart: always
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
