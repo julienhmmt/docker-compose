@@ -3,7 +3,7 @@ version: '3.8'
 services:
   portainer:
     container_name: portainer
-    image: portainer/portainer:latest
+    image: portainer/${VERSION}
     restart: unless-stopped
     command: -H unix:///var/run/docker.sock
     ports:
