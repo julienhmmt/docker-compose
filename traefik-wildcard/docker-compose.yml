@@ -16,8 +16,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefik_dynamic.yml:ro
-      - ./conf/acme.json:/acme.json
       - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json     
     labels:
       traefik.enable: true
       traefik.http.routers.traefik-secure.entrypoints: websecure

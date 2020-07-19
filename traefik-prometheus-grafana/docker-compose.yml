@@ -13,8 +13,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-- ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
 
   prometheus:

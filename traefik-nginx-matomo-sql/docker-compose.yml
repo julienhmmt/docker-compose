@@ -15,6 +15,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
 
   nginxmatomo:
