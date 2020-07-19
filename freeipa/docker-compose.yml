@@ -3,7 +3,7 @@ version: "3.8"
 services:
   freeipa:
     container_name: freeipa
-    image: freeipa/freeipa-server:centos-8
+    image: freeipa/${VERSION}
     restart: unless-stopped
     hostname: freeipa.czs.local
     environment:
