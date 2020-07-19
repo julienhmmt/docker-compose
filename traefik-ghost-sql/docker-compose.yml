@@ -26,9 +26,9 @@ services:
       - datasqlghost:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_USER: ghost
-      MYSQL_PASSWORD: sqlghostuserpassword
-      MYSQL_DATABASE: ghost
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
 
   ghost:
     container_name: cmsghost
