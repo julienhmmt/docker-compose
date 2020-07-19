@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 53:53/udp
@@ -19,11 +19,11 @@ services:
   pihole:
     container_name: pihole
     restart: unless-stopped
-    image: pihole/pihole:v5.0
+    image: pihole/${PIHOLEVERSION}
     environment:
-      TZ: 'Europe/Paris'
+      TZ: ${TZ}
       VIRTUAL_HOST: pihole.czs.local
-      WEBPASSWORD: 'pouetpouet'
+      WEBPASSWORD: ${PIHOLEWEBPWD}
     volumes:
       - datapihole:/etc/pihole/
       - datadnsmasqd:/etc/dnsmasq.d/
