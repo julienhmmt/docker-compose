@@ -48,9 +48,9 @@ services:
       - datanextcloud:/var/www/html
     environment:
       MYSQL_HOST: dbnextcloud
-      MYSQL_USER: nextcloudsqluser
-      MYSQL_PASSWORD: nextcloudsqlpassword
-      MYSQL_DATABASE: nextclouddb
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
       REDIS_HOST: redisnextcloud
     labels:
       traefik.enable: false
@@ -64,9 +64,9 @@ services:
       - dbnextcloud:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_PASSWORD: nextcloudsqlpassword
-      MYSQL_DATABASE: nextclouddb
-      MYSQL_USER: nextcloudsqluser
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
     labels:
       traefik.enable: false
 
