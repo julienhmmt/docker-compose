@@ -26,9 +26,9 @@ services:
       - datasqlwp:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_USER: wpsqluser
-      MYSQL_PASSWORD: 'sqlpassword'
-      MYSQL_DATABASE: wpdb
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
     labels:
       traefik.enable: false
  
@@ -65,10 +65,10 @@ services:
       - sqlwp
     environment:
       WORDPRESS_DB_HOST: sqlwp
-      WORDPRESS_DB_USER: wpsqluser
-      WORDPRESS_DB_PASSWORD: 'sqlpassword'
-      WORDPRESS_DB_NAME: wpdb
-      WORDPRESS_TABLE_PREFIX: lkEZKOl
+      WORDPRESS_DB_USER: ${MYSQLUSER}
+      WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQLDB}
+      WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX}
     labels:
       traefik.enable: false
 
