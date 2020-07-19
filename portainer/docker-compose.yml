@@ -13,11 +13,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - dataportainer:/data
-    
-    ## FACULTATIF - configuration with Traefik
-    #labels:
-      #traefik.enable: true
-      #traefik.http.routers.portainer-http.entrypoints: "web"
-      #traefik.http.routers.portainer.rule: Host(`portainer.czs.local`)
- volumes:
-   dataportainer:
+    labels: # for traefik, delete this if not needed
+      traefik.enable: true
+      traefik.http.routers.portainer-http.entrypoints: web
+      traefik.http.routers.portainer.rule: Host(`portainer.czs.local`)
+volumes:
+  dataportainer:
