@@ -19,7 +19,7 @@ services:
   pihole:
     container_name: pihole
     restart: unless-stopped
-    image: pihole/${PIHOLEVERSION}
+    image: pihole/pihole:${PIHOLEVERSION}
     environment:
       TZ: ${TZ}
       VIRTUAL_HOST: pihole.czs.local
