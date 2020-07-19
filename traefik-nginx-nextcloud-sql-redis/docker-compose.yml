@@ -13,7 +13,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-- ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro      
       - ./conf/acme.json:/acme.json
 
@@ -31,11 +31,8 @@ services:
       - nextcloud
     labels:
       traefik.enable: true
-      traefik.http.routers.nginxnextcloud-http.rule: Host(`nextcloud.czs.local`)
-      traefik.http.routers.nginxnextcloud-http.entrypoints: web
-      traefik.http.routers.nginxnextcloud-http.middlewares: https-redirect@file
-      traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
       traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
+      traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
       traefik.http.routers.nginxnextcloud-https.middlewares: "security@file, compression@file"
       traefik.http.routers.nginxnextcloud-https.tls: "true"
       traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"

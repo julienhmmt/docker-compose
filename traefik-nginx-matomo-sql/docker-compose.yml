@@ -13,7 +13,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-- ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./conf/acme.json:/acme.json
 
@@ -31,11 +31,8 @@ services:
       - matomo
     labels:
       traefik.enable: true
-      traefik.http.routers.nginxmatomo-http.rule: Host(`matomo.czs.local`)
-      traefik.http.routers.nginxmatomo-http.entrypoints: web
-      traefik.http.routers.nginxmatomo-http.middlewares: https-redirect@file
-      traefik.http.routers.nginxmatomo-https.rule: Host(`matomo.czs.local`)
       traefik.http.routers.nginxmatomo-https.entrypoints: websecure
+      traefik.http.routers.nginxmatomo-https.rule: Host(`matomo.czs.local`)
       traefik.http.routers.nginxmatomo-https.middlewares: compression@file, security@file
       traefik.http.routers.nginxmatomo-https.tls: true
       traefik.http.routers.nginxmatomo-https.tls.certresolver: letsencrypt

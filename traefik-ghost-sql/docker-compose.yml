@@ -42,11 +42,8 @@ services:
       - sqlghost
     labels:
       traefik.enable: true
-      traefik.http.routers.ghost-http.rule: Host(`ghost.czs.local`)
-      traefik.http.routers.ghost-http.entrypoints: web
-      traefik.http.routers.ghost-http.middlewares: https-redirect@file
-      traefik.http.routers.ghost-https.rule: Host(`ghost.czs.local`)
       traefik.http.routers.ghost-https.entrypoints: websecure
+      traefik.http.routers.ghost-https.rule: Host(`ghost.czs.local`)
       traefik.http.routers.ghost-https.middlewares: compression@file, security@file
       traefik.http.routers.ghost-https.tls: true
       traefik.http.routers.ghost-https.tls.certresolver: "letsencrypt"
