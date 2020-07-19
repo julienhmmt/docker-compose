@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 80:80
@@ -20,7 +20,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v2.19.2
+    image: prom/prometheus:${PROMETHEUSVERSION}
     restart: unless-stopped
     volumes:
       - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -35,7 +35,7 @@ services:
 
   alertmanager:
     container_name: alertmanager
-    image: prom/alertmanager:v0.21.0
+    image: prom/alertmanager:${ALERTMANAGERVERSION}
     restart: unless-stopped
     networks:
       - oueb
@@ -49,7 +49,7 @@ services:
       traefik.http.routers.alertmanager.tls: true
 
   node-exporter:
-    image: prom/node-exporter:v1.0.1
+    image: prom/node-exporter:${NODEEXPORTERVERSION}
     container_name: node-exporter
     restart: unless-stopped
     networks:
@@ -68,7 +68,7 @@ services:
 
   grafana:
     container_name: grafana
-    image: grafana/grafana:7.0.6
+    image: grafana/${GRAFANAVERSION}
     restart: unless-stopped
     networks:
       - oueb
