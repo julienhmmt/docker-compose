@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 80:80
@@ -20,7 +20,7 @@ services:
 
   nginxmatomo:
     container_name: nginxformatomo
-    image: nginx:stable-alpine
+    image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -40,7 +40,7 @@ services:
 
   sqlmatomo:
     container_name: sqlmatomo
-    image: mariadb:bionic
+    image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
       - datasqlmatomo:/var/lib/mysql
@@ -54,7 +54,7 @@ services:
 
   matomo:
     container_name: matomoapp
-    image: matomo:3-fpm-alpine
+    image: matomo:{MATOMOVERSION}
     restart: unless-stopped
     depends_on:
       - sqlmatomo
