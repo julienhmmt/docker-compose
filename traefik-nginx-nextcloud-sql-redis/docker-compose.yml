@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 80:80
@@ -20,7 +20,7 @@ services:
 
   nginxnextcloud:
     container_name: nginxfornextcloud
-    image: nginx:stable-alpine
+    image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -40,7 +40,7 @@ services:
 
   nextcloud:
     container_name: nextcloudapp
-    image: nextcloud:19-fpm-alpine
+    image: nextcloud:${NEXTCLOUDVERSION}
     restart: unless-stopped
     links:
       - dbnextcloud
@@ -57,7 +57,7 @@ services:
 
   dbnextcloud:
     container_name: sqlnextcloud
-    image: mariadb:bionic
+    image: mariadb:${MARIADBVERSION}
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
@@ -71,7 +71,7 @@ services:
       traefik.enable: false
 
   redisnextcloud:
-    image: redis:6
+    image: redis:${REDISVERSION}
     restart: unless-stopped
     volumes:
       - dataredisnextcloud:/data
