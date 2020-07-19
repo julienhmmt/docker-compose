@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 80:80
@@ -20,7 +20,7 @@ services:
 
   sqlwp:
     container_name: sqlwp
-    image: mariadb:bionic
+    image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
       - datasqlwp:/var/lib/mysql
@@ -34,7 +34,7 @@ services:
  
   nginxwp:
     container_name: nginxforwp
-    image: nginx:stable-alpine
+    image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -54,7 +54,7 @@ services:
 
   wp:
     container_name: wpapp
-    image: wordpress:5-php7.4-fpm-alpine
+    image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -74,7 +74,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:6
+    image: redis:${REDISVERSION}
     restart: unless-stopped
     volumes:
       - dataredis:/data
