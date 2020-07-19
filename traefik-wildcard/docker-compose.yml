@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     environment:
       - "GANDIV5_API_KEY=<INSERT-WITHOUT-HOOK>"
@@ -31,7 +31,7 @@ services:
 
   portainer:
     container_name: portainer
-    image: portainer/portainer:1.24.0
+    image: portainer/portainer:${PORTAINERVERSION}
     restart: unless-stopped
     depends_on:
       - traefik
