@@ -8,14 +8,12 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080
+      - 8080:8080 # used to have the traefik dashboard # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      # Use either .toml files or .yml
-      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
-      # - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./conf/acme.json:/acme.json
 
