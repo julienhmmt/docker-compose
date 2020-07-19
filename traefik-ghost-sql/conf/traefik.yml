@@ -8,8 +8,7 @@ api:
   #debug: true
 
 log:
-#  filePath: "/etc/traefik/applog.log"
-#  format: json
+  filePath: "/etc/traefik/applog.log"
   level: INFO
 
 providers:
@@ -30,7 +29,7 @@ entryPoints:
       redirections:
         entryPoint:
           to: websecure
-          scheme: https    
+          scheme: https
   websecure:
     address: ":443"
 
