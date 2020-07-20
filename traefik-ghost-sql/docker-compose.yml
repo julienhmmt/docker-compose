@@ -3,7 +3,7 @@ version: '3.8'
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.2.5
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
       - 80:80
@@ -20,7 +20,7 @@ services:
 
   sqlghost:
     container_name: sqlghost
-    image: mariadb:bionic
+    image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
       - datasqlghost:/var/lib/mysql
@@ -32,7 +32,7 @@ services:
 
   ghost:
     container_name: cmsghost
-    image: ghost:3
+    image: ghost:${GHOSTVERSION}
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
