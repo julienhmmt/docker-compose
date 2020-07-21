@@ -37,8 +37,6 @@ services:
     container_name: alertmanager
     image: prom/alertmanager:${ALERTMANAGERVERSION}
     restart: unless-stopped
-    networks:
-      - oueb
     volumes:
       - dataalertmanager:/etc/alertmanager
     labels:
@@ -52,8 +50,6 @@ services:
     image: prom/node-exporter:${NODEEXPORTERVERSION}
     container_name: node-exporter
     restart: unless-stopped
-    networks:
-      - oueb
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -70,8 +66,6 @@ services:
     container_name: grafana
     image: grafana/${GRAFANAVERSION}
     restart: unless-stopped
-    networks:
-      - oueb
     depends_on:
       - prometheus
       - node-exporter
