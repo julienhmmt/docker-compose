@@ -61,7 +61,7 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
-      - dbnextcloud:/var/lib/mysql
+      - datadbnextcloud:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
       MYSQL_USER: ${MYSQLUSER}
