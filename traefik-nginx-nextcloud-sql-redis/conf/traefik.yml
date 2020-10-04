@@ -8,8 +8,7 @@ api:
   #debug: true
 
 log:
-#  filePath: "/etc/traefik/applog.log"
-#  format: json
+  filePath: "/etc/traefik/applog.log"
   level: INFO
 
 providers:
