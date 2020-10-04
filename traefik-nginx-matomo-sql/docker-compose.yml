@@ -1,5 +1,5 @@
 ---
-version: '3.8'
+version: '3.6'
 services:
   traefik:
     container_name: traefik
@@ -11,8 +11,6 @@ services:
       - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
@@ -23,8 +21,6 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - datamatomo:/var/www/html
       - datanginxmatomologs:/var/log/nginx/
       - ./conf/nginx-matomo:/etc/nginx
