@@ -1,5 +1,5 @@
 ---
-version: '3.8'
+version: '3.6'
 services:
   traefik:
     container_name: traefik
@@ -14,7 +14,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-
   pihole:
     container_name: pihole
     restart: unless-stopped
