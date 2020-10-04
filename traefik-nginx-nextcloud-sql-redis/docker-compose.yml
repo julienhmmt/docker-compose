@@ -1,8 +1,7 @@
 ---
-version: '3.8'
+version: '3.6'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
@@ -11,23 +10,18 @@ services:
       - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
 
-  nginxnextcloud:
-    container_name: nginxfornextcloud
+  nginx:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - datanextcloud:/var/www/html
       - datanginxnextcloudlogs:/var/log/nginx/
-      - ./conf/nginx-nextcloud:/etc/nginx/conf.d
+      - ./conf/nginx-nextcloud:/etc/nginx/
     links:
       - nextcloud
     labels:
@@ -39,11 +33,10 @@ services:
       traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"
 
   nextcloud:
-    container_name: nextcloudapp
     image: nextcloud:${NEXTCLOUDVERSION}
     restart: unless-stopped
     links:
-      - dbnextcloud
+      - mariadb
     volumes:
       - datanextcloud:/var/www/html
     environment:
@@ -55,13 +48,12 @@ services:
     labels:
       traefik.enable: false
 
-  dbnextcloud:
-    container_name: sqlnextcloud
+  mariadb:
     image: mariadb:${MARIADBVERSION}
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
-      - dbnextcloud:/var/lib/mysql
+      - datadbnextcloud:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
       MYSQL_USER: ${MYSQLUSER}
@@ -70,7 +62,7 @@ services:
     labels:
       traefik.enable: false
 
-  redisnextcloud:
+  redis:
     image: redis:${REDISVERSION}
     restart: unless-stopped
     volumes:
