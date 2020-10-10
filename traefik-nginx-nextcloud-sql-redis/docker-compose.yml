@@ -15,15 +15,14 @@ services:
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
 
-  nginx:
+  nginxnextcloud:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
+    container_name: nginxnextcloud
     volumes:
       - datanextcloud:/var/www/html
-      - datanginxnextcloudlogs:/var/log/nginx/
-      - ./conf/nginx-nextcloud:/etc/nginx/
-    links:
-      - nextcloud
+      - datanginxnextcloudlogs:/var/log/nginx
+      - ./conf/nginx-nextcloud:/etc/nginx
     labels:
       traefik.enable: true
       traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
@@ -35,16 +34,17 @@ services:
   nextcloud:
     image: nextcloud:${NEXTCLOUDVERSION}
     restart: unless-stopped
-    links:
-      - mariadb
+    container_name: nextcloudfpm
     volumes:
       - datanextcloud:/var/www/html
     environment:
-      MYSQL_HOST: dbnextcloud
+      MYSQL_HOST: sqlnextcloud
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
       REDIS_HOST: redisnextcloud
+    links:
+      - mariadb
     labels:
       traefik.enable: false
 
@@ -52,6 +52,7 @@ services:
     image: mariadb:${MARIADBVERSION}
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
+    container_name: sqlnextcloud
     volumes:
       - datadbnextcloud:/var/lib/mysql
     environment:
