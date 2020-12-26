@@ -1,0 +1,29 @@
+---
+version: '3.6'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:${TRAEFIKVERSION}
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080 # used for dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefik_dynamic.yml:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json     
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.19
+    restart: unless-stopped
+    volumes:
+      - nginxdata:/var/www/html
+      - nginxlogs:/var/log/nginx
+
+volumes:
+  nginxdata:
+  nginxlogs:

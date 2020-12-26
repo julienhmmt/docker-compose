@@ -1,0 +1,51 @@
+---
+global:
+  sendAnonymousUsage: yes
+  checkNewVersion: false
+
+api:
+  #insecure: true
+  dashboard: true
+  #debug: true
+
+log:
+  filePath: "/etc/traefik/applog.log"
+  format: json
+  level: "ERROR"
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    watch: true
+    swarmMode: false
+  file:
+    directory: "/dynamic"
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+  metrics:
+    address: ":9090"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: mail@domain.name
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      storage: acme.json
+      keyType: EC256
+      httpChallenge:
+        entryPoint: web
+
+pilot:
+  token: "your-token-here"
