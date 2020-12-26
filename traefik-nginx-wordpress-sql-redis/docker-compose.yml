@@ -53,7 +53,7 @@ services:
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/php.ini:/usr/local/etc/php/php.ini
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp:/var/www/html
     depends_on:
       - sqlwp
