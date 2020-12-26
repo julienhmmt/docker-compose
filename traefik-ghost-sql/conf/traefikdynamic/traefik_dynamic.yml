@@ -39,7 +39,6 @@ http:
         frameDeny: true
         sslRedirect: true
         sslForceHost: true
-        stsIncludeSubdomain: true
         stsPreload: true
         #ContentSecurityPolicy = "default-src 'self' 'unsafe-inline'"
         customFrameOptionsValue: SAMEORIGIN
