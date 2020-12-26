@@ -56,7 +56,7 @@ services:
     volumes:
       - datadbnextcloud:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: '1'
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
