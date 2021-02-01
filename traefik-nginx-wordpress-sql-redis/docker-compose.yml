@@ -57,6 +57,7 @@ services:
       - datawp:/var/www/html
     depends_on:
       - sqlwp
+      - redis
     environment:
       WORDPRESS_DB_HOST: sqlwp
       WORDPRESS_DB_USER: ${MYSQLUSER}
@@ -70,6 +71,7 @@ services:
     container_name: redis
     image: redis:${REDISVERSION}
     restart: unless-stopped
+    command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
     volumes:
       - dataredis:/data
     labels:
