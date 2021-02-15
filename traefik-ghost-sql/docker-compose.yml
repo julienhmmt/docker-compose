@@ -21,6 +21,8 @@ services:
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - datasqlghostlog:/var/log/mysql
       - datasqlghost:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
@@ -40,4 +42,5 @@ services:
 
 volumes:
   datasqlghost:
+  datasqlghostlog:
   dataghost:
