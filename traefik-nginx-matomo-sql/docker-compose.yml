@@ -17,49 +17,43 @@ services:
       - ./conf/acme.json:/acme.json
 
   nginxmatomo:
-    container_name: nginxformatomo
+    container_name: nginxmotomo
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
       - datamatomo:/var/www/html
-      - datanginxmatomologs:/var/log/nginx/
-      - ./conf/nginx-matomo:/etc/nginx
+      - datanginxlogsmatomo:/var/log/nginx/
+      - ./conf/nginx-matomo:/etc/nginx/
     links:
-      - matomo
-    labels:
-      traefik.enable: true
-      traefik.http.routers.nginxmatomo-https.entrypoints: websecure
-      traefik.http.routers.nginxmatomo-https.rule: Host(`matomo.czs.local`)
-      traefik.http.routers.nginxmatomo-https.middlewares: compression@file, security@file
-      traefik.http.routers.nginxmatomo-https.tls: true
-      traefik.http.routers.nginxmatomo-https.tls.certresolver: letsencrypt
+      - matomoapp
 
   sqlmatomo:
     container_name: sqlmatomo
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlmatomo:/var/lib/mysql
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-      MYSQL_USER: ${MYSQLUSER}
-      MYSQL_PASSWORD: ${MYSQLPASSWORD}
-      MYSQL_DATABASE: ${MYSQLDB}
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOTMATOMO}
+      MYSQL_USER: ${MYSQLUSERMATOMO}
+      MYSQL_PASSWORD: ${MYSQLPASSWORDMATOMO}
+      MYSQL_DATABASE: ${MYSQLDBMATOMO}
     labels:
       traefik.enable: false
 
-  matomo:
+  matomoapp:
     container_name: matomoapp
-    image: matomo:{MATOMOVERSION}
+    image: matomo:${MATOMOVERSION}
     restart: unless-stopped
     depends_on:
       - sqlmatomo
     environment:
       MATOMO_DATABASE_HOST: sqlmatomo
-      MATOMO_DATABASE_TABLES_PREFIX: ${MYSQLTABLEPREFIX}
-      MATOMO_DATABASE_USERNAME: ${MYSQLUSER}
-      MATOMO_DATABASE_PASSWORD: ${MYSQLPASSWORD}
-      MATOMO_DATABASE_DBNAME: ${MYSQLDB}
+      MATOMO_DATABASE_TABLES_PREFIX: ${MYSQLTABLEPREFIXMATOMO}
+      MATOMO_DATABASE_USERNAME: ${MYSQLUSERMATOMO}
+      MATOMO_DATABASE_PASSWORD: ${MYSQLPASSWORDMATOMO}
+      MATOMO_DATABASE_DBNAME: ${MYSQLDBMATOMO}
     volumes:
       - datamatomo:/var/www/html
     labels:
