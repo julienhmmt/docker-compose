@@ -50,3 +50,46 @@ http:
       basicAuth:
         users: # admon / totolasticot
         - admon:$2y$10$4IgUsvlCwENsF18B9t7AoegQ7eWZVfWxPFRhNfBWz7F00h1X2oZFe
+
+###############################################################################################
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-prometheus:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: sc-prometheus
+      rule: Host (`prometheus.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-grafana:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-grafana
+      rule: Host (`grafana.czs.local`)
+      tls:
+        certResolver: letsencrypt
+###
+  services:
+    sc-grafana:
+      loadBalancer:
+        servers:
+        - url: "http://grafana:3000"
+
+    sc-prometheus:
+      loadBalancer:
+        servers:
+        - url: "http://prometheus:9090"

@@ -9,7 +9,8 @@ api:
 
 log:
   filePath: "/etc/traefik/applog.log"
-  level: INFO
+  format: json
+  level: "ERROR"
 
 providers:
   docker:
@@ -17,9 +18,8 @@ providers:
     exposedByDefault: false
     watch: true
     swarmMode: false
-
   file:
-    directory: /traefikdynamic
+    directory: "/dynamic"
     watch: true
 
 entryPoints:

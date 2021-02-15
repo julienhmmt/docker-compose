@@ -23,30 +23,10 @@ services:
     volumes:
       - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./conf/prometheus/rules.yml:/etc/prometheus/rules.yml
-      - ./conf/prometheus/alerts.yml:/etc/prometheus/alerts.yml
-    labels:
-      traefik.enable: true
-      traefik.http.routers.prometheus.entrypoints: websecure
-      traefik.http.routers.prometheus.rule: Host(`prometheus.czs.local`)
-      traefik.http.routers.prometheus.middlewares: authentification@file, security@file
-      traefik.http.routers.prometheus.tls: true
 
-  alertmanager:
-    container_name: alertmanager
-    image: prom/alertmanager:${ALERTMANAGERVERSION}
-    restart: unless-stopped
-    volumes:
-      - dataalertmanager:/etc/alertmanager
-    labels:
-      traefik.enable: true
-      traefik.http.routers.alertmanager.entrypoints: websecure
-      traefik.http.routers.alertmanager.rule: Host(`alertmanager.czs.local`)
-      traefik.http.routers.alertmanager.middlewares: authentification@file, security@file
-      traefik.http.routers.alertmanager.tls: true
-
-  node-exporter:
+  nodeexporter:
+    container_name: nodeexporter
     image: prom/node-exporter:${NODEEXPORTERVERSION}
-    container_name: node-exporter
     restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
@@ -55,28 +35,32 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+      - --collector.processes
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    labels:
-      traefik.enable: false
+
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/disk:/var/disk:ro
 
   grafana:
     container_name: grafana
-    image: grafana/${GRAFANAVERSION}
+    image: grafana/grafana:${GRAFANAVERSION}
     restart: unless-stopped
+    environment:
+      - "GF_USERS_ALLOW_SIGN_UP=false"
     depends_on:
       - prometheus
-      - node-exporter
-      - alertmanager
     volumes:
+      - ./conf/grafana/provisioning.yml:/etc/grafana/provisioning/datasources/all.yml
       - datagrafana:/var/lib/grafana
-      - datagrafanalogs:/var/log/grafana
-    labels:
-      traefik.enable: true
-      traefik.http.routers.grafana.entrypoints: websecure
-      traefik.http.routers.grafana.rule: Host(`grafana.czs.local`)
-      traefik.http.routers.grafana.middlewares: security@file, compression@file
-      traefik.http.routers.grafana.tls: true
 
 volumes:
   dataprometheus:
