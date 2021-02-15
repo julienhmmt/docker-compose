@@ -23,7 +23,7 @@ services:
     volumes:
       - datasqlghost:/var/lib/mysql
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
@@ -37,13 +37,6 @@ services:
       - ./conf/config.production.json:/var/lib/ghost/config.production.json:ro
     depends_on:
       - sqlghost
-    labels:
-      traefik.enable: true
-      traefik.http.routers.ghost-https.entrypoints: websecure
-      traefik.http.routers.ghost-https.rule: Host(`ghost.czs.local`)
-      traefik.http.routers.ghost-https.middlewares: compression@file, security@file
-      traefik.http.routers.ghost-https.tls: true
-      traefik.http.routers.ghost-https.tls.certresolver: "letsencrypt"
 
 volumes:
   datasqlghost:
