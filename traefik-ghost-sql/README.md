@@ -15,7 +15,7 @@ A fast and prod oriented stack to have your own and easy hackable CMS with Ghost
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:portainer
+git clone https://github.com/Mettmett/docker-compose.git:traefik-ghost-sql/
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars.
