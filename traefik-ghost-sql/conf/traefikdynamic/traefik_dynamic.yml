@@ -74,9 +74,9 @@ http:
       rule: Host (`ghost.czs.local`)
       tls:
         certResolver: letsencrypt
-####
+
   services:
     sc-ghost:
       loadBalancer:
         servers:
-        - url: "http://ghost:80"
+        - url: "http://ghost:2378"
