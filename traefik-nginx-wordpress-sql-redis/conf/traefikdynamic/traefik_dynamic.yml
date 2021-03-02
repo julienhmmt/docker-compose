@@ -1,3 +1,4 @@
+---
 tls:
   options:
     default:
@@ -30,7 +31,6 @@ http:
           - GET
           - OPTIONS
           - PUT
-        #accessControlAllowOriginList = "*"
         accessControlMaxAge: 100
         addVaryHeader: true
         browserXssFilter: true
@@ -40,16 +40,17 @@ http:
         sslRedirect: true
         sslForceHost: true
         stsPreload: true
-        #ContentSecurityPolicy = "default-src 'self' 'unsafe-inline'"
         customFrameOptionsValue: SAMEORIGIN
-        referrerPolicy: same-origin
-        featurePolicy: vibrate 'self'
+        referrerPolicy: "same-origin"
+        featurePolicy: "camera 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none'; vibrate 'self';"
         stsSeconds: 315360000
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
 
     authentification:
       basicAuth:
-        users: # admon / totolasticot
-        - admon:$2y$10$4IgUsvlCwENsF18B9t7AoegQ7eWZVfWxPFRhNfBWz7F00h1X2oZFe
+        users:
+        - admin:$2y$10$byzmasKak2LLmvY86KcnGO0pX8UaaNDxQZMJW.wMmaoHRhjNXqOwG # admin/admin, use "https://bcrypt.fr" to encrypt your password
 
   routers:
     rt-traefik:
