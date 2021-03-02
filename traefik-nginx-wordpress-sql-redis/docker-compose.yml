@@ -8,7 +8,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -41,13 +40,6 @@ services:
       - ./conf/nginx-wp:/etc/nginx/
     links:
       - wp
-    labels:
-      traefik.enable: true
-      traefik.http.routers.nginxwp-https.entrypoints: websecure
-      traefik.http.routers.nginxwp-https.rule: Host(`wp.czs.local`)
-      traefik.http.routers.nginxwp-https.middlewares: security@file, compression@file
-      traefik.http.routers.nginxwp-https.tls: true
-      traefik.http.routers.nginxwp-https.tls.certresolver: letsencrypt
 
   wp:
     container_name: wpapp

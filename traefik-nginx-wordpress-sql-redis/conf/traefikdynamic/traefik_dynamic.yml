@@ -50,3 +50,31 @@ http:
       basicAuth:
         users: # admon / totolasticot
         - admon:$2y$10$4IgUsvlCwENsF18B9t7AoegQ7eWZVfWxPFRhNfBWz7F00h1X2oZFe
+
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-wordpress
+      rule: Host (`czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    sc-wordpress:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp:80"
