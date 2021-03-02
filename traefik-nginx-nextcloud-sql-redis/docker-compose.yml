@@ -7,7 +7,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -23,13 +22,6 @@ services:
       - datanextcloud:/var/www/html
       - datanginxnextcloudlogs:/var/log/nginx
       - ./conf/nginx-nextcloud:/etc/nginx
-    labels:
-      traefik.enable: true
-      traefik.http.routers.nginxnextcloud-https.entrypoints: "websecure"
-      traefik.http.routers.nginxnextcloud-https.rule: "Host(`nextcloud.czs.local`)"
-      traefik.http.routers.nginxnextcloud-https.middlewares: "security@file, compression@file"
-      traefik.http.routers.nginxnextcloud-https.tls: "true"
-      traefik.http.routers.nginxnextcloud-https.tls.certresolver: "letsencrypt"
 
   nextcloud:
     image: nextcloud:${NEXTCLOUDVERSION}
