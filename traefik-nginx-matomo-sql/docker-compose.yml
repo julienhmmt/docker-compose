@@ -8,7 +8,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
