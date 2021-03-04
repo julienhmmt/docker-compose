@@ -80,4 +80,4 @@ http:
     sc-ghost:
       loadBalancer:
         servers:
-        - url: "http://ghost:2378"
+        - url: "http://ghost:2368"
