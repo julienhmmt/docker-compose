@@ -1,0 +1,34 @@
+; custom my.cnf for MySQL8 and WordPress website
+
+[mysqld_safe]
+socket = /var/run/mysqld/mysqld.sock
+nice = 0
+
+[mysqld]
+performance_schema=ON
+performance-schema-instrument='stage/%=ON'
+performance-schema-consumer-events-stages-current=ON
+performance-schema-consumer-events-stages-history=ON
+performance-schema-consumer-events-stages-history-long=ON
+
+; InnoDB tuning
+innodb_file_per_table = 1
+innodb_buffer_pool_size = 1G
+innodb_log_file_size = 48M
+
+; Cache
+query_cache_type = 1
+query_cache_size = 128M
+query_cache_limit = 16M
+
+; Misc
+tmp_table_size = 64M
+max_heap_table_size = 64M
+
+; Logging
+log_error = /var/log/mysql/error.log
+slow_query_log_file = /var/log/mysql/mariadb-slow.log
+long_query_time = 10
+log_slow_rate_limit = 1000
+expire_logs_days = 10
+max_binlog_size = 100M

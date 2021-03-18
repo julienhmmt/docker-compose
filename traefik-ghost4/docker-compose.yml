@@ -1,0 +1,45 @@
+---
+version: '3.6'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:${TRAEFIKVERSION}
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json
+
+  sqlghost:
+    container_name: sqlghost
+    image: mariadb:${MARIADBVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - datasqlghostlog:/var/log/mysql
+      - datasqlghost:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
+
+  ghost:
+    container_name: cmsghost
+    image: ghost:${GHOSTVERSION}
+    restart: unless-stopped
+    volumes:
+      - dataghost:/var/lib/ghost/content
+      - ./conf/config.production.json:/var/lib/ghost/config.production.json:ro
+    depends_on:
+      - sqlghost
+
+volumes:
+  datasqlghost:
+  datasqlghostlog:
+  dataghost:
