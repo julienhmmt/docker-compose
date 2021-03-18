@@ -1,0 +1,173 @@
+---
+version: '3.6'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:${TRAEFIKVERSION}
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json
+
+  sqlwp1:
+    container_name: sqlwp1
+    image: mariadb:${MARIADBVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - datasqlwp1:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT1}
+      MYSQL_USER: ${MYSQLUSER1}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD1}
+      MYSQL_DATABASE: ${MYSQLDB1}
+    labels:
+      traefik.enable: 'false'
+ 
+  nginxwp1:
+    container_name: nginxwp1
+    image: nginx:${NGINXVERSION}
+    restart: unless-stopped
+    volumes:
+      - datawp1:/var/www/html
+      - datanginxlogs1:/var/log/nginx/
+      - ./conf/nginx-wp1:/etc/nginx/
+    links:
+      - wp1
+
+  wp1:
+    container_name: wpapp1
+    image: wordpress:${WPVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - datawp1:/var/www/html
+    depends_on:
+      - sqlwp1
+      - redis
+    environment:
+      WORDPRESS_DB_HOST: sqlwp1
+      WORDPRESS_DB_USER: ${MYSQLUSER1}
+      WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD1}
+      WORDPRESS_DB_NAME: ${MYSQLDB1}
+      WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX1}
+    labels:
+      traefik.enable: 'false'
+
+  sqlwp2:
+    container_name: sqlwp2
+    image: mariadb:${MARIADBVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - datasqlwp2:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT2}
+      MYSQL_USER: ${MYSQLUSER2}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD2}
+      MYSQL_DATABASE: ${MYSQLDB2}
+    labels:
+      traefik.enable: 'false'
+ 
+  nginxwp2:
+    container_name: nginxwp2
+    image: nginx:${NGINXVERSION}
+    restart: unless-stopped
+    volumes:
+      - datawp2:/var/www/html
+      - datanginxlogs2:/var/log/nginx/
+      - ./conf/nginx-wp2:/etc/nginx/
+    links:
+      - wp2
+
+  wp2:
+    container_name: wpapp2
+    image: wordpress:${WPVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - datawp2:/var/www/html
+    depends_on:
+      - sqlwp2
+      - redis
+    environment:
+      WORDPRESS_DB_HOST: sqlwp2
+      WORDPRESS_DB_USER: ${MYSQLUSER2}
+      WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD2}
+      WORDPRESS_DB_NAME: ${MYSQLDB2}
+      WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX2}
+    labels:
+      traefik.enable: 'false'
+
+  sqlwp3:
+    container_name: sqlwp3
+    image: mariadb:${MARIADBVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - datasqlwp3:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT3
+      MYSQL_USER: ${MYSQLUSER3}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD3}
+      MYSQL_DATABASE: ${MYSQLDB3}
+    labels:
+      traefik.enable: 'false'
+ 
+  nginxwp3:
+    container_name: nginxwp3
+    image: nginx:${NGINXVERSION}
+    restart: unless-stopped
+    volumes:
+      - datawp3:/var/www/html
+      - datanginxlogs3:/var/log/nginx/
+      - ./conf/nginx-wp3:/etc/nginx/
+    links:
+      - wp3
+
+  wp3:
+    container_name: wpapp3
+    image: wordpress:${WPVERSION}
+    restart: unless-stopped
+    volumes:
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - datawp3:/var/www/html
+    depends_on:
+      - sqlwp3
+      - redis
+    environment:
+      WORDPRESS_DB_HOST: sqlwp3
+      WORDPRESS_DB_USER: ${MYSQLUSER3}
+      WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD3}
+      WORDPRESS_DB_NAME: ${MYSQLDB3}
+      WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX3}
+    labels:
+      traefik.enable: 'false'
+
+  redis:
+    container_name: redis
+    image: redis:${REDISVERSION}
+    restart: unless-stopped
+    command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
+    volumes:
+      - dataredis:/data
+    labels:
+      traefik.enable: 'false'
+
+volumes:
+  datasqlwp1:
+  datanginxlogs1:
+  datawp1:
+  datasqlwp2:
+  datanginxlogs2:
+  datawp2:
+  datasqlwp3:
+  datanginxlogs3:
+  datawp3:
+  dataredis:
