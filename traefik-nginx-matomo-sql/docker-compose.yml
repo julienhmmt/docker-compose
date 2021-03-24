@@ -14,6 +14,8 @@ services:
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+    environment:
+      - "TRAEFIK_PILOT_DASHBOARD=false"
 
   nginxmatomo:
     container_name: nginxmotomo
@@ -38,8 +40,6 @@ services:
       MYSQL_USER: ${MYSQLUSERMATOMO}
       MYSQL_PASSWORD: ${MYSQLPASSWORDMATOMO}
       MYSQL_DATABASE: ${MYSQLDBMATOMO}
-    labels:
-      traefik.enable: false
 
   matomoapp:
     container_name: matomoapp
@@ -55,8 +55,6 @@ services:
       MATOMO_DATABASE_DBNAME: ${MYSQLDBMATOMO}
     volumes:
       - datamatomo:/var/www/html
-    labels:
-      traefik.enable: false
 
 volumes:
   datamatomo:

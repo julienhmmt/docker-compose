@@ -13,6 +13,8 @@ services:
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+    environment:
+      - "TRAEFIK_PILOT_DASHBOARD=false"
 
   nginxnextcloud:
     image: nginx:${NGINXVERSION}
@@ -37,8 +39,6 @@ services:
       REDIS_HOST: redisnextcloud
     links:
       - mariadb
-    labels:
-      traefik.enable: false
 
   mariadb:
     image: mariadb:${MARIADBVERSION}
@@ -52,16 +52,12 @@ services:
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
-    labels:
-      traefik.enable: false
 
   redis:
     image: redis:${REDISVERSION}
     restart: unless-stopped
     volumes:
       - dataredisnextcloud:/data
-    labels:
-      traefik.enable: false
 
 volumes:
   datanextcloud:

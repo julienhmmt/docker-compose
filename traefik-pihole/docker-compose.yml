@@ -14,6 +14,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
+    environment:
+      - "TRAEFIK_PILOT_DASHBOARD=false"
+
   pihole:
     container_name: pihole
     restart: unless-stopped
@@ -31,7 +34,7 @@ services:
       - 127.0.0.1
       - 1.1.1.1
     labels:
-      traefik.enable: true
+      traefik.enable: 'true'
       traefik.http.routers.pihole-http.rule: Host(`pihole.czs.local`)
       traefik.http.routers.pihole-http.entrypoints: web
       traefik.http.services.pihole.loadbalancer.server.port: 80

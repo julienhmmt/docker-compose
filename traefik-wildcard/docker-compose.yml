@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
       - "GANDIV5_API_KEY=<INSERT-WITHOUT-HOOK>"
+      - "TRAEFIK_PILOT_DASHBOARD=false"
     ports:
       - 80:80
       - 443:443
@@ -17,11 +18,11 @@ services:
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json     
     labels:
-      traefik.enable: true
+      traefik.enable: 'true'
       traefik.http.routers.traefik-secure.entrypoints: websecure
       traefik.http.routers.traefik-secure.rule: Host(`traefik.domain.local`)
       traefik.http.routers.traefik-secure.middlewares: authentification@file
-      traefik.http.routers.traefik-secure.tls: true
+      traefik.http.routers.traefik-secure.tls: 'true'
       traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
       traefik.http.routers.traefik-secure.tls.domains[0].main: domain.local
       traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.domain.local"
@@ -38,11 +39,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - dataportainer:/data
     labels:
-      traefik.enable: true
+      traefik.enable: 'true'
       traefik.http.routers.portainer.entrypoints: websecure
       traefik.http.routers.portainer.rule: Host(`portainer.domain.local`)
       traefik.http.routers.portainer.middlewares: security@file
-      traefik.http.routers.portainer.tls: true
+      traefik.http.routers.portainer.tls: 'true'
 
 volumes:
   dataportainer:

@@ -8,6 +8,9 @@ api:
   dashboard: true
   #debug: true
 
+pilot:
+  dashboard: true
+
 log:
   filePath: "/etc/traefik/applog.log"
   format: json
@@ -46,6 +49,3 @@ certificatesResolvers:
       keyType: EC256
       httpChallenge:
         entryPoint: web
-
-pilot:
-  token: "your-token-here"

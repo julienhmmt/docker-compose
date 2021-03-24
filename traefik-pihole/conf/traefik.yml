@@ -7,6 +7,9 @@ api:
   dashboard: true
   #debug: true
 
+pilot:
+  dashboard: true
+
 log:
   filePath: "/etc/traefik/applog.log"
   level: INFO

@@ -14,6 +14,8 @@ services:
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+    environment:
+      - "TRAEFIK_PILOT_DASHBOARD=false"
 
   sqlwp1:
     container_name: sqlwp1
@@ -27,8 +29,6 @@ services:
       MYSQL_USER: ${MYSQLUSER1}
       MYSQL_PASSWORD: ${MYSQLPASSWORD1}
       MYSQL_DATABASE: ${MYSQLDB1}
-    labels:
-      traefik.enable: 'false'
  
   nginxwp1:
     container_name: nginxwp1
@@ -57,8 +57,6 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD1}
       WORDPRESS_DB_NAME: ${MYSQLDB1}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX1}
-    labels:
-      traefik.enable: 'false'
 
   sqlwp2:
     container_name: sqlwp2
@@ -72,8 +70,6 @@ services:
       MYSQL_USER: ${MYSQLUSER2}
       MYSQL_PASSWORD: ${MYSQLPASSWORD2}
       MYSQL_DATABASE: ${MYSQLDB2}
-    labels:
-      traefik.enable: 'false'
  
   nginxwp2:
     container_name: nginxwp2
@@ -102,8 +98,6 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD2}
       WORDPRESS_DB_NAME: ${MYSQLDB2}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX2}
-    labels:
-      traefik.enable: 'false'
 
   sqlwp3:
     container_name: sqlwp3
@@ -117,8 +111,6 @@ services:
       MYSQL_USER: ${MYSQLUSER3}
       MYSQL_PASSWORD: ${MYSQLPASSWORD3}
       MYSQL_DATABASE: ${MYSQLDB3}
-    labels:
-      traefik.enable: 'false'
  
   nginxwp3:
     container_name: nginxwp3
@@ -147,8 +139,6 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD3}
       WORDPRESS_DB_NAME: ${MYSQLDB3}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX3}
-    labels:
-      traefik.enable: 'false'
 
   redis:
     container_name: redis
@@ -157,8 +147,6 @@ services:
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
     volumes:
       - dataredis:/data
-    labels:
-      traefik.enable: 'false'
 
 volumes:
   datasqlwp1:
