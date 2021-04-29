@@ -11,6 +11,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - dataportainer:/data
+      - /etc/localtime:/etc/localtime:ro
     labels: # for traefik, delete this if not needed
       traefik.enable: true
       traefik.http.routers.portainer-http.entrypoints: web

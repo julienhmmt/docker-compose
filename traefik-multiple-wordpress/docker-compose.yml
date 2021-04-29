@@ -14,6 +14,7 @@ services:
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
@@ -24,6 +25,7 @@ services:
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp1:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT1}
       MYSQL_USER: ${MYSQLUSER1}
@@ -38,6 +40,7 @@ services:
       - datawp1:/var/www/html
       - datanginxlogs1:/var/log/nginx/
       - ./conf/nginx-wp1:/etc/nginx/
+      - /etc/localtime:/etc/localtime:ro
     links:
       - wp1
 
@@ -48,6 +51,7 @@ services:
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp1:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - sqlwp1
       - redis
@@ -65,6 +69,7 @@ services:
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp2:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT2}
       MYSQL_USER: ${MYSQLUSER2}
@@ -79,6 +84,7 @@ services:
       - datawp2:/var/www/html
       - datanginxlogs2:/var/log/nginx/
       - ./conf/nginx-wp2:/etc/nginx/
+      - /etc/localtime:/etc/localtime:ro
     links:
       - wp2
 
@@ -89,6 +95,7 @@ services:
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp2:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - sqlwp2
       - redis
@@ -106,6 +113,7 @@ services:
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp3:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT3
       MYSQL_USER: ${MYSQLUSER3}
@@ -120,6 +128,7 @@ services:
       - datawp3:/var/www/html
       - datanginxlogs3:/var/log/nginx/
       - ./conf/nginx-wp3:/etc/nginx/
+      - /etc/localtime:/etc/localtime:ro
     links:
       - wp3
 
@@ -130,6 +139,7 @@ services:
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp3:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - sqlwp3
       - redis
@@ -147,6 +157,7 @@ services:
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
     volumes:
       - dataredis:/data
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   datasqlwp1:

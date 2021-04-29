@@ -9,6 +9,7 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
@@ -24,6 +25,7 @@ services:
       - datanextcloud:/var/www/html
       - datanginxnextcloudlogs:/var/log/nginx
       - ./conf/nginx-nextcloud:/etc/nginx
+      - /etc/localtime:/etc/localtime:ro
 
   nextcloud:
     image: nextcloud:${NEXTCLOUDVERSION}
@@ -31,6 +33,7 @@ services:
     container_name: nextcloudfpm
     volumes:
       - datanextcloud:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_HOST: sqlnextcloud
       MYSQL_USER: ${MYSQLUSER}
@@ -47,6 +50,7 @@ services:
     container_name: sqlnextcloud
     volumes:
       - datadbnextcloud:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_USER: ${MYSQLUSER}
@@ -58,6 +62,7 @@ services:
     restart: unless-stopped
     volumes:
       - dataredisnextcloud:/data
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   datanextcloud:

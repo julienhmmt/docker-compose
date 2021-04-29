@@ -14,6 +14,7 @@ services:
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
@@ -25,6 +26,7 @@ services:
       - datamatomo:/var/www/html
       - datanginxlogsmatomo:/var/log/nginx/
       - ./conf/nginx-matomo:/etc/nginx/
+      - /etc/localtime:/etc/localtime:ro
     links:
       - matomoapp
 
@@ -35,6 +37,7 @@ services:
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlmatomo:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOTMATOMO}
       MYSQL_USER: ${MYSQLUSERMATOMO}
@@ -55,6 +58,7 @@ services:
       MATOMO_DATABASE_DBNAME: ${MYSQLDBMATOMO}
     volumes:
       - datamatomo:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   datamatomo:

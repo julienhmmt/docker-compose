@@ -14,6 +14,7 @@ services:
       - ./conf/traefikdynamic:/traefik_dynamic.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
