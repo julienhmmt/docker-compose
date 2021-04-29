@@ -1,0 +1,42 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-portainer:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-portainer
+      rule: Host(`portainer.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-wordpress
+      rule: Host (`czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress-login:
+      entryPoints:
+      - websecure
+      middlewares:
+      - ratelimiter
+      service: sc-wordpress
+      rule: Host (`czs.local`) && PathPrefix(`/wp-login.php`) && Method(`POST`)

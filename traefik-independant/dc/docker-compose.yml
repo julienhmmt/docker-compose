@@ -1,0 +1,84 @@
+---
+version: '3.7'
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:2.4
+    restart: unless-stopped
+    networks:
+      - oueb
+      - backend
+    ports:
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
+    environment:
+      - "TZ=Europe/Paris"
+      - "TRAEFIK_PILOT_DASHBOARD=false"
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/dynamic
+      - ./conf/acme.json:/acme.json
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./logs/traefikAccess.log:/etc/traefik/access.log
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:2.1.1-alpine
+    restart: unless-stopped
+    networks:
+      - oueb
+    depends_on:
+      - traefik
+    command: -H unix:///var/run/docker.sock
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - dataportainer:/data
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    networks:
+      - backend
+    command: 
+      - redis-server 
+      - '--maxmemory 1024mb'
+      - '--maxmemory-policy allkeys-lru'
+      - '--requirepass 9gX2zjz5vvLB5XoBdmdjAQGFtuRsRZVv'
+      - '--appendonly yes'
+      - '--bind redis'
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - dataredis:/data
+      - /etc/localtime:/etc/localtime:ro
+
+#################################################################################
+volumes:
+  dataredis:
+  dataportainer:
+
+#################################################################################
+# docker network create --subnet 172.16.1.0/24 --driver bridge oueb
+# docker network create --subnet 192.168.10.0/24 backend
+networks:
+  oueb:
+    external:
+      name: oueb
+
+  backend:
+    external:
+      name: backend

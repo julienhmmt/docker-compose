@@ -1,0 +1,72 @@
+---
+global:
+  sendAnonymousUsage: false
+  checkNewVersion: false
+
+api:
+  dashboard: true
+
+pilot:
+  dashboard: false
+
+log:
+  filePath: "/etc/traefik/applog.log"
+  format: json
+  level: "ERROR"
+
+accessLog:
+  filePath: "/etc/traefik/access.log"
+  bufferingSize: 100
+  filters:
+    statusCodes:
+      - "200-203"
+      - "300-302"
+      #- "400-401-403-404-405-413-414-429"
+      #- "500-502-503-504"
+    retryAttempts: true
+    minDuration: "10ms"
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    watch: true
+    swarmMode: false
+  file:
+    directory: "/dynamic"
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+  metrics:
+    address: ":9090"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: name@fqdn.local
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      #caServer: https://acme-v02.api.letsencrypt.org/directory
+      storage: acme.json
+      keyType: EC256
+      httpChallenge:
+        entryPoint: web
+
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0

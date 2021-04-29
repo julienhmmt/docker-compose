@@ -1,0 +1,12 @@
+---
+http:
+  services:
+    sc-portainer:
+      loadBalancer:
+        servers:
+        - url: "http://portainer:9000"
+
+    sc-wordpress:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp:80"

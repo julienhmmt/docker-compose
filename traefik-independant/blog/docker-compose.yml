@@ -1,0 +1,91 @@
+---
+version: '3.7'
+services:
+  sqlwp:
+    container_name: sqlwp
+    image: mariadb:10.5
+    restart: unless-stopped
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+        reservations:
+          memory: 128M
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - /etc/localtime:/etc/localtime:ro
+      - datasqlwp:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB}
+ 
+  nginxwp:
+    container_name: nginxwp
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    networks:
+      - oueb
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+        reservations:
+          memory: 32M
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - datawp:/var/www/html
+      - datanginxlogs:/var/log/nginx/
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf/nginxwp:/etc/nginx/
+
+  wp:
+    container_name: wpapp
+    image: wordpress:5.7-php7.4-fpm-alpine
+    restart: unless-stopped
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 384m
+        reservations:
+          memory: 128M
+    security_opt:
+      - no-new-privileges=true
+    volumes:
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - /etc/localtime:/etc/localtime:ro
+      - datawp:/var/www/html
+    depends_on:
+      - sqlwp
+    environment:
+      WORDPRESS_DB_HOST: sqlwp
+      WORDPRESS_DB_USER: ${MYSQLUSER}
+      WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQLDB}
+      WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX}
+
+volumes:
+  datasqlwp:
+  datanginxlogs:
+  datawp:
+
+#################################################################################
+# docker network create --subnet 172.16.1.0/24 --driver bridge oueb
+# docker network create --subnet 192.168.10.0/24 backend
+networks:
+  oueb:
+    external:
+      name: oueb
+
+  backend:
+    external:
+      name: backend
