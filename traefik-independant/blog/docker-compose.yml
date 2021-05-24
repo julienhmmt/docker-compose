@@ -27,7 +27,7 @@ services:
  
   nginxwp:
     container_name: nginxwp
-    image: nginx:stable-alpine
+    image: nginx:1.19
     restart: unless-stopped
     networks:
       - oueb

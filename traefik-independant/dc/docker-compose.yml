@@ -33,7 +33,7 @@ services:
 
   portainer:
     container_name: portainer
-    image: portainer/portainer-ce:2.1.1-alpine
+    image: portainer/portainer-ce:2.5.0
     restart: unless-stopped
     networks:
       - oueb
@@ -49,7 +49,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:6.2-alpine
+    image: redis:6.2
     restart: unless-stopped
     networks:
       - backend
