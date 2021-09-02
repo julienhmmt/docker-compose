@@ -20,8 +20,6 @@ services:
     environment:
       - "TZ=Europe/Paris"
       - "TRAEFIK_PILOT_DASHBOARD=false"
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -40,8 +38,6 @@ services:
     depends_on:
       - traefik
     command: -H unix:///var/run/docker.sock
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -60,8 +56,6 @@ services:
       - '--requirepass 9gX2zjz5vvLB5XoBdmdjAQGFtuRsRZVv'
       - '--appendonly yes'
       - '--bind redis'
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - dataredis:/data
       - /etc/localtime:/etc/localtime:ro

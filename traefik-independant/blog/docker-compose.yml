@@ -13,8 +13,6 @@ services:
           memory: 512m
         reservations:
           memory: 128M
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - /etc/localtime:/etc/localtime:ro
@@ -38,8 +36,6 @@ services:
           memory: 128m
         reservations:
           memory: 32M
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - datawp:/var/www/html
       - datanginxlogs:/var/log/nginx/
@@ -58,8 +54,6 @@ services:
           memory: 384m
         reservations:
           memory: 128M
-    security_opt:
-      - no-new-privileges=true
     volumes:
       - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - /etc/localtime:/etc/localtime:ro
