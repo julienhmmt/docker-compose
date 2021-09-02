@@ -10,10 +10,10 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./conf/traefikdynamic:/traefikdynamic:ro
-      - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
+      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - $(pwd)/conf/traefikdynamic:/traefikdynamic:ro
+      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
+      - $(pwd)/conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
@@ -23,7 +23,7 @@ services:
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp1:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -39,7 +39,7 @@ services:
     volumes:
       - datawp1:/var/www/html
       - datanginxlogs1:/var/log/nginx/
-      - ./conf/nginx-wp1:/etc/nginx/
+      - $(pwd)/conf/nginx-wp1:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
     links:
       - wp1
@@ -49,7 +49,7 @@ services:
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp1:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
@@ -67,7 +67,7 @@ services:
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp2:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -83,7 +83,7 @@ services:
     volumes:
       - datawp2:/var/www/html
       - datanginxlogs2:/var/log/nginx/
-      - ./conf/nginx-wp2:/etc/nginx/
+      - $(pwd)/conf/nginx-wp2:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
     links:
       - wp2
@@ -93,7 +93,7 @@ services:
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp2:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:
@@ -111,7 +111,7 @@ services:
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp3:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -127,7 +127,7 @@ services:
     volumes:
       - datawp3:/var/www/html
       - datanginxlogs3:/var/log/nginx/
-      - ./conf/nginx-wp3:/etc/nginx/
+      - $(pwd)/conf/nginx-wp3:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
     links:
       - wp3
@@ -137,7 +137,7 @@ services:
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
-      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - datawp3:/var/www/html
       - /etc/localtime:/etc/localtime:ro
     depends_on:

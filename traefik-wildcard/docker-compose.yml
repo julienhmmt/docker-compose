@@ -13,10 +13,10 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./conf/traefikdynamic:/traefik_dynamic.yml:ro
-      - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json     
+      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - $(pwd)/conf/traefikdynamic:/traefik_dynamic.yml:ro
+      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
+      - $(pwd)/conf/acme.json:/acme.json     
     labels:
       traefik.enable: 'true'
       traefik.http.routers.traefik-secure.entrypoints: websecure
