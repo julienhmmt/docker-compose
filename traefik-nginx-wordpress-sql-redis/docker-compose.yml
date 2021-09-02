@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
@@ -19,7 +18,6 @@ services:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
   sqlwp:
-    container_name: sqlwp
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
@@ -33,7 +31,6 @@ services:
       MYSQL_DATABASE: ${MYSQLDB}
  
   nginxwp:
-    container_name: nginxforwp
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
@@ -45,7 +42,6 @@ services:
       - wp
 
   wp:
-    container_name: wpapp
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
@@ -63,7 +59,6 @@ services:
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX}
 
   redis:
-    container_name: redis
     image: redis:${REDISVERSION}
     restart: unless-stopped
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis

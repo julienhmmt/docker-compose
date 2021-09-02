@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     networks:
@@ -30,7 +29,6 @@ services:
       - $(pwd)/logs/traefikAccess.log:/etc/traefik/access.log
 
   portainer:
-    container_name: portainer
     image: portainer/portainer-ce:${PORTAINERVERSION}
     restart: unless-stopped
     networks:
@@ -44,7 +42,6 @@ services:
       - dataportainer:/data
 
   redis:
-    container_name: redis
     image: redis:${REDISVERSION}
     restart: unless-stopped
     networks:

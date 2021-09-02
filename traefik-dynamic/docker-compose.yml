@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
@@ -19,7 +18,6 @@ services:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
   nginx:
-    container_name: nginx
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:

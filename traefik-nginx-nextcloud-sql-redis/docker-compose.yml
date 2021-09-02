@@ -20,7 +20,6 @@ services:
   nginxnextcloud:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
-    container_name: nginxnextcloud
     volumes:
       - datanextcloud:/var/www/html
       - datanginxnextcloudlogs:/var/log/nginx
@@ -30,7 +29,6 @@ services:
   nextcloud:
     image: nextcloud:${NEXTCLOUDVERSION}
     restart: unless-stopped
-    container_name: nextcloudfpm
     volumes:
       - datanextcloud:/var/www/html
       - /etc/localtime:/etc/localtime:ro
@@ -47,7 +45,6 @@ services:
     image: mariadb:${MARIADBVERSION}
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
-    container_name: sqlnextcloud
     volumes:
       - datadbnextcloud:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro

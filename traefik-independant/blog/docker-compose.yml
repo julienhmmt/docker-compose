@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   sqlwp:
-    container_name: sqlwp
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     networks:
@@ -24,7 +23,6 @@ services:
       MYSQL_DATABASE: ${MYSQLDB}
  
   nginxwp:
-    container_name: nginxwp
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     networks:
@@ -43,7 +41,6 @@ services:
       - $(pwd)/conf/nginxwp:/etc/nginx/
 
   wp:
-    container_name: wpapp
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     networks:

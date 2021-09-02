@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
@@ -18,7 +17,6 @@ services:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
   prometheus:
-    container_name: prometheus
     image: prom/prometheus:${PROMETHEUSVERSION}
     restart: unless-stopped
     volumes:
@@ -26,7 +24,6 @@ services:
       - $(pwd)/conf/prometheus/rules.yml:/etc/prometheus/rules.yml
 
   nodeexporter:
-    container_name: nodeexporter
     image: prom/node-exporter:${NODEEXPORTERVERSION}
     restart: unless-stopped
     volumes:
@@ -41,7 +38,6 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
 
   cadvisor:
-    container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
     restart: unless-stopped
     volumes:
@@ -52,7 +48,6 @@ services:
       - /var/disk:/var/disk:ro
 
   grafana:
-    container_name: grafana
     image: grafana/grafana:${GRAFANAVERSION}
     restart: unless-stopped
     environment:

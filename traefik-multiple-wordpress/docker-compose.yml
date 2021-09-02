@@ -2,7 +2,6 @@
 version: '3.7'
 services:
   traefik:
-    container_name: traefik
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
@@ -19,7 +18,6 @@ services:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
   sqlwp1:
-    container_name: sqlwp1
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
@@ -33,7 +31,6 @@ services:
       MYSQL_DATABASE: ${MYSQLDB1}
  
   nginxwp1:
-    container_name: nginxwp1
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
@@ -45,7 +42,6 @@ services:
       - wp1
 
   wp1:
-    container_name: wpapp1
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
@@ -63,7 +59,6 @@ services:
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX1}
 
   sqlwp2:
-    container_name: sqlwp2
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
@@ -77,7 +72,6 @@ services:
       MYSQL_DATABASE: ${MYSQLDB2}
  
   nginxwp2:
-    container_name: nginxwp2
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
@@ -89,7 +83,6 @@ services:
       - wp2
 
   wp2:
-    container_name: wpapp2
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
@@ -107,7 +100,6 @@ services:
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX2}
 
   sqlwp3:
-    container_name: sqlwp3
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
@@ -121,7 +113,6 @@ services:
       MYSQL_DATABASE: ${MYSQLDB3}
  
   nginxwp3:
-    container_name: nginxwp3
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
@@ -133,7 +124,6 @@ services:
       - wp3
 
   wp3:
-    container_name: wpapp3
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
@@ -151,7 +141,6 @@ services:
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX3}
 
   redis:
-    container_name: redis
     image: redis:${REDISVERSION}
     restart: unless-stopped
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
