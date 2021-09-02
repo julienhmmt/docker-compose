@@ -3,7 +3,7 @@ version: '3.7'
 services:
   traefik:
     container_name: traefik
-    image: traefik:2.4
+    image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     networks:
       - oueb
@@ -33,7 +33,7 @@ services:
 
   portainer:
     container_name: portainer
-    image: portainer/portainer-ce:2.5.0
+    image: portainer/portainer-ce:${PORTAINERVERSION}
     restart: unless-stopped
     networks:
       - oueb
@@ -49,7 +49,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:6.2
+    image: redis:${REDISVERSION}
     restart: unless-stopped
     networks:
       - backend
