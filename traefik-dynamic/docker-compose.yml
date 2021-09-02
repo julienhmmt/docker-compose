@@ -20,7 +20,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: nginx:1.19
+    image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
       - nginxdata:/var/www/html
