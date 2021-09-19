@@ -33,7 +33,7 @@ providers:
     watch: true
     swarmMode: false
   file:
-    directory: "/dynamic"
+    directory: "/etc/traefik/dynamic"
     watch: true
 
 entryPoints:
