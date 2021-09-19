@@ -10,10 +10,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $(pwd)/conf/traefikdynamic:/traefikdynamic:ro
-      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
-      - $(pwd)/conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
@@ -23,7 +23,7 @@ services:
     volumes:
       - datanextcloud:/var/www/html
       - datanginxnextcloudlogs:/var/log/nginx
-      - $(pwd)/conf/nginx-nextcloud:/etc/nginx
+      - ./conf/nginx-nextcloud:/etc/nginx
       - /etc/localtime:/etc/localtime:ro
 
   nextcloud:

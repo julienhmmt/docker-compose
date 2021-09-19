@@ -10,10 +10,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $(pwd)/conf/traefikdynamic:/traefikdynamic:ro
-      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
-      - $(pwd)/conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
@@ -21,7 +21,7 @@ services:
     image: mariadb:${MARIADBVERSION}
     restart: unless-stopped
     volumes:
-      - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - datasqlwp:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -37,7 +37,7 @@ services:
       - datawp:/var/www/html
       - datanginxlogs:/var/log/nginx/
       - /etc/localtime:/etc/localtime:ro
-      - $(pwd)/conf/nginx-wp:/etc/nginx/
+      - ./conf/nginx-wp:/etc/nginx/
     links:
       - wp
 
@@ -45,7 +45,7 @@ services:
     image: wordpress:${WPVERSION}
     restart: unless-stopped
     volumes:
-      - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - /etc/localtime:/etc/localtime:ro
       - datawp:/var/www/html
     depends_on:

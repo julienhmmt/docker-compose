@@ -22,11 +22,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $(pwd)/conf/traefikdynamic:/dynamic
-      - $(pwd)/conf/acme.json:/acme.json
-      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
-      - $(pwd)/logs/traefikAccess.log:/etc/traefik/access.log
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/dynamic
+      - ./conf/acme.json:/acme.json
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./logs/traefikAccess.log:/etc/traefik/access.log
 
   portainer:
     image: portainer/portainer-ce:${PORTAINERVERSION}

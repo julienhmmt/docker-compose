@@ -9,10 +9,10 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $(pwd)/conf/traefikdynamic:/traefikdynamic:ro
-      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
-      - $(pwd)/conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/traefikdynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/acme.json:/acme.json
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
@@ -20,8 +20,8 @@ services:
     image: prom/prometheus:${PROMETHEUSVERSION}
     restart: unless-stopped
     volumes:
-      - $(pwd)/conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - $(pwd)/conf/prometheus/rules.yml:/etc/prometheus/rules.yml
+      - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./conf/prometheus/rules.yml:/etc/prometheus/rules.yml
 
   nodeexporter:
     image: prom/node-exporter:${NODEEXPORTERVERSION}
@@ -55,7 +55,7 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - $(pwd)/conf/grafana/provisioning.yml:/etc/grafana/provisioning/datasources/all.yml
+      - ./conf/grafana/provisioning.yml:/etc/grafana/provisioning/datasources/all.yml
       - datagrafana:/var/lib/grafana
 
 volumes:

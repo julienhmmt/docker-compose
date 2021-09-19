@@ -13,7 +13,7 @@ services:
         reservations:
           memory: 128M
     volumes:
-      - $(pwd)/conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
+      - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - /etc/localtime:/etc/localtime:ro
       - datasqlwp:/var/lib/mysql
     environment:
@@ -38,7 +38,7 @@ services:
       - datawp:/var/www/html
       - datanginxlogs:/var/log/nginx/
       - /etc/localtime:/etc/localtime:ro
-      - $(pwd)/conf/nginxwp:/etc/nginx/
+      - ./conf/nginxwp:/etc/nginx/
 
   wp:
     image: wordpress:${WPVERSION}
@@ -52,7 +52,7 @@ services:
         reservations:
           memory: 128M
     volumes:
-      - $(pwd)/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - /etc/localtime:/etc/localtime:ro
       - datawp:/var/www/html
     depends_on:

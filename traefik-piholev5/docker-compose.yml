@@ -12,8 +12,8 @@ services:
       - 8080:8080 # used to have the traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - $(pwd)/conf/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $(pwd)/logs/traefik.log:/etc/traefik/applog.log
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
     environment:
       - "TRAEFIK_PILOT_DASHBOARD=false"
 
