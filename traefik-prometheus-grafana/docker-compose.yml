@@ -12,6 +12,7 @@ services:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
@@ -23,12 +24,14 @@ services:
     volumes:
       - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./conf/prometheus/rules.yml:/etc/prometheus/rules.yml
+      - /etc/localtime:/etc/localtime:ro
 
   nodeexporter:
     image: prom/node-exporter:${NODEEXPORTERVERSION}
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
+      - /etc/localtime:/etc/localtime:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
     command:
@@ -43,6 +46,7 @@ services:
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
+      - /etc/localtime:/etc/localtime:ro
       - /sys:/sys:ro
       - /var/disk:/var/disk:ro
       - /var/lib/docker/:/var/lib/docker:ro
@@ -58,6 +62,7 @@ services:
       - prometheus
     volumes:
       - ./conf/grafana/provisioning.yml:/etc/grafana/provisioning/datasources/all.yml
+      - /etc/localtime:/etc/localtime:ro
       - datagrafana:/var/lib/grafana
 
 volumes:

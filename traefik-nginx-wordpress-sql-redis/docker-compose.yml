@@ -68,6 +68,7 @@ services:
     environment:
       TZ: "Europe/Paris"
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - dataredis:/data
 
 volumes:

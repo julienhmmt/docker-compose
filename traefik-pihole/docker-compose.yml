@@ -12,6 +12,7 @@ services:
     volumes:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
@@ -25,8 +26,9 @@ services:
       VIRTUAL_HOST: pihole.czs.local
       WEBPASSWORD: ${PIHOLEWEBPWD}
     volumes:
-      - datapihole:/etc/pihole/
+      - /etc/localtime:/etc/localtime:ro
       - datadnsmasqd:/etc/dnsmasq.d/
+      - datapihole:/etc/pihole/
     cap_add:
       - NET_ADMIN
     dns:
