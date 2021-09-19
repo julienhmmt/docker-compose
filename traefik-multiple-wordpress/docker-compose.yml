@@ -15,7 +15,8 @@ services:
       - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   sqlwp1:
     image: mariadb:${MARIADBVERSION}
@@ -29,6 +30,7 @@ services:
       MYSQL_USER: ${MYSQLUSER1}
       MYSQL_PASSWORD: ${MYSQLPASSWORD1}
       MYSQL_DATABASE: ${MYSQLDB1}
+      TZ: "Europe/Paris"
  
   nginxwp1:
     image: nginx:${NGINXVERSION}
@@ -57,6 +59,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD1}
       WORDPRESS_DB_NAME: ${MYSQLDB1}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX1}
+      TZ: "Europe/Paris"
 
   sqlwp2:
     image: mariadb:${MARIADBVERSION}
@@ -70,6 +73,7 @@ services:
       MYSQL_USER: ${MYSQLUSER2}
       MYSQL_PASSWORD: ${MYSQLPASSWORD2}
       MYSQL_DATABASE: ${MYSQLDB2}
+      TZ: "Europe/Paris"
  
   nginxwp2:
     image: nginx:${NGINXVERSION}
@@ -98,6 +102,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD2}
       WORDPRESS_DB_NAME: ${MYSQLDB2}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX2}
+      TZ: "Europe/Paris"
 
   sqlwp3:
     image: mariadb:${MARIADBVERSION}
@@ -111,6 +116,7 @@ services:
       MYSQL_USER: ${MYSQLUSER3}
       MYSQL_PASSWORD: ${MYSQLPASSWORD3}
       MYSQL_DATABASE: ${MYSQLDB3}
+      TZ: "Europe/Paris"
  
   nginxwp3:
     image: nginx:${NGINXVERSION}
@@ -139,11 +145,14 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD3}
       WORDPRESS_DB_NAME: ${MYSQLDB3}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX3}
+      TZ: "Europe/Paris"
 
   redis:
     image: redis:${REDISVERSION}
     restart: unless-stopped
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
+    environement:
+      TZ: "Europe/Paris"
     volumes:
       - dataredis:/data
       - /etc/localtime:/etc/localtime:ro

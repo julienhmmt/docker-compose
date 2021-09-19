@@ -7,7 +7,7 @@ services:
     hostname: freeipa.czs.local
     environment:
       IPA_SERVER_HOSTNAME: freeipa.czs.local
-      TZ: Europe/paris
+      TZ: "Europe/Paris"
     tty: true
     stdin_open: true
     cap_add:

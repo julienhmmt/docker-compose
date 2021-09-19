@@ -15,7 +15,8 @@ services:
       - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   nginxmatomo:
     image: nginx:${NGINXVERSION}
@@ -40,6 +41,7 @@ services:
       MYSQL_USER: ${MYSQLUSERMATOMO}
       MYSQL_PASSWORD: ${MYSQLPASSWORDMATOMO}
       MYSQL_DATABASE: ${MYSQLDBMATOMO}
+      TZ: "Europe/Paris"
 
   matomoapp:
     image: matomo:${MATOMOVERSION}
@@ -52,6 +54,7 @@ services:
       MATOMO_DATABASE_USERNAME: ${MYSQLUSERMATOMO}
       MATOMO_DATABASE_PASSWORD: ${MYSQLPASSWORDMATOMO}
       MATOMO_DATABASE_DBNAME: ${MYSQLDBMATOMO}
+      TZ: "Europe/Paris"
     volumes:
       - datamatomo:/var/www/html
       - /etc/localtime:/etc/localtime:ro

@@ -12,6 +12,7 @@ services:
       - dataportainer:/data
       - /etc/localtime:/etc/localtime:ro
     environment:
-      TZ: 'Europe/Paris'
+      TZ: "Europe/Paris"
+
 volumes:
   dataportainer:

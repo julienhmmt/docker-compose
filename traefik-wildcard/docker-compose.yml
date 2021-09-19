@@ -5,8 +5,9 @@ services:
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     environment:
-      - "GANDIV5_API_KEY=<INSERT-WITHOUT-HOOK>"
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      GANDIV5_API_KEY: "<INSERT-YOURS>"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
     ports:
       - 80:80
       - 443:443

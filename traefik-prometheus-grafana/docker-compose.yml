@@ -14,7 +14,8 @@ services:
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   prometheus:
     image: prom/prometheus:${PROMETHEUSVERSION}
@@ -51,7 +52,8 @@ services:
     image: grafana/grafana:${GRAFANAVERSION}
     restart: unless-stopped
     environment:
-      - "GF_USERS_ALLOW_SIGN_UP=false"
+      GF_USERS_ALLOW_SIGN_UP: false
+      TZ: "Europe/Paris"
     depends_on:
       - prometheus
     volumes:

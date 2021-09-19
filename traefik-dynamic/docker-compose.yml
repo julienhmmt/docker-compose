@@ -15,7 +15,8 @@ services:
       - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   nginx:
     image: nginx:${NGINXVERSION}

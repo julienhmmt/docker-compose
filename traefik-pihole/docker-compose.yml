@@ -14,13 +14,14 @@ services:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   pihole:
     restart: unless-stopped
     image: pihole/pihole:${PIHOLEVERSION}
     environment:
-      TZ: ${TZ}
+      TZ: "Europe/Paris"
       VIRTUAL_HOST: pihole.czs.local
       WEBPASSWORD: ${PIHOLEWEBPWD}
     volumes:

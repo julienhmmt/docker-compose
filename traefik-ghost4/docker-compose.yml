@@ -15,7 +15,8 @@ services:
       - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   sqlghost:
     image: mariadb:${MARIADBVERSION}
@@ -30,6 +31,7 @@ services:
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
+      TZ: "Europe/Paris"
 
   ghost:
     image: ghost:${GHOSTVERSION}
@@ -40,6 +42,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - sqlghost
+    environment:
+      TZ: "Europe/Paris"
 
 volumes:
   datasqlghost:

@@ -15,7 +15,8 @@ services:
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   sqlwp:
     image: mariadb:${MARIADBVERSION}
@@ -29,6 +30,7 @@ services:
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
+      TZ: "Europe/Paris"
  
   nginxwp:
     image: nginx:${NGINXVERSION}
@@ -57,11 +59,14 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD}
       WORDPRESS_DB_NAME: ${MYSQLDB}
       WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX}
+      TZ: "Europe/Paris"
 
   redis:
     image: redis:${REDISVERSION}
     restart: unless-stopped
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
+    environment:
+      TZ: "Europe/Paris"
     volumes:
       - dataredis:/data
 

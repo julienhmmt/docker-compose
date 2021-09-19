@@ -15,7 +15,8 @@ services:
       - ./logs/traefik.log:/etc/traefik/applog.log
       - ./conf/acme.json:/acme.json
     environment:
-      - "TRAEFIK_PILOT_DASHBOARD=false"
+      TRAEFIK_PILOT_DASHBOARD: false
+      TZ: "Europe/Paris"
 
   nginxnextcloud:
     image: nginx:${NGINXVERSION}
@@ -38,6 +39,7 @@ services:
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
       REDIS_HOST: redisnextcloud
+      TZ: "Europe/Paris"
     links:
       - mariadb
 
@@ -53,10 +55,13 @@ services:
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQLPASSWORD}
       MYSQL_DATABASE: ${MYSQLDB}
+      TZ: "Europe/Paris"
 
   redis:
     image: redis:${REDISVERSION}
     restart: unless-stopped
+    environment:
+      TZ: "Europe/Paris"
     volumes:
       - dataredisnextcloud:/data
       - /etc/localtime:/etc/localtime:ro
