@@ -1,31 +1,30 @@
 # docker-compose FreeIPA
 
-> Docker stack to have a FreeIPA server without DNS. This stack is a "simple" LDAP server.
+> Docker stack to have a FreeIPA server without DNS. This stack is a "simple" LDAP server for testing purpose only. Not a production ready !
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 18.04 & 20.04, Debian 9 & 10)
+* linux host (tested successfully on Ubuntu 20.04, Debian 10 & 11)
 * docker >= 18.x
+* docker-compose >= 1.26
 
 ## :rocket: How to use
 
-Clone this repo where you want with this line :
+Clone this repository :
 
 ```bash
 git clone https://github.com/Mettmett/docker-compose.git:freeipa
 ```
 
-You need to edit the file `.env` at the source folder to modify the values of some vars.
-
-After that when you're all set, press the red button to initiate :fire: !
+You need to edit the file `.env` at the source folder to modify the values of some vars. After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-docker-compose pull && docker-compose up -d && docker-compose logs -f
+docker-compose pull; docker-compose up -d; docker-compose logs -f
 ```
 
 ## :star: Author
 
-Made by Julien HOMMET :fr: for [ComputerZ Solutions](https://computerz.solutions/)
+Made by Julien HOMMET :fr: at [ComputerZ Solutions](https://computerz.solutions/)
 
 * Twitter: [@_ComputerZ](https://twitter.com/_ComputerZ)
 * GitHub: [Mettmett](https://github.com/Mettmett)
