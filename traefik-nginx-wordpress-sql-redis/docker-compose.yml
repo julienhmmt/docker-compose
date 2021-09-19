@@ -44,7 +44,7 @@ services:
     volumes:
       - ./conf/nginx-wp:/etc/nginx:ro
       - /etc/localtime:/etc/localtime:ro
-      - datanginxlogs:/var/log/nginx/
+      - datanginxlogs:/var/log/nginx
       - datawp:/var/www/html
     links:
       - wp
