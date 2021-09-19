@@ -6,7 +6,8 @@ services:
     restart: unless-stopped
     hostname: freeipa.czs.local
     environment:
-      - IPA_SERVER_HOSTNAME=freeipa.czs.local
+      IPA_SERVER_HOSTNAME: freeipa.czs.local
+      TZ: Europe/paris
     tty: true
     stdin_open: true
     cap_add:
