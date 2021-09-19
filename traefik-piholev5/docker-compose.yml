@@ -5,11 +5,18 @@ services:
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
     ports:
-      - 53:53/udp
-      - 53:53
-      - 80:80
-      - 443:443
-      - 8080:8080 # used to have the traefik dashboard
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
+      - target : 53
+        published : 53
+        protocol : udp
+        mode : host
     volumes:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./logs/traefik.log:/etc/traefik/applog.log

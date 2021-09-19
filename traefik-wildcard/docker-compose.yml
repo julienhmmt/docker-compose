@@ -9,8 +9,14 @@ services:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
     ports:
-      - 80:80
-      - 443:443
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
     volumes:
       - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
