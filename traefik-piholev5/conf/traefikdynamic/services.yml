@@ -1,0 +1,14 @@
+---
+http:
+  services:
+    sc-pihole:
+      loadBalancer:
+        servers:
+        - url: "http://pihole:80"
+
+udp:
+  services:
+    sc-pihole-udp:
+      loadBalancer:
+        servers:
+        - address: "udp://pihole:53"

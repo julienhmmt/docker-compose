@@ -1,0 +1,30 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-pihole:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-pihole
+      rule: Host (`pihole.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+udp:
+  routers:
+    udp-pihole:
+      entryPoints:
+      - udpdns
+      service: sc-pihole-udp
