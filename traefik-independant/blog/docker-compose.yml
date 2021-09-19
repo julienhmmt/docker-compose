@@ -6,12 +6,6 @@ services:
     restart: unless-stopped
     networks:
       - backend
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-        reservations:
-          memory: 128M
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
       - /etc/localtime:/etc/localtime:ro
@@ -28,12 +22,6 @@ services:
     networks:
       - oueb
       - backend
-    deploy:
-      resources:
-        limits:
-          memory: 128m
-        reservations:
-          memory: 32M
     volumes:
       - datawp:/var/www/html
       - datanginxlogs:/var/log/nginx/
@@ -45,12 +33,6 @@ services:
     restart: unless-stopped
     networks:
       - backend
-    deploy:
-      resources:
-        limits:
-          memory: 384m
-        reservations:
-          memory: 128M
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - /etc/localtime:/etc/localtime:ro
