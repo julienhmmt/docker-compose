@@ -1,6 +1,6 @@
-# docker-compose Traefik & PiHole
+# docker-compose Traefik & PiHole v5
 
-> Docker stack to have a PiHole behind a Traefik reverse-proxy.
+> Docker stack to have a PiHole v5 behind a Traefik reverse-proxy.
 
 ## :factory: Requirements
 

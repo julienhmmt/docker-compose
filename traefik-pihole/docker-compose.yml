@@ -19,6 +19,7 @@ services:
         mode : host
     volumes:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -37,21 +38,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - datadnsmasqd:/etc/dnsmasq.d/
       - datapihole:/etc/pihole/
-    cap_add:
-      - NET_ADMIN
     dns:
       - 127.0.0.1
       - 1.1.1.1
-    labels:
-      traefik.enable: 'true'
-      traefik.http.routers.pihole-http.rule: Host(`pihole.czs.local`)
-      traefik.http.routers.pihole-http.entrypoints: web
-      traefik.http.services.pihole.loadbalancer.server.port: 80
-      traefik.tcp.routers.pihole-dns.entrypoints: dns
-      traefik.tcp.routers.pihole-dns.service: pihole
-      traefik.udp.routers.pihole-udp.entrypoints: udpdns
-      traefik.udp.routers.pihole-udp.service: pihole
-      traefik.udp.services.pihole.loadbalancer.server.port: 53
 
 volumes:
   datadnsmasqd:
