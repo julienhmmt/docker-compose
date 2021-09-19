@@ -3,9 +3,7 @@ global:
   checkNewVersion: false
 
 api:
-  #insecure: true
   dashboard: true
-  #debug: true
 
 pilot:
   dashboard: true
