@@ -1,34 +1,36 @@
-; custom my.cnf for MySQL8 and WordPress website
-
 [mysqld_safe]
-socket = /var/run/mysqld/mysqld.sock
 nice = 0
+socket = /var/run/mysqld/mysqld.sock
 
 [mysqld]
+performance_schema_consumer_events_stages_current=ON
+performance_schema_consumer_events_stages_history_long=ON
+performance_schema_consumer_events_stages_history=ON
+performance_schema_instrument='stage/%=ON'
 performance_schema=ON
-performance-schema-instrument='stage/%=ON'
-performance-schema-consumer-events-stages-current=ON
-performance-schema-consumer-events-stages-history=ON
-performance-schema-consumer-events-stages-history-long=ON
 
 ; InnoDB tuning
+innodb_buffer_pool_size = 2G
 innodb_file_per_table = 1
-innodb_buffer_pool_size = 1G
-innodb_log_file_size = 48M
+innodb_log_file_size = 128M
 
-; Cache
-query_cache_type = 1
-query_cache_size = 128M
-query_cache_limit = 16M
+; Cache - we use redis
+query_cache_size = 0
+query_cache_type = 0
 
 ; Misc
-tmp_table_size = 64M
+max_connections = 200
 max_heap_table_size = 64M
+skip_name_resolve
+thread_cache_size = 10
+tmp_table_size = 64M
 
 ; Logging
+;log_slow_rate_limit = 1000
+;long_query_time = 10
+;slow_query_log_file = /var/log/mysql/mariadb-slow.log
 log_error = /var/log/mysql/error.log
-slow_query_log_file = /var/log/mysql/mariadb-slow.log
-long_query_time = 10
-log_slow_rate_limit = 1000
-expire_logs_days = 10
+
+; Bin logs
+expire_logs_days = 14
 max_binlog_size = 100M
