@@ -8,12 +8,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
@@ -22,10 +22,10 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datamatomo:/var/www/html
-      - datanginxlogsmatomo:/var/log/nginx/
       - ./conf/nginx-matomo:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
+      - datamatomo:/var/www/html
+      - datanginxlogsmatomo:/var/log/nginx/
     links:
       - matomoapp
 
@@ -34,8 +34,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlmatomo:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlmatomo:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOTMATOMO}
       MYSQL_USER: ${MYSQLUSERMATOMO}
@@ -56,8 +56,8 @@ services:
       MATOMO_DATABASE_DBNAME: ${MYSQLDBMATOMO}
       TZ: "Europe/Paris"
     volumes:
-      - datamatomo:/var/www/html
       - /etc/localtime:/etc/localtime:ro
+      - datamatomo:/var/www/html
 
 volumes:
   datamatomo:

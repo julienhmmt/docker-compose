@@ -8,12 +8,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
+      - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
@@ -23,8 +23,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlwp:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlwp:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
       MYSQL_USER: ${MYSQLUSER}
@@ -36,10 +36,10 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datawp:/var/www/html
-      - datanginxlogs:/var/log/nginx/
-      - /etc/localtime:/etc/localtime:ro
       - ./conf/nginx-wp:/etc/nginx/
+      - /etc/localtime:/etc/localtime:ro
+      - datanginxlogs:/var/log/nginx/
+      - datawp:/var/www/html
     links:
       - wp
 
@@ -71,7 +71,7 @@ services:
       - dataredis:/data
 
 volumes:
-  datasqlwp:
   datanginxlogs:
-  datawp:
   dataredis:
+  datasqlwp:
+  datawp:

@@ -8,12 +8,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/localtime:/etc/localtime:ro
+      - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
@@ -22,17 +22,17 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datanextcloud:/var/www/html
-      - datanginxnextcloudlogs:/var/log/nginx
       - ./conf/nginx-nextcloud:/etc/nginx
       - /etc/localtime:/etc/localtime:ro
+      - datanextcloud:/var/www/html
+      - datanginxnextcloudlogs:/var/log/nginx
 
   nextcloud:
     image: nextcloud:${NEXTCLOUDVERSION}
     restart: unless-stopped
     volumes:
-      - datanextcloud:/var/www/html
       - /etc/localtime:/etc/localtime:ro
+      - datanextcloud:/var/www/html
     environment:
       MYSQL_HOST: sqlnextcloud
       MYSQL_USER: ${MYSQLUSER}
@@ -48,8 +48,8 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
-      - datadbnextcloud:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datadbnextcloud:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_USER: ${MYSQLUSER}
@@ -63,11 +63,11 @@ services:
     environment:
       TZ: "Europe/Paris"
     volumes:
-      - dataredisnextcloud:/data
       - /etc/localtime:/etc/localtime:ro
+      - dataredisnextcloud:/data
 
 volumes:
-  datanextcloud:
   datadbnextcloud:
+  datanextcloud:
   datanginxnextcloudlogs:
   dataredisnextcloud:

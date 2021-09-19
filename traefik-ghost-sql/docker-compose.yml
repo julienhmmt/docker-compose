@@ -8,12 +8,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
@@ -23,9 +23,9 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlghostlog:/var/log/mysql
-      - datasqlghost:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlghost:/var/lib/mysql
+      - datasqlghostlog:/var/log/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
       MYSQL_USER: ${MYSQLUSER}
@@ -37,15 +37,15 @@ services:
     image: ghost:${GHOSTVERSION}
     restart: unless-stopped
     volumes:
-      - dataghost:/var/lib/ghost/content
       - ./conf/config.production.json:/var/lib/ghost/config.production.json:ro
       - /etc/localtime:/etc/localtime:ro
+      - dataghost:/var/lib/ghost/content
     depends_on:
       - sqlghost
     environment:
       TZ: "Europe/Paris"
 
 volumes:
+  dataghost:
   datasqlghost:
   datasqlghostlog:
-  dataghost:

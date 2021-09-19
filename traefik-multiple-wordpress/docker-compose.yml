@@ -8,12 +8,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/traefikdynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - ./conf/acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: false
       TZ: "Europe/Paris"
@@ -23,8 +23,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlwp1:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlwp1:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT1}
       MYSQL_USER: ${MYSQLUSER1}
@@ -36,10 +36,10 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datawp1:/var/www/html
-      - datanginxlogs1:/var/log/nginx/
       - ./conf/nginx-wp1:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
+      - datanginxlogs1:/var/log/nginx/
+      - datawp1:/var/www/html
     links:
       - wp1
 
@@ -48,8 +48,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
-      - datawp1:/var/www/html
       - /etc/localtime:/etc/localtime:ro
+      - datawp1:/var/www/html
     depends_on:
       - sqlwp1
       - redis
@@ -66,8 +66,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlwp2:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlwp2:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT2}
       MYSQL_USER: ${MYSQLUSER2}
@@ -79,10 +79,10 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datawp2:/var/www/html
-      - datanginxlogs2:/var/log/nginx/
       - ./conf/nginx-wp2:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
+      - datanginxlogs2:/var/log/nginx/
+      - datawp2:/var/www/html
     links:
       - wp2
 
@@ -91,8 +91,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
-      - datawp2:/var/www/html
       - /etc/localtime:/etc/localtime:ro
+      - datawp2:/var/www/html
     depends_on:
       - sqlwp2
       - redis
@@ -109,8 +109,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - datasqlwp3:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
+      - datasqlwp3:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLROOT3
       MYSQL_USER: ${MYSQLUSER3}
@@ -122,10 +122,10 @@ services:
     image: nginx:${NGINXVERSION}
     restart: unless-stopped
     volumes:
-      - datawp3:/var/www/html
-      - datanginxlogs3:/var/log/nginx/
       - ./conf/nginx-wp3:/etc/nginx/
       - /etc/localtime:/etc/localtime:ro
+      - datanginxlogs3:/var/log/nginx/
+      - datawp3:/var/www/html
     links:
       - wp3
 
@@ -134,8 +134,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
-      - datawp3:/var/www/html
       - /etc/localtime:/etc/localtime:ro
+      - datawp3:/var/www/html
     depends_on:
       - sqlwp3
       - redis
@@ -154,17 +154,17 @@ services:
     environement:
       TZ: "Europe/Paris"
     volumes:
-      - dataredis:/data
       - /etc/localtime:/etc/localtime:ro
+      - dataredis:/data
 
 volumes:
-  datasqlwp1:
   datanginxlogs1:
-  datawp1:
-  datasqlwp2:
   datanginxlogs2:
-  datawp2:
-  datasqlwp3:
   datanginxlogs3:
-  datawp3:
   dataredis:
+  datasqlwp1:
+  datasqlwp2:
+  datasqlwp3:
+  datawp1:
+  datawp2:
+  datawp3:

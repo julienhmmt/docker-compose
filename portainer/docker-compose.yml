@@ -8,9 +8,9 @@ services:
     ports:
       - 9000:9000
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - dataportainer:/data
-      - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: "Europe/Paris"
 
