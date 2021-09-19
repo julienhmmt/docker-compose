@@ -23,7 +23,7 @@ You need to edit the file `.env` at the source folder to modify the values of so
 After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-docker-compose pull && docker-compose up -d && docker-compose logs -f
+docker-compose pull; docker-compose up -d; docker-compose logs -f
 ```
 
 ## :star: Author

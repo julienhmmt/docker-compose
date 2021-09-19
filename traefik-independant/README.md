@@ -33,9 +33,9 @@ docker network create --subnet 192.168.10.0/24 backend
 After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-cd dc && docker-compose pull && docker-compose up -d && docker-compose logs -f
+cd dc && docker-compose pull; docker-compose up -d; docker-compose logs -f
 
-cd ../blog && docker-compose pull && docker-compose up -d && docker-compose logs -f
+cd ../blog && docker-compose pull; docker-compose up -d; docker-compose logs -f
 ```
 
 ## :star: Author
