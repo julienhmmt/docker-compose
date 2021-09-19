@@ -1,0 +1,9 @@
+---
+# example
+
+http:
+  services:
+    sc-exampleName:
+      loadBalancer:
+        servers:
+        - url: "http://serviceNameInDockerComposeFile:port"

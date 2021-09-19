@@ -1,0 +1,14 @@
+---
+# example
+
+http:
+  routers:
+    rt-exampleNameRt:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-exampleName
+      rule: Host (`fqdn.com`)
+      tls:
+        certResolver: cloudflare
