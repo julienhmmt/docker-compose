@@ -1,7 +1,0 @@
----
-http:
-  services:
-    sc-nginx:
-      loadBalancer:
-        servers:
-        - url: "http://nginx:80"
