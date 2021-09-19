@@ -1,7 +1,0 @@
----
-http:
-  services:
-    sc-ghost:
-      loadBalancer:
-        servers:
-        - url: "http://ghost:2368"
