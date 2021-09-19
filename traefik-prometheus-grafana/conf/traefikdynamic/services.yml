@@ -1,0 +1,12 @@
+---
+http:
+  services:
+    sc-grafana:
+      loadBalancer:
+        servers:
+        - url: "http://grafana:3000"
+
+    sc-prometheus:
+      loadBalancer:
+        servers:
+        - url: "http://prometheus:9090"

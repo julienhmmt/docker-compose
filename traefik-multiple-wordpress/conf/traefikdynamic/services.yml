@@ -1,0 +1,17 @@
+---
+http:
+  services:
+    sc-wordpress1:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp1:80"
+
+    sc-wordpress2:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp2:80"
+
+    sc-wordpress3:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp3:80"

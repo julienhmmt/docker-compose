@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-matomo:
+      loadBalancer:
+        servers:
+        - url: "http://nginxmatomo:80"

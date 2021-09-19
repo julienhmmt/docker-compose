@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-wordpress:
+      loadBalancer:
+        servers:
+        - url: "http://nginxwp:80"

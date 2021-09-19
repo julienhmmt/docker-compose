@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-nextcloud:
+      loadBalancer:
+        servers:
+        - url: "http://nginxnextcloud:80"

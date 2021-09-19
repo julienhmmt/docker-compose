@@ -1,0 +1,45 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress1:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-wordpress
+      rule: Host (`wp1.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress2:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-wordpress2
+      rule: Host (`wp2.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-wordpress3:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-wordpress3
+      rule: Host (`wp3.czs.local`)
+      tls:
+        certResolver: letsencrypt

@@ -1,0 +1,32 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-prometheus:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: sc-prometheus
+      rule: Host (`prometheus.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-grafana:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-grafana
+      rule: Host (`grafana.czs.local`)
+      tls:
+        certResolver: letsencrypt

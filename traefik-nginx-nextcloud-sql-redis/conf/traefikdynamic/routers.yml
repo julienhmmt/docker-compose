@@ -1,0 +1,23 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      middlewares:
+      - authentification
+      service: api@internal
+      rule: Host (`traefik.czs.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-nextcloud:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      - compression
+      service: sc-nextcloud
+      rule: Host (`czs.local`)
+      tls:
+        certResolver: letsencrypt
