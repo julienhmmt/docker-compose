@@ -6,8 +6,9 @@ It's easy to manage for all your containers and no need to refresh/reload your c
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 18.04 & 20.04, Debian 9 & 10)
+* linux host (tested successfully on Ubuntu 20.04, Debian 10 & 11)
 * docker >= 18.x
+* docker-compose >= 1.26
 
 ## :rocket: How to use
 
