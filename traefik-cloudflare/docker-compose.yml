@@ -9,7 +9,7 @@ services:
       CF_API_KEY: changeMe
       CF_DNS_API_TOKEN: CreateMeAndchangeMe
       CF_ZONE_API_TOKEN: CreateMeAndchangeMe
-      TRAEFIK_PILOT_DASHBOARD: false
+      TRAEFIK_PILOT_DASHBOARD: "false"
       TZ: "Europe/Paris"
     ports:
       - target : 80
