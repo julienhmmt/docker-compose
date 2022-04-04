@@ -48,15 +48,16 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
+    privileged: true
+    image: gcr.io/cadvisor/cadvisor:v0.39.3
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /sys:/sys:ro
-      - /var/disk:/var/disk:ro
-      - /var/lib/docker/:/var/lib/docker:ro
       - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /dev/kmsg/:/dev/kmsg:ro
 
   grafana:
     image: grafana/grafana:${GRAFANAVERSION}
