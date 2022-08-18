@@ -62,3 +62,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 ## :anchor: Misc
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
