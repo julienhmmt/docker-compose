@@ -19,7 +19,7 @@ services:
       TZ: "Europe/Paris"
 
   sqlghost:
-    image: mariadb:${MARIADBVERSION}
+    image: mysql:${MYSQLVERSION}
     restart: unless-stopped
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
