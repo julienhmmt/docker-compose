@@ -48,9 +48,9 @@ docker-compose pull; docker-compose up -d; docker-compose logs -f
 
 ## :star: Author
 
-Made by Julien HOMMET :fr: for [ComputerZ Solutions](https://computerz.solutions/)
+Made by Julien HOMMET :fr: for [my personal purposes](https://j.hommet.net/) - This is my homelab
 
-* Twitter: [@_ComputerZ](https://twitter.com/_ComputerZ)
+* Twitter: [@JulienHOMMET](https://twitter.com/JulienHOMMET)
 * GitHub: [Mettmett](https://github.com/Mettmett)
 
 ## :wrench: Support & Contribution
