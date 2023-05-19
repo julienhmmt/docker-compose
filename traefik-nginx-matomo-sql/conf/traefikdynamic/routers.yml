@@ -7,7 +7,7 @@ http:
       middlewares:
       - authentification
       service: api@internal
-      rule: Host (`traefik.czs.local`)
+      rule: Host (`traefik.yourhome.local`)
       tls:
         certResolver: letsencrypt
 
@@ -17,7 +17,7 @@ http:
       middlewares:
       - security
       service: sc-matomo
-      rule: Host (`matomo.czs.local`)
+      rule: Host (`matomo.yourhome.local`)
       tls:
         options: default
         certResolver: letsencrypt

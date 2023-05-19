@@ -32,7 +32,7 @@ services:
     image: pihole/pihole:${PIHOLEVERSION}
     environment:
       TZ: "Europe/Paris"
-      VIRTUAL_HOST: pihole.czs.local
+      VIRTUAL_HOST: pihole.yourhome.local
       WEBPASSWORD: ${PIHOLEWEBPWD}
     volumes:
       - /etc/localtime:/etc/localtime:ro

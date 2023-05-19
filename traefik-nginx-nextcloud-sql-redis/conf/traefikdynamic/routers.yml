@@ -7,7 +7,7 @@ http:
       middlewares:
       - authentification
       service: api@internal
-      rule: Host (`traefik.czs.local`)
+      rule: Host (`traefik.yourhome.local`)
       tls:
         certResolver: letsencrypt
 
@@ -18,6 +18,6 @@ http:
       - security
       - compression
       service: sc-nextcloud
-      rule: Host (`czs.local`)
+      rule: Host (`yourhome.local`)
       tls:
         certResolver: letsencrypt

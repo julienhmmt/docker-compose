@@ -7,7 +7,7 @@ http:
       middlewares:
       - authentification
       service: api@internal
-      rule: Host (`traefik.czs.local`)
+      rule: Host (`traefik.yourhome.local`)
       tls:
         certResolver: letsencrypt
 
@@ -18,7 +18,7 @@ http:
       - security
       - compression
       service: sc-wordpress
-      rule: Host (`wp1.czs.local`)
+      rule: Host (`wp1.yourhome.local`)
       tls:
         certResolver: letsencrypt
 
@@ -29,7 +29,7 @@ http:
       - security
       - compression
       service: sc-wordpress2
-      rule: Host (`wp2.czs.local`)
+      rule: Host (`wp2.yourhome.local`)
       tls:
         certResolver: letsencrypt
 
@@ -40,6 +40,6 @@ http:
       - security
       - compression
       service: sc-wordpress3
-      rule: Host (`wp3.czs.local`)
+      rule: Host (`wp3.yourhome.local`)
       tls:
         certResolver: letsencrypt

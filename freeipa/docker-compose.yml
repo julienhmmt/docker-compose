@@ -4,9 +4,9 @@ services:
   freeipa:
     image: freeipa/${VERSION}
     restart: unless-stopped
-    hostname: freeipa.czs.local
+    hostname: freeipa.yourhome.local
     environment:
-      IPA_SERVER_HOSTNAME: freeipa.czs.local
+      IPA_SERVER_HOSTNAME: freeipa.yourhome.local
       TZ: "Europe/Paris"
     tty: true
     stdin_open: true
@@ -23,8 +23,8 @@ services:
       - "seccomp:unconfined"
     command:
       - -U
-      - --domain=czs.local
-      - --realm=czs.local
+      - --domain=yourhome.local
+      - --realm=yourhome.local
       - --http-pin=UltraS3cure
       - --dirsrv-pin=UltraS3cure
       - --ds-password=UltraS3cure

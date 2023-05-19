@@ -1,5 +1,5 @@
 {
-    "url": "https://ghost.czs.local",
+    "url": "https://ghost.yourhome.local",
     "server": {
       "port": 2368,
       "host": "0.0.0.0"
