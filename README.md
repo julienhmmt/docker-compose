@@ -50,7 +50,7 @@ docker-compose pull; docker-compose up -d; docker-compose logs -f
 
 Made by Julien HOMMET :fr: for [my personal purposes](https://j.hommet.net/) - This is my homelab
 
-* Twitter: [@JulienHOMMET](https://twitter.com/JulienHOMMET)
+* Twitter: [@mettmettz](https://twitter.com/mettmettz)
 * GitHub: [Mettmett](https://github.com/Mettmett)
 
 ## :wrench: Support & Contribution

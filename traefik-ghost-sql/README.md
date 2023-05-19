@@ -3,7 +3,7 @@
 
 > Just a simple docker-compose with [Traefik](https://traefik.io/), [Ghost](https://ghost.org/) (CMS) and MariaDB for SQL server.
 
-A fast and prod oriented stack to have your own and easy hackable CMS with Ghost. Was used before on [ComputerZ Solutions](https://computerz.solutions/).
+A fast and prod oriented stack to have your own and easy hackable CMS with Ghost. Was used before on [my personnal website](https://j.hommet.net).
 
 ## :factory: Requirements
 
@@ -31,7 +31,7 @@ docker-compose pull; docker-compose up -d; docker-compose logs -f
 
 ## :star: Author
 
-Made by Julien HOMMET :fr: for [ComputerZ Solutions](https://computerz.solutions/)
+Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
 * Twitter: [@_ComputerZ](https://twitter.com/_ComputerZ)
 * GitHub: [Mettmett](https://github.com/Mettmett)
