@@ -1,12 +1,12 @@
-# docker-compose
+# docker compose stack examples
 
-> Some examples used on ComputerZ Solutions...
+> Some examples used at home on my homelab...
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04, Debian 10 & 11)
-* docker >= 18.x
-* docker-compose >= 1.26
+* linux host (tested successfully on Ubuntu 20.04 && 22.04 & 22.04, Debian 10 & 11)
+* docker >= 23.x
+* docker compose (plugin) >= 2.17
 
 ## What you'll find
 
@@ -35,7 +35,8 @@ All scripts are "as it", and can be updated without consent.
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:folder-name
+# git clone https://github.com/Mettmett/docker-compose.git:folder-name
+e.q. : git clone https://github.com/Mettmett/docker-compose.git:traefik-ghost-sql
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars.
@@ -43,7 +44,7 @@ You need to edit the file `.env` at the source folder to modify the values of so
 After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-docker-compose pull; docker-compose up -d; docker-compose logs -f
+docker compose pull && docker compose up -d && docker compose logs -f
 ```
 
 ## :star: Author

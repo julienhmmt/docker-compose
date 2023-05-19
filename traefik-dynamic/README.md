@@ -6,9 +6,9 @@ It's easy to manage for all your containers and no need to refresh/reload your c
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04, Debian 10 & 11)
-* docker >= 18.x
-* docker-compose >= 1.26
+* linux host (tested successfully on Ubuntu 20.04 && 22.04, Debian 10 & 11)
+* docker >= 23.x
+* docker compose (plugin) >= 2.17.x
 
 ## :rocket: How to use
 
@@ -23,14 +23,14 @@ You need to edit the file `.env` at the source folder to modify the values of so
 After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-docker-compose pull; docker-compose up -d; docker-compose logs -f
+docker compose pull && docker compose up -d && docker compose logs -f
 ```
 
 ## :star: Author
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@_ComputerZ](https://twitter.com/_ComputerZ)
+* Twitter: [@mettmettz](https://twitter.com/mettmettz)
 * GitHub: [Mettmett](https://github.com/Mettmett)
 
 ## :wrench: Support & Contribution

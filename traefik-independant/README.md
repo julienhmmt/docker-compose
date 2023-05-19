@@ -8,9 +8,9 @@ This stack is a multipurpose environment : you'll have a specific stack for Trae
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04, Debian 10 & 11)
-* docker >= 18.x
-* docker-compose >= 1.26
+* linux host (tested successfully on Ubuntu 20.04 && 22.04, Debian 10 & 11)
+* docker >= 23.x
+* docker compose (plugin) >= 2.17.x
 
 ## :rocket: How to use
 
@@ -33,16 +33,16 @@ docker network create --subnet 192.168.10.0/24 backend
 After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
-cd dc && docker-compose pull; docker-compose up -d; docker-compose logs -f
+cd dc && docker compose pull && docker compose up -d && docker compose logs -f
 
-cd ../blog && docker-compose pull; docker-compose up -d; docker-compose logs -f
+cd ../blog && docker compose pull && docker compose up -d && docker compose logs -f
 ```
 
 ## :star: Author
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@_ComputerZ](https://twitter.com/_ComputerZ)
+* Twitter: [@mettmettz](https://twitter.com/mettmettz)
 * GitHub: [Mettmett](https://github.com/Mettmett)
 
 ## :wrench: Support & Contribution
