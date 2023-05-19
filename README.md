@@ -10,23 +10,23 @@ This is some examples used at home on my homelab. Many stacks are production-rea
 
 ## What you'll find
 
-- [**FreeIPA**](<https://www.freeipa.org/page/Main_Page>) : <https://github.com/Mettmett/docker-compose/tree/master/freeipa>
+* [**FreeIPA**](<https://www.freeipa.org/page/Main_Page>) : <https://github.com/Mettmett/docker-compose/tree/master/freeipa>
 
-- [**Portainer**](<https://www.portainer.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/portainer>
+* [**Portainer**](<https://www.portainer.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/portainer>
 
-- [**Ghost**](<https://ghost.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-ghost-sql> for a website with Ghost and its SQL server [**MariaDB**](<https://mariadb.org/>) behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+* [**Ghost**](<https://ghost.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-ghost-sql> for a website with Ghost and its SQL server [**MariaDB**](<https://mariadb.org/>) behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
-- [**WordPress**](<https://wordpress.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-wordpress-sql-redis> for a website with WordPress with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**WordPress**](<https://wordpress.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-wordpress-sql-redis> for a website with WordPress with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-- [**Nextcloud**](<https://nextcloud.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-nextcloud-sql-redis> for a private cloud with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Nextcloud**](<https://nextcloud.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-nextcloud-sql-redis> for a private cloud with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-- [**Matomo**](<https://fr.matomo.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-matomo-sql> for a private analytics powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Matomo**](<https://fr.matomo.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-matomo-sql> for a private analytics powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-- [**Grafana**](<https://grafana.com/>) and [**Prometheus**](<https://prometheus.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-prometheus-grafana> for a monitoring stack behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Grafana**](<https://grafana.com/>) and [**Prometheus**](<https://prometheus.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-prometheus-grafana> for a monitoring stack behind [**Traefik**](<https://containo.us/traefik/>)
 
-- [**PiHole**](<https://pi-hole.net/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-pihole> for a DNS server with adblocker, with a configuration behind the reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+* [**PiHole**](<https://pi-hole.net/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-pihole> for a DNS server with adblocker, with a configuration behind the reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
-- Misc repo with Traefik inside...
+* Misc repo with Traefik inside...
 
 All scripts are "as it", and can be updated without consent.
 
