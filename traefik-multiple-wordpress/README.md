@@ -46,5 +46,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 ## :anchor: Misc
-
-More info at [https://computerz.solutions/docker-compose-wordpress-nginx-et-traefik/](https://computerz.solutions/docker-compose-wordpress-nginx-et-traefik/)

@@ -46,4 +46,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## :anchor: Misc
 
-More infos at [https://computerz.solutions/docker-ghost-traefik-tls/](https://computerz.solutions/docker-ghost-traefik-tls/)
