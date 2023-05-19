@@ -1,6 +1,6 @@
 # docker compose stack examples
 
-> Some examples used at home on my homelab...
+This is some examples used at home on my homelab. Many stacks are production-ready and daily used.
 
 ## :factory: Requirements
 
