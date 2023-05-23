@@ -67,9 +67,9 @@ volumes:
 # docker network create --subnet 192.168.10.0/24 backend
 networks:
   oueb:
-    external:
-      name: oueb
+    external: true
+    name: oueb
 
   backend:
-    external:
-      name: backend
+    external: true
+    name: backend
