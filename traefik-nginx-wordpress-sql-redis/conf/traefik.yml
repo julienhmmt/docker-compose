@@ -5,9 +5,6 @@ global:
 api:
   dashboard: true
 
-pilot:
-  dashboard: true
-
 log:
   filePath: "/etc/traefik/applog.log"
   level: INFO

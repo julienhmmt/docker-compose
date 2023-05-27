@@ -6,9 +6,6 @@ global:
 api:
   dashboard: true
 
-pilot:
-  dashboard: false
-
 log:
   filePath: "/etc/traefik/applog.log"
   format: json

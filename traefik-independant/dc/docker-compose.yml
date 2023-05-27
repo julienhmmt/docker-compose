@@ -18,7 +18,6 @@ services:
         mode : host
     environment:
       - "TZ=Europe/Paris"
-      - "TRAEFIK_PILOT_DASHBOARD=false"
     volumes:
       - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro

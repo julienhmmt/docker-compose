@@ -63,7 +63,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       #- /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      TRAEFIK_PILOT_DASHBOARD: "false"
       TZ: "Europe/Paris"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
