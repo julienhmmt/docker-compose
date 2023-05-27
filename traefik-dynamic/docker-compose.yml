@@ -43,6 +43,7 @@ services:
   traefik:
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
+    container_name: traefik
     networks:
       - dockerproxynet
     ports:
