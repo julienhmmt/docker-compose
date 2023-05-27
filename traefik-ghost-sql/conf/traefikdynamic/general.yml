@@ -17,6 +17,11 @@ tls:
       curvePreferences:
         - CurveP521
         - CurveP384
+      alpnProtocols:
+        - h2
+        - http/1.1
+    mintls13:
+      minVersion: VersionTLS13
 
 http:
   middlewares:
