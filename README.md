@@ -1,6 +1,8 @@
-# docker compose stack examples
+# docker compose stack examples, for Traefik
 
-This is some examples used at home on my homelab. Many stacks are production-ready and daily used.
+This is some examples used at home on my homelab. Many stacks are production-ready and daily used. Folders got a Traefik dynamic configuration, with a docker socket proxy. There are many tweaks to provide a ready-to-use environment.
+
+Configurations provided are tested on a private environment (QEMU and VirtualBox). Maybe in few months I'll test it on GCP, Azure or AWS (if there's free month subscription).
 
 ## :factory: Requirements
 
@@ -9,6 +11,8 @@ This is some examples used at home on my homelab. Many stacks are production-rea
 * docker compose (plugin) >= 2.17
 
 ## What you'll find
+
+Some usefull applications, used on homelab.
 
 * [**FreeIPA**](<https://www.freeipa.org/page/Main_Page>) : <https://github.com/Mettmett/docker-compose/tree/master/freeipa>
 
