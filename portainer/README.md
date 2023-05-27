@@ -24,6 +24,8 @@ After that when you're all set, press the red button to initiate :fire: !
 docker compose pull && docker compose up -d && docker compose logs -f
 ```
 
+In Portainer 2.17+ administration page, you'll have to add the docker environment you want to connect to. Select "Docker Standalone" and use the "API" instead of "Socket". The docker API URL is the `dockerproxy` container, so type `dockerproxy:2375`.
+
 ## :star: Author
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
