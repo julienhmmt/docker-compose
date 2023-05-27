@@ -65,6 +65,11 @@ services:
     environment:
       TRAEFIK_PILOT_DASHBOARD: "false"
       TZ: "Europe/Paris"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     mem_limit: 256m
     mem_reservation: 128m
     depends_on:
