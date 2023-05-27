@@ -65,6 +65,8 @@ services:
     environment:
       TRAEFIK_PILOT_DASHBOARD: "false"
       TZ: "Europe/Paris"
+    mem_limit: 256m
+    mem_reservation: 128m
     depends_on:
       - dockerproxy
 
