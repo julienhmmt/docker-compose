@@ -1,9 +1,50 @@
 ---
 
 services:
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy:edge
+    restart: always
+    container_name: dockerproxy
+    networks:
+      - dockerproxynet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LOG_LEVEL: info
+      # 0 to revoke access / 1 to grant access.
+      ## Granted by Default
+      EVENTS: 1
+      PING: 1
+      VERSION: 1
+      ## Revoked by Default
+      # Security critical
+      AUTH: 0
+      SECRETS: 0
+      # Not always needed
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 1 # Traefik, portainer, etc.
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 1 # Portainer
+      INFO: 1 # Portainer
+      NETWORKS: 1 # Portainer
+      NODES: 0
+      PLUGINS: 0
+      SERVICES: 1 # Portainer
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 1 # Portainer
+      VOLUMES: 1 # Portainer
+      TZ: "Europe/Paris"
+
   traefik:
     image: traefik:${TRAEFIKVERSION}
     restart: unless-stopped
+    networks:
+      - dockerproxynet
     ports:
       - target : 80
         published : 80
@@ -19,10 +60,12 @@ services:
       - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      #- /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TRAEFIK_PILOT_DASHBOARD: "false"
       TZ: "Europe/Paris"
+    depends_on:
+      - dockerproxy
 
   nginx:
     image: nginx:${NGINXVERSION}
@@ -34,3 +77,10 @@ services:
 volumes:
   nginxdata:
   nginxlogs:
+
+networks:
+  dockerproxynet:
+    name: dockerproxynet
+    ipam:
+      config:
+        - subnet: 172.16.10.0/24
