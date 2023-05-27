@@ -1,5 +1,6 @@
+---
 global:
-  sendAnonymousUsage: false
+  sendAnonymousUsage: true
   checkNewVersion: false
 
 api:
@@ -14,7 +15,9 @@ log:
 
 providers:
   docker:
-    endpoint: unix:///var/run/docker.sock
+    #endpoint: unix:///var/run/docker.sock
+    endpoint: tcp://dockerproxy:2375
+    network: dockerproxynet
     exposedByDefault: false
     watch: true
     swarmMode: false
@@ -32,15 +35,19 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
-
   metrics:
     address: ":9090"
+  ping:
+    address: ":8082"
+
+ping:
+  entryPoint: "ping"
 
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: contact@yourhome.local
-#      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      email: mail@domain.name
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       caServer: https://acme-v02.api.letsencrypt.org/directory
       storage: acme.json
       keyType: EC256
@@ -51,6 +58,7 @@ metrics:
   prometheus:
     entryPoint: metrics
     addEntryPointsLabels: true
+    addRoutersLabels: true
     addServicesLabels: true
     buckets:
       - 0.1

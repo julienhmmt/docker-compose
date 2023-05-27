@@ -1,6 +1,6 @@
 ---
 global:
-  sendAnonymousUsage: yes
+  sendAnonymousUsage: true
   checkNewVersion: false
 
 api:

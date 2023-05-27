@@ -1,31 +1,23 @@
 ---
 global:
-  sendAnonymousUsage: false
+  sendAnonymousUsage: true
   checkNewVersion: false
 
 api:
+  #insecure: true
   dashboard: true
+  #debug: true
 
 log:
   filePath: "/etc/traefik/applog.log"
   format: json
   level: "ERROR"
 
-accessLog:
-  filePath: "/etc/traefik/access.log"
-  bufferingSize: 100
-  filters:
-    statusCodes:
-      - "200-203"
-      - "300-302"
-      #- "400-401-403-404-405-413-414-429"
-      #- "500-502-503-504"
-    retryAttempts: true
-    minDuration: "10ms"
-
 providers:
   docker:
-    endpoint: unix:///var/run/docker.sock
+    #endpoint: unix:///var/run/docker.sock
+    endpoint: tcp://dockerproxy:2375
+    network: dockerproxynet
     exposedByDefault: false
     watch: true
     swarmMode: false
@@ -45,13 +37,18 @@ entryPoints:
     address: ":443"
   metrics:
     address: ":9090"
+  ping:
+    address: ":8082"
+
+ping:
+  entryPoint: "ping"
 
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: name@fqdn.local
-      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      #caServer: https://acme-v02.api.letsencrypt.org/directory
+      email: mail@domain.name
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
       storage: acme.json
       keyType: EC256
       httpChallenge:
@@ -61,6 +58,7 @@ metrics:
   prometheus:
     entryPoint: metrics
     addEntryPointsLabels: true
+    addRoutersLabels: true
     addServicesLabels: true
     buckets:
       - 0.1

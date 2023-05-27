@@ -1,10 +1,12 @@
 ---
 global:
-  sendAnonymousUsage: false
+  sendAnonymousUsage: true
   checkNewVersion: false
 
 api:
+  #insecure: true
   dashboard: true
+  #debug: true
 
 log:
   filePath: "/etc/traefik/applog.log"
@@ -13,11 +15,12 @@ log:
 
 providers:
   docker:
-    endpoint: unix:///var/run/docker.sock
+    #endpoint: unix:///var/run/docker.sock
+    endpoint: tcp://dockerproxy:2375
+    network: dockerproxynet
     exposedByDefault: false
     watch: true
     swarmMode: false
-
   file:
     directory: "/etc/traefik/dynamic"
     watch: true
@@ -32,6 +35,13 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+  metrics:
+    address: ":9090"
+  ping:
+    address: ":8082"
+
+ping:
+  entryPoint: "ping"
 
 certificatesResolvers:
   cloudflare:
@@ -46,3 +56,15 @@ certificatesResolvers:
         resolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"
+
+metrics:
+  prometheus:
+    entryPoint: metrics
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
