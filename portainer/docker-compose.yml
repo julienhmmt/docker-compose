@@ -43,6 +43,7 @@ services:
   portainer:
     image: portainer/${VERSION}
     restart: unless-stopped
+    container_name: portainer
     networks:
       - dockerproxynet
     command: ["-H", "tcp://dockerproxy:2375"]
