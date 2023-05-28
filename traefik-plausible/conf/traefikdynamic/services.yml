@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-plausible:
+      loadBalancer:
+        servers:
+        - url: "http://plausible:8000"

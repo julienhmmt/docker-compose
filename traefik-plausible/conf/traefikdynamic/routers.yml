@@ -1,0 +1,21 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      service: api@internal
+      rule: Host (`traefik.domain.name`)
+      tls:
+        options: default
+        certResolver: letsencrypt
+
+    rt-plausible:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-plausible
+      rule: Host (`plausible.domain.local`)
+      tls:
+        certResolver: letsencrypt
