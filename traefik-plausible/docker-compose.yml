@@ -1,0 +1,150 @@
+---
+
+services:
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy:edge
+    restart: always
+    container_name: dockerproxy
+    networks:
+      - dockerproxynet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LOG_LEVEL: info
+      # 0 to revoke access / 1 to grant access.
+      ## Granted by Default
+      EVENTS: 1
+      PING: 1
+      VERSION: 1
+      ## Revoked by Default
+      # Security critical
+      AUTH: 0
+      SECRETS: 0
+      # Not always needed
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      CONTAINERS: 1 # Traefik, portainer, etc.
+      DISTRIBUTION: 0
+      EXEC: 0
+      IMAGES: 1 # Portainer
+      INFO: 1 # Portainer
+      NETWORKS: 1 # Portainer
+      NODES: 0
+      PLUGINS: 0
+      SERVICES: 1 # Portainer
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 1 # Portainer
+      VOLUMES: 1 # Portainer
+      TZ: "Europe/Paris"
+
+  traefik:
+    image: traefik:saintmarcelin
+    restart: unless-stopped
+    container_name: traefik
+    networks:
+      - dockerproxynet
+    ports:
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
+    volumes:
+      - ./conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - /etc/localtime:/etc/localtime:ro
+      #- /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      TZ: "Europe/Paris"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    mem_reservation: 128m
+    depends_on:
+      - dockerproxy
+
+  plausible_mail:
+    image: bytemark/smtp
+    container_name: plausible_mail
+    restart: unless-stopped
+    environment:
+      RELAY_HOST: mail.domain.local
+      RELAY_PORT: 587
+      RELAY_USERNAME: changeme@domain.local
+      RELAY_PASSWORD: changeme
+      TZ: Europe/Paris
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    mem_limit: 128m
+    mem_reservation: 64m
+
+  plausible_db:
+    image: postgres:14-alpine
+    container_name: plausible_db
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      POSTGRES_USER: plausibledbuser
+      POSTGRES_PASSWORD: plausibledbpassword
+      POSTGRES_DB: plausibledb
+      TZ: Europe/Paris
+
+  plausible_events_db:
+    image: clickhouse/clickhouse-server:22.6-alpine
+    container_name: plausible_events_db
+    restart: unless-stopped
+    volumes:
+      - event-data:/var/lib/clickhouse
+      - ./clickhouse/clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+      - ./clickhouse/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Europe/Paris
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  plausible:
+    image: plausible/analytics:latest
+    container_name: plausible
+    restart: unless-stopped
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin && /entrypoint.sh run"
+    depends_on:
+      - plausible_db
+      - plausible_events_db
+      - plausible_mail
+    env_file:
+      - plausible-conf.env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Europe/Paris
+
+volumes:
+  db-data:
+    driver: local
+  event-data:
+    driver: local
+  geoip:
+    driver: local
+
+networks:
+  dockerproxynet:
+    name: dockerproxynet
+    ipam:
+      config:
+        - subnet: 172.16.10.0/24
