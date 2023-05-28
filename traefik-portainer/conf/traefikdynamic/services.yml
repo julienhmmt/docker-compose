@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-portainer:
+      loadBalancer:
+        servers:
+        - url: "http://portainer:9000"

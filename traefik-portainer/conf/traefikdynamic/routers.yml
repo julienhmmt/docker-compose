@@ -1,0 +1,22 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      service: api@internal
+      rule: Host (`traefik.domain.name`)
+      tls:
+        options: default
+        certResolver: letsencrypt
+
+    rt-portainer:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-portainer
+      rule: Host (`portainer.domain.name`)
+      tls:
+        options: default
+        certResolver: letsencrypt
