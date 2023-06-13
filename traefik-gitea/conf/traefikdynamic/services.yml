@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-gitea:
+      loadBalancer:
+        servers:
+        - url: "http://gitea:3000"
