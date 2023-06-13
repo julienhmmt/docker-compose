@@ -12,32 +12,28 @@ services:
     environment:
       LOG_LEVEL: info
       # 0 to revoke access / 1 to grant access.
-      ## Granted by Default
       EVENTS: 1
       PING: 1
       VERSION: 1
-      ## Revoked by Default
-      # Security critical
       AUTH: 0
       SECRETS: 0
-      # Not always needed
       BUILD: 0
       COMMIT: 0
       CONFIGS: 0
-      CONTAINERS: 1 # Traefik, portainer, etc.
+      CONTAINERS: 1
       DISTRIBUTION: 0
       EXEC: 0
-      IMAGES: 1 # Portainer
-      INFO: 1 # Portainer
-      NETWORKS: 1 # Portainer
+      IMAGES: 1
+      INFO: 1
+      NETWORKS: 1
       NODES: 0
       PLUGINS: 0
-      SERVICES: 1 # Portainer
+      SERVICES: 1
       SESSION: 0
       SWARM: 0
       SYSTEM: 0
-      TASKS: 1 # Portainer
-      VOLUMES: 1 # Portainer
+      TASKS: 1
+      VOLUMES: 1
       TZ: "Europe/Paris"
 
   traefik:
