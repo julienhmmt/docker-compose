@@ -1,0 +1,22 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      service: api@internal
+      rule: Host (`traefik.domain.name`)
+      tls:
+        options: default
+        certResolver: letsencrypt
+
+    rt-gitea:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-gitea
+      rule: Host (`git.domain.name`)
+      tls:
+        options: default
+        certResolver: letsencrypt
