@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-vaultwarden:
+      loadBalancer:
+        servers:
+        - url: "http://vaultwarden:80"

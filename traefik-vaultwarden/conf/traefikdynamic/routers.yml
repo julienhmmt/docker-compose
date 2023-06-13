@@ -1,0 +1,21 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+      - websecure
+      service: api@internal
+      rule: Host (`traefik.domain.local`)
+      tls:
+        options: default
+        certResolver: letsencrypt
+
+    rt-vaultwarden:
+      entryPoints:
+      - websecure
+      middlewares:
+      - security
+      service: sc-vaultwarden
+      rule: Host (`vaultwarden.domain.local`)
+      tls:
+        certResolver: letsencrypt
