@@ -1,10 +1,22 @@
 ---
+x-common: &x-common
+  privileged: false
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 3000
+      hard: 6000
 
 services:
   dockerproxy:
+    <<: *x-common
     image: tecnativa/docker-socket-proxy:edge
-    restart: always
     container_name: dockerproxy
+    restart: always
     networks:
       - dockerproxynet
     volumes:
@@ -27,25 +39,30 @@ services:
       CONTAINERS: 1 # Traefik, portainer, etc.
       DISTRIBUTION: 0
       EXEC: 0
-      IMAGES: 1 # Portainer
-      INFO: 1 # Portainer
-      NETWORKS: 1 # Portainer
+      IMAGES: 0
+      INFO: 0
+      NETWORKS: 0
       NODES: 0
       PLUGINS: 0
-      SERVICES: 1 # Portainer
+      SERVICES: 0
       SESSION: 0
       SWARM: 0
       SYSTEM: 0
-      TASKS: 1 # Portainer
-      VOLUMES: 1 # Portainer
+      TASKS: 0
+      VOLUMES: 0
       TZ: "Europe/Paris"
+    mem_limit: 32m
+    memswap_limit: 32m
+    mem_reservation: 16m
 
   traefik:
-    image: traefik:${TRAEFIKVERSION}
-    restart: unless-stopped
+    <<: *x-common
+    image: traefik:saintmarcelin
     container_name: traefik
+    restart: unless-stopped
     networks:
       - dockerproxynet
+      - oueb
     ports:
       - target : 80
         published : 80
@@ -55,6 +72,10 @@ services:
         published : 443
         protocol: tcp
         mode : host
+      - target: 443
+        published: 443
+        protocol: udp
+        mode: host
     volumes:
       - ./conf/acme.json:/acme.json
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -69,42 +90,86 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 128m
+    memswap_limit: 128m
+    mem_reservation: 64m
     depends_on:
       - dockerproxy
 
-  sqlghost:
-    image: mysql:${MYSQLVERSION}
+  ghostdb:
+    <<: *x-common
+    image: rapidfort/mysql:8.0
+    container_name: ghostdb
     restart: unless-stopped
+    networks:
+      - backend
     volumes:
       - ./conf/custom-mysql.cnf:/etc/mysql/conf.d/custom-mysql.cnf
-      - /etc/localtime:/etc/localtime:ro
-      - datasqlghost:/var/lib/mysql
-      - datasqlghostlog:/var/log/mysql
+      - dbdata:/bitnami/mysql/data
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQLROOT}
-      MYSQL_USER: ${MYSQLUSER}
-      MYSQL_PASSWORD: ${MYSQLPASSWORD}
-      MYSQL_DATABASE: ${MYSQLDB}
+      MYSQL_ROOT_PASSWORD: /run/secrets/sql_root_password
+      MYSQL_USER: ghostuser
+      MYSQL_PASSWORD: /run/secrets/sql_user_password
+      MYSQL_DATABASE: ghostappdb
       TZ: "Europe/Paris"
+    mem_limit: 768m
+    mem_reservation: 512m
+    secrets:
+      - sql_root_password
+      - sql_user_password
 
-  ghost:
-    image: ghost:${GHOSTVERSION}
+  sqlexporterghostdb:
+    <<: *x-common
+    image: bitnami/mysqld-exporter
+    container_name: sqlexporterghostdb
     restart: unless-stopped
+    networks:
+      - backend
+    environment:
+      DATA_SOURCE_NAME: root:$(cat /run/secrets/sql_root_password)@(ghostdb:3306)/ghostappdb
+    depends_on:
+      - ghostdb
+    mem_limit: 32m
+    memswap_limit: 32m # block the usage of swap
+    mem_reservation: 16m
+
+  ghostapp:
+    <<: *x-common
+    container_name: ghost
+    image: ghost:5
+    restart: unless-stopped
+    networks:
+      - backend
+      - oueb
     volumes:
       - ./conf/config.production.json:/var/lib/ghost/config.production.json:ro
-      - /etc/localtime:/etc/localtime:ro
-      - dataghost:/var/lib/ghost/content
+      - ./appdata:/var/lib/ghost/content
+      - ./logs/:/var/lib/ghost/logs
     depends_on:
       - sqlghost
-    environment:
-      TZ: "Europe/Paris"
+    mem_limit: 256m
+    memswap_limit: 256m # block the usage of swap
+    mem_reservation: 192m
+
+  varnish:
+    privileged: false
+    image: varnish:fresh
+    container_name: varnish
+    restart: unless-stopped
+    networks:
+      - oueb
+    depends_on:
+      - ghostdb
+      - ghostapp
+    volumes:
+      - ./conf/varnishdefault.vcl:/etc/varnish/default.vcl
+    tmpfs: /var/lib/varnish/varnishd:exec,size=512m
+    mem_limit: 256m
+    memswap_limit: 256m # block the usage of swap
+    mem_reservation: 192m
 
 volumes:
-  dataghost:
-  datasqlghost:
-  datasqlghostlog:
+  dbdata:
 
 networks:
   dockerproxynet:
@@ -112,3 +177,12 @@ networks:
     ipam:
       config:
         - subnet: 172.16.10.0/24
+
+  oueb:
+  backend:
+
+secrets:
+  sql_root_password:
+    file: .sql_root_password
+  sql_user_password:
+    file: .sql_user_password

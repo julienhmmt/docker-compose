@@ -17,7 +17,8 @@ http:
       middlewares:
       - security
       - compression
-      service: sc-ghost
+      #service: sc-ghost # Fallback if needed. Maybe we need to loadbalance, if varnish is too long...
+      service: sc-varnishGhost
       rule: Host (`ghost.yourhome.local`)
       tls:
         certResolver: letsencrypt

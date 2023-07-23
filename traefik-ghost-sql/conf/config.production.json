@@ -1,27 +1,39 @@
 {
-    "url": "https://ghost.yourhome.local",
-    "server": {
-      "port": 2368,
-      "host": "0.0.0.0"
-    },
-    "database": {
+  "name": "My Ghost blog",
+  "url": "https://www.your.url",
+  "database": {
       "client": "mysql",
       "connection": {
-        "host": "sqlghost",
-        "user": "ghost",
-        "port": "3306",
-        "password": "sqlghostuserpassword",
-        "database": "ghost"
-      }
-    },
-    "privacy": {
+          "host": "ghostdb",
+          "user": "ghostuser",
+          "port": "3306",
+          "password": "sqluserpassword",
+          "database": "ghostappdb"
+     }
+  },
+  "server": {
+      "port": 2368,
+      "host": "0.0.0.0"
+  },
+  "privacy": {
       "useUpdateCheck": false,
       "useGravatar": false,
-      "useRpcPing": false,
+      "useRpcPing": true,
       "useStructuredData": true
-    },
-    "process": "systemd",
-    "paths": {
+  },
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "logging": {
+      "path": "/var/lib/ghost/logs/",
+      "useLocalTime": true,
+      "level": "info",
+      "rotation": {
+          "enabled": true,
+          "count": 15,
+          "period": "1d"
+      },
+      "transports": ["stdout", "file"]
+  },
+  "paths": {
       "contentPath": "/var/lib/ghost/content"
-    }
+  }
 }

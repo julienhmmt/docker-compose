@@ -25,6 +25,9 @@ providers:
     directory: "/etc/traefik/dynamic"
     watch: true
 
+experimental:
+  http3: true
+
 entryPoints:
   web:
     address: ":80"
@@ -35,6 +38,8 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+    http3:
+      advertisedPort: 443
   metrics:
     address: ":9090"
   ping:

@@ -5,3 +5,8 @@ http:
       loadBalancer:
         servers:
         - url: "http://ghost:2368"
+
+    sc-varnishGhost:
+      loadBalancer:
+        servers:
+          - url: "http://varnish:80"
