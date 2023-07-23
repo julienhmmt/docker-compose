@@ -55,3 +55,6 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
 ## :anchor: Misc
+
+- Varnish (configuration file) : inspiration from "https://github.com/studplus/wordpress_docker/blob/main/custom-varnish/wordpress.vcl"
+- Docker Compose (anchor) : inspiration from "https://infos.zogg.fr/traefik-crowdsec"
