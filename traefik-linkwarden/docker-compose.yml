@@ -1,0 +1,119 @@
+---
+
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
+services:
+  traefik:
+    <<: *x-common
+    image: traefik:saintmarcelin
+    restart: unless-stopped
+    container_name: traefik
+    networks:
+      - oueb
+    ports:
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
+    volumes:
+      - ./conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      TZ: "Europe/Paris"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    mem_reservation: 128m
+
+  linkwarden_pgsql:
+    <<: *x-common
+    image: rapidfort/postgresql-official:15.5-bullseye
+    container_name: linkwarden_pgsql
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pgsql_linkwarden_password
+      POSTGRES_DB: linkwardenbase
+    networks:
+      - backendlinkwarden
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d linkwardenbase -U postgres"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    secrets:
+      - pgsql_linkwarden_password
+    volumes:
+      - linkwarden_pgdata:/var/lib/postgresql/data
+
+  linkwarden_pgsql_exporter:
+    <<: *x-common
+    container_name: linkwarden_pgsql_exporter
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.13.2
+    restart: unless-stopped
+    networks:
+      - backendlinkwarden
+    environment:
+      DATA_SOURCE_URI: linkwarden_pgsql:5432?sslmode=disable
+      DATA_SOURCE_USER: postgres
+      DATA_SOURCE_PASS_FILE: /run/secrets/pgsql_linkwarden_password
+    depends_on:
+      linkwarden_pgsql:
+        condition: service_healthy
+    mem_limit: 64m
+    memswap_limit: 64m
+    mem_reservation: 32m
+    secrets:
+      - pgsql_linkwarden_password
+
+  linkwarden:
+    <<: *x-common
+    env_file: ./linkwarden.env
+    image: ghcr.io/linkwarden/linkwarden:latest
+    restart: unless-stopped
+    container_name: linkwarden
+    networks:
+      - backendlinkwarden
+      - oueb
+    volumes:
+      - linkwardendata:/data/data
+    depends_on:
+      - linkwarden_pgsql
+
+volumes:
+  linkwardendata:
+  linkwarden_pgdata:
+
+secrets:
+  pgsql_linkwarden_password:
+    file: .secrets/pgsql_linkwarden_password.txt
+
+networks:
+  backendlinkwarden:
+  oueb:

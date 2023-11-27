@@ -20,6 +20,8 @@ Some usefull applications, used on homelab.
 
 * [**Ghost**](<https://ghost.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-ghost-sql> for a website with Ghost and its SQL server [**MariaDB**](<https://mariadb.org/>) behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
+* [**Linkwarden**](<https://linkwarden.app/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-linkwarden> to store your links, a ne way for bookmarking and sharing links, with a PostgreSQL base, behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+
 * [**WordPress**](<https://wordpress.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-wordpress-sql-redis> for a website with WordPress with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
 * [**Nextcloud**](<https://nextcloud.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-nextcloud-sql-redis> for a private cloud with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)

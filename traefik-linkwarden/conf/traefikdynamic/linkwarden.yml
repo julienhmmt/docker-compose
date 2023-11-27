@@ -1,0 +1,18 @@
+---
+http:
+  services:
+    sc-linkwarden:
+      loadBalancer:
+        servers:
+          - url: "http://linkwarden:3000"
+
+  routers:
+    rt-linkwarden:
+      entryPoints:
+        - websecure
+      middlewares:
+        - security
+      service: sc-linkwarden
+      rule: Host(`links.yourdomain.net`)
+      tls:
+        certResolver: letsencrypt
