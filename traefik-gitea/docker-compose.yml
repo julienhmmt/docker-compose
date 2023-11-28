@@ -41,7 +41,7 @@ services:
       TZ: "Europe/Paris"
 
   traefik:
-    image: traefik:${TRAEFIKVERSION}
+    image: traefik:saintmarcelin
     restart: unless-stopped
     container_name: traefik
     networks:
