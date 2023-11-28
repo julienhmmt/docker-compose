@@ -1,12 +1,11 @@
 # docker-compose Traefik + Gitea
 
-Gitea a simple self-hosted and ready-to-use git server with CI/CD. Simpler and lighter than GitLab, it's a must have in your homelab ! More information at [the official website](https://docs.gitea.com/).
+Gitea a simple self-hosted and ready-to-use git server with CI/CD. Simpler and lighter than GitLab, it's a must have in your homelab ! More information at [the official website](https://docs.gitea.com/). This stack will spawn a PostgreSQL database server, with Gitea "rootless". There is an exporter for the postgresql database server (prometheus metrics).
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04 && 22.04, Debian 10 & 11)
-* docker >= 23.x
-* docker compose (plugin) >= 2.17.x
+* linux host (tested successfully on Ubuntu 22.04 & Debian 12)
+* docker (+compose) >= 23.x
 
 ## :rocket: How to use
 
@@ -16,7 +15,7 @@ Clone this repo where you want with this line :
 git clone https://github.com/Mettmett/docker-compose.git:traefik-gitea
 ```
 
-You need to edit the file `.env` at the source folder to modify the values of some vars.
+You need to edit files in the folder `.secrets` with your own values.
 
 After that when you're all set, press the red button to initiate :fire: !
 
