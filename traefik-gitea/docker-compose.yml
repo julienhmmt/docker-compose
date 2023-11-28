@@ -1,5 +1,19 @@
 ---
 
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
 services:
   dockerproxy:
     image: tecnativa/docker-socket-proxy:edge
@@ -41,11 +55,13 @@ services:
       TZ: "Europe/Paris"
 
   traefik:
+    <<: *x-common
     image: traefik:saintmarcelin
     restart: unless-stopped
     container_name: traefik
     networks:
       - dockerproxynet
+      - oueb
     ports:
       - target : 80
         published : 80
@@ -60,7 +76,6 @@ services:
       - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
       - ./logs/traefik.log:/etc/traefik/applog.log
-      - /etc/localtime:/etc/localtime:ro
       #- /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TZ: "Europe/Paris"
@@ -75,54 +90,107 @@ services:
       - dockerproxy
 
   giteadb:
-    image: mysql:8
-    restart: unless-stopped
+    <<: *x-common
+    image: rapidfort/postgresql-official:15.5-bullseye
     container_name: giteadb
-    environment:
-      MYSQL_ROOT_PASSWORD: ${SQLROOTGITEA}
-      MYSQL_USER: ${SQLUSERGITEA}
-      MYSQL_PASSWORD: ${SQLPASSWORDGITEA}
-      MYSQL_DATABASE: ${SQLDBGITEA}
-    volumes:
-      - ./giteaSqldata:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-
-  sqlexportergitea:
-    image: prom/mysqld-exporter
     restart: unless-stopped
-    container_name: sqlexportergitea
     environment:
-      DATA_SOURCE_NAME: root:${SQLROOTGITEA}@(giteadb:3306)/${SQLDBGITEA}
-    links:
-      - giteadb
+      POSTGRES_PASSWORD_FILE: /run/secrets/pgsql_password
+      POSTGRES_DB: giteabase
+    networks:
+      - backendgitea
+    volumes:
+      - giteadbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d giteabase -U postgres"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    secrets:
+      - pgsql_password
+
+  giteadb-pgsql_exporter:
+    <<: *x-common
+    container_name: giteadb-pgsql_exporter
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.13.2
+    restart: unless-stopped
+    networks:
+      - backendgitea
+    environment:
+      DATA_SOURCE_URI: giteadb:5432?sslmode=disable
+      DATA_SOURCE_USER: postgres
+      DATA_SOURCE_PASS_FILE: /run/secrets/pgsql_password
     depends_on:
-      - giteadb
-    mem_limit: 128m
-    mem_reservation: 64m
+      giteadb:
+        condition: service_healthy
+    mem_limit: 64m
+    memswap_limit: 64m
+    mem_reservation: 32m
+    secrets:
+      - pgsql_password
 
   gitea:
-    image: gitea/gitea:1.19
-    restart: unless-stopped
+    <<: *x-common
     container_name: gitea
+    image: gitea/gitea:1.21-rootless
+    restart: unless-stopped
     environment:
-      GITEA__database__DB_TYPE: mysql
-      GITEA__database__HOST: giteadb:3306
-      GITEA__database__NAME: ${SQLDBGITEA}
-      GITEA__database__USER: ${SQLUSERGITEA}
-      GITEA__database__PASSWD: ${SQLPASSWORDGITEA}
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: giteadb:5432
+      GITEA__database__NAME: giteabase
+      GITEA__database__USER: postgres
+      GITEA__database__PASSWD__FILE: /run/secrets/pgsql_password
+      GITEA__mailer__ENABLED: true
+      GITEA__mailer__FROM: no-reply@your-domain.net
+      GITEA__mailer__MAILER_TYPE: smtp
+      GITEA__mailer__SMTP_ADDR: mail.domain.com
+      GITEA__mailer__IS_TLS_ENABLED: true
+      GITEA__mailer__USER: no-reply@your-domain.net
+      GITEA__mailer__PASSWD__FILE: /run/secrets/smtp_password
+      USER_UID: 1000
+      USER_GID: 1000
+    networks:
+      - backendgitea
+      - oueb
     volumes:
-      - ./gitea:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - giteadata:/var/lib/gitea
+      - ./configGitea:/etc/gitea
     depends_on:
-      - giteadb
+      giteadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    secrets:
+      - pgsql_password
+      - smtp_password
+
+secrets:
+  pgsql_password:
+    file: .secrets/pgsql_password.txt
+  smtp_password:
+    file: .secrets/smtp_password.txt
 
 networks:
+  backendgitea:
+
   dockerproxynet:
     name: dockerproxynet
     ipam:
       config:
         - subnet: 172.16.10.0/24
+
+  oueb:
+
+volumes:
+  giteadata:
+  giteadbdata:
