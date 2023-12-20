@@ -1,0 +1,158 @@
+---
+x-logging: &x-logging
+  logging:
+    driver: loki
+    options:
+      loki-url: "http://loki:3100/loki/api/v1/push"
+      loki-retries: "5"
+      loki-batch-size: "400"
+      loki-external-labels: service={{.Name}}
+  labels:
+    logging: "promtail"
+    logging_jobname: "containerlogs"
+
+x-common: &x-common
+  <<: *x-logging
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
+services:
+  traefik:
+    image: traefik:saintmarcelin
+    restart: unless-stopped
+    networks:
+      - monitoring
+    container_name: traefik
+    ports:
+      - target : 80
+        published : 80
+        protocol: tcp
+        mode : host
+      - target : 443
+        published : 443
+        protocol: tcp
+        mode : host
+    volumes:
+      - ./conf/acme.json:/acme.json
+      - ./conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf/traefikdynamic:/etc/traefik/dynamic:ro
+      - ./logs/traefik.log:/etc/traefik/applog.log
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      TZ: "Europe/Paris"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    mem_reservation: 128m
+
+  nodeexporter:
+    <<: *x-common
+    image: prom/node-exporter:v1.7.0
+    container_name: nodeexporter
+    restart: unless-stopped
+    networks:
+      - monitoring
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--collector.processes"
+      - "--collector.systemd.private"
+      - "--collector.filesystem.mount-points-exclude"
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    mem_limit: 128m
+    memswap_limit: 128m
+    mem_reservation: 64m
+
+  grafana:
+    <<: *x-common
+    image: grafana/grafana-oss:10.2.2
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - monitoring
+    environment:
+      GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-piechart-panel,redis-datasource"
+    healthcheck:
+      test: wget -nv -t1 --spider 'http://localhost:3000/'
+      interval: 1m
+      timeout: 30s
+      retries: 3
+    volumes:
+      - ./conf/grafana/grafana-custom.ini:/etc/grafana/grafana.ini:ro
+      - ./conf/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./logs/grafana:/var/log/grafana
+      - datagrafana:/var/lib/grafana
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/config.yml
+    networks:
+      - monitoring
+    volumes:
+      - ./conf/lokiconfig.yml:/etc/loki/config.yml:ro
+      - dataloki:/data/loki
+    expose:
+      - "3100"
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+
+  promtail:
+    <<: *x-common
+    image: grafana/promtail:2.9.2
+    container_name: promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - monitoring
+    volumes:
+      - /var/log:/var/log:ro
+      - /opt/docker/dc/logs:/logs/traefik:ro
+      - /opt/docker/ghost/logs:/logs/ghost:ro
+      - ./conf/promtailconfig.yml:/etc/promtail/config.yml:ro
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+
+  vmetrics:
+    image: victoriametrics/victoria-metrics:stable
+    container_name: vmetrics
+    restart: unless-stopped
+    networks:
+      - monitoring
+    command: -storageDataPath=/victoria-metrics-data -retentionPeriod=6 -memory.allowedPercent=20 -promscrape.config=/etc/victoria/scrape_config.yml
+    volumes:
+      - ./.data/victoria:/victoria-metrics-data
+      - ./conf/scrape_config.yml:/etc/victoria/scrape_config.yml:ro
+
+volumes:
+  datagrafana:
+  dataloki:
+  datavmetrics:
+
+networks:
+  monitoring:

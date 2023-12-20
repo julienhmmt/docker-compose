@@ -1,0 +1,12 @@
+---
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: "traefik"
+    static_configs:
+      - targets: ["traefik:9090"]
+
+  - job_name: 'vmetrics'
+    static_configs:
+      - targets: ['vmetrics:8428']
