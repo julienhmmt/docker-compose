@@ -1,0 +1,13 @@
+---
+apiVersion: 1
+
+datasources:
+  - name: 'VMetrics'
+    type: 'prometheus'
+    id: 'vmetrics'
+    access: proxy
+    org_id: 1
+    url: 'http://vmetrics:8428'
+    is_default: true
+    version: 1
+    editable: true

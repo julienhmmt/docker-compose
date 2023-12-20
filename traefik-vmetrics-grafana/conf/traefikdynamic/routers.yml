@@ -1,0 +1,22 @@
+---
+http:
+  routers:
+    rt-traefik:
+      entryPoints:
+        - websecure
+      middlewares:
+        - authentification
+      service: api@internal
+      rule: Host (`traefik.yourhome.local`)
+      tls:
+        certResolver: letsencrypt
+
+    rt-grafana:
+      entryPoints:
+        - websecure
+      middlewares:
+        - security
+      service: sc-grafana
+      rule: Host (`grafana.yourhome.local`)
+      tls:
+        certResolver: letsencrypt

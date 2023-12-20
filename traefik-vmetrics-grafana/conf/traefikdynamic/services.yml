@@ -1,0 +1,7 @@
+---
+http:
+  services:
+    sc-grafana:
+      loadBalancer:
+        servers:
+          - url: "http://grafana:3000"
