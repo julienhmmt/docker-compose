@@ -1,0 +1,123 @@
+---
+
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
+services:
+  umami:
+    container_name: umami
+    <<: *x-common
+    restart: unless-stopped
+    image: ghcr.io/umami-software/umami:postgresql-v2.18
+    networks:
+      - backendumami
+      - front
+    environment:
+      APP_SECRET: /run/secrets/umami_app_secret
+      DATABASE_TYPE: postgresql
+      DATABASE_URL: ${UMAMI_DB_URI}
+      IGNORE_IP: 82.66.236.6
+      TRACKER_SCRIPT_NAME: compteurvisites.js
+      TZ: Europe/Paris
+    depends_on:
+      umami_pgsql:
+        condition: service_healthy
+    secrets:
+      - umami_app_secret
+
+  umami_pgsql:
+    container_name: umami_pgsql
+    <<: *x-common
+    restart: unless-stopped
+    image: postgres:16-alpine
+    networks:
+      - backendumami
+    environment:
+      POSTGRES_DB: umamidb
+      POSTGRES_PASSWORD_FILE: /run/secrets/pgsql_password_umami
+      TZ: Europe/Paris
+    volumes:
+      - umami_pgsql_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    secrets:
+      - pgsql_password_umami
+
+  umami_pgsql_exporter:
+    <<: *x-common
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: umami_pgsql_exporter
+    restart: unless-stopped
+    networks:
+      - backendumami
+      - monitoring
+    environment:
+      DATA_SOURCE_URI: umami_pgsql:5432?sslmode=disable
+      DATA_SOURCE_USER: postgres
+      DATA_SOURCE_PASS_FILE: /run/secrets/pgsql_password_umami
+    depends_on:
+      umami_pgsql:
+        condition: service_healthy
+    secrets:
+      - pgsql_password_umami
+
+  umami_pgsql_backuper:
+    <<: *x-common
+    image: prodrigestivill/postgres-backup-local:16
+    container_name: umami_pgsql_backuper
+    restart: unless-stopped
+    networks:
+      - backendumami
+    volumes:
+      - ./backups/umami:/backups
+    depends_on:
+      umami_pgsql:
+        condition: service_healthy
+    environment:
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      - POSTGRES_HOST=umami_pgsql
+      - POSTGRES_DB=umamidb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/pgsql_password_umami
+      - POSTGRES_EXTRA_OPTS=-Z6 --schema=public --blobs -a
+      - SCHEDULE=@daily
+      - TZ=Europe/Paris
+    secrets:
+      - pgsql_password_umami
+
+volumes:
+  umami_pgsql_data:
+
+networks:
+  backendumami:
+    external: true
+  monitoring:
+    external: true
+  front:
+    external: true
+
+secrets:
+  pgsql_password_umami:
+    file: .secrets/pgsql_password_umami.txt
+  umami_app_secret:
+    file: .secrets/umami_app_secret.txt
+
+## RESTORE
+# docker cp umami-bckp.sql umami_pgsql:/umami-bckp.sql ; docker exec -it umami_pgsql bash ; psql -U postgres -d WPqWdAiFXz2YJXYcey -f /umami-bckp.sql
+# sinon : docker exec --tty --interactive $CONTAINER /bin/sh -c "zcat $BACKUPFILE | psql --username=$USERNAME --dbname=$DBNAME -W"
