@@ -60,7 +60,7 @@ services:
 
   nodeexporter:
     <<: *x-common
-    image: prom/node-exporter:v1.7.0
+    image: prom/node-exporter:v1.10.2
     container_name: nodeexporter
     restart: unless-stopped
     networks:
@@ -82,7 +82,7 @@ services:
 
   grafana:
     <<: *x-common
-    image: grafana/grafana-oss:10.2.2
+    image: grafana/grafana-oss:10.3.1
     container_name: grafana
     restart: unless-stopped
     networks:
@@ -106,7 +106,7 @@ services:
     mem_reservation: 128m
 
   loki:
-    image: grafana/loki:2.9.2
+    image: grafana/loki:2.9.17
     container_name: loki
     restart: unless-stopped
     command: -config.file=/etc/loki/config.yml
@@ -123,7 +123,7 @@ services:
 
   promtail:
     <<: *x-common
-    image: grafana/promtail:2.9.2
+    image: grafana/promtail:2.9.17
     container_name: promtail
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
