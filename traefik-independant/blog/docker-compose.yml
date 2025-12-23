@@ -1,9 +1,25 @@
 ---
 
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
 services:
   sqlwp:
-    image: mariadb:${MARIADBVERSION}
+    <<: *x-common
+    image: mariadb:${MARIADB_VERSION:-lts}
     restart: unless-stopped
+    container_name: sqlwp
     networks:
       - backend
     volumes:
@@ -17,8 +33,10 @@ services:
       MYSQL_DATABASE: ${MYSQLDB}
  
   nginxwp:
-    image: nginx:${NGINXVERSION}
+    <<: *x-common
+    image: nginx:${NGINX_VERSION:-stable-alpine}
     restart: unless-stopped
+    container_name: nginxwp
     networks:
       - oueb
       - backend
@@ -29,8 +47,10 @@ services:
       - ./conf/nginxwp:/etc/nginx/
 
   wp:
-    image: wordpress:${WPVERSION}
+    <<: *x-common
+    image: wordpress:${WP_VERSION:-php8.3-fpm-alpine}
     restart: unless-stopped
+    container_name: wp
     networks:
       - backend
     volumes:

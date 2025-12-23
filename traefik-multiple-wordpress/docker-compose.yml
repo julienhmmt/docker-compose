@@ -1,7 +1,22 @@
 ---
 
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
 services:
   dockerproxy:
+    <<: *x-common
     image: tecnativa/docker-socket-proxy:edge
     restart: always
     container_name: dockerproxy
@@ -41,7 +56,7 @@ services:
       TZ: "Europe/Paris"
 
   traefik:
-    image: traefik:${TRAEFIKVERSION}
+    image: traefik:${TRAEFIKVERSION:-ramequin}
     restart: unless-stopped
     container_name: traefik
     networks:
@@ -168,7 +183,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - datasqlwp3:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQLROOT3
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOT3}
       MYSQL_USER: ${MYSQLUSER3}
       MYSQL_PASSWORD: ${MYSQLPASSWORD3}
       MYSQL_DATABASE: ${MYSQLDB3}
@@ -204,10 +219,12 @@ services:
       TZ: "Europe/Paris"
 
   redis:
-    image: redis:${REDISVERSION}
+    <<: *x-common
+    image: redis:${REDIS_VERSION:-alpine}
     restart: unless-stopped
+    container_name: redis
     command: redis-server --maxmemory 1024mb --maxmemory-policy allkeys-lru --requirepass changemeWithALongPassword --appendonly yes --bind redis
-    environement:
+    environment:
       TZ: "Europe/Paris"
     volumes:
       - /etc/localtime:/etc/localtime:ro

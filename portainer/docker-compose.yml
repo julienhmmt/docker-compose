@@ -1,5 +1,19 @@
 ---
 
+x-common: &x-common
+  privileged: false
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+  security_opt:
+    - no-new-privileges=true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m
+  ulimits:
+    nproc: 6144
+    nofile:
+      soft: 6000
+      hard: 12000
+
 services:
   dockerproxy:
     image: tecnativa/docker-socket-proxy:edge
@@ -39,9 +53,12 @@ services:
       TASKS: 1 # Portainer
       VOLUMES: 1 # Portainer
       TZ: "Europe/Paris"
+    mem_limit: 64m
+    mem_reservation: 32m
 
   portainer:
-    image: portainer/${VERSION}
+    <<: *x-common
+    image: portainer/portainer-ce:${PORTAINER_VERSION:-lts}
     restart: unless-stopped
     container_name: portainer
     networks:

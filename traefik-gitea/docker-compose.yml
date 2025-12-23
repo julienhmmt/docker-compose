@@ -56,7 +56,7 @@ services:
 
   traefik:
     <<: *x-common
-    image: traefik:saintmarcelin
+    image: traefik:ramequin
     restart: unless-stopped
     container_name: traefik
     networks:

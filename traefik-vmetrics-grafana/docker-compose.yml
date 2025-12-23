@@ -28,7 +28,7 @@ x-common: &x-common
 
 services:
   traefik:
-    image: traefik:saintmarcelin
+    image: traefik:ramequin
     restart: unless-stopped
     networks:
       - monitoring
