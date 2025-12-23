@@ -52,7 +52,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## :moneybag: Licence
 
-[CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0)
+[CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0)
 
 ## :anchor: Misc
 
