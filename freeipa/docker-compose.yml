@@ -2,7 +2,7 @@
 
 services:
   freeipa:
-    image: freeipa/${VERSION}
+    image: quay.io/freeipa/freeipa-server:${FREEIPA_VERSION:-almalinux-10-4.12.2}
     restart: unless-stopped
     hostname: freeipa.yourhome.local
     environment:
@@ -33,8 +33,14 @@ services:
       #- --no-dnssec-validation
       #- --setup-dns
       #- --auto-forwarders
-      #- --allow-zone-overlap
+      - --allow-zone-overlap
       - --unattended
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k --fail https://localhost/ipa/ui/ >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
     ports:
       #- "53:53/udp"
       #- "53:53"

@@ -4,9 +4,9 @@
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04 && 22.04, Debian 10 & 11)
-* docker >= 23.x
-* docker compose (plugin) >= 2.17.x
+* linux host (tested successfully on Ubuntu 22.04, 24.04, Debian 11, 12 and 13)
+* docker >= 28.2.x
+* docker compose (plugin) >= 2.37.x
 
 ## :rocket: How to use
 
@@ -16,7 +16,7 @@ Clone this repository :
 git clone https://github.com/Mettmett/docker-compose.git:freeipa
 ```
 
-You need to edit the file `.env` at the source folder to modify the values of some vars. After that when you're all set, press the red button to initiate :fire: !
+You need to edit the file `.env` at the source folder to modify the values of some vars, including `FREEIPA_VERSION` if you want to pin to a different image tag. After that when you're all set, press the red button to initiate :fire: !
 
 ```bash
 docker compose pull && docker compose up -d && docker compose logs -f
