@@ -4,7 +4,7 @@
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 22.04, 24.04, Debian 11, 12 and 13)
+* linux host (tested successfully on Ubuntu 22.04, 24.04, Debian 12 and 13)
 * docker >= 28.2.x
 * docker compose (plugin) >= 2.37.x
 

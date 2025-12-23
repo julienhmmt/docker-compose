@@ -8,9 +8,9 @@ This stack is a multipurpose environment : you'll have a specific stack for Trae
 
 ## :factory: Requirements
 
-* linux host (tested successfully on Ubuntu 20.04 && 22.04, Debian 10 & 11)
-* docker >= 23.x
-* docker compose (plugin) >= 2.17.x
+* linux host (tested successfully on Ubuntu 22.04, 24.04, Debian 12 and 13)
+* docker >= 28.2.x
+* docker compose (plugin) >= 2.37.x
 
 ## :rocket: How to use
 
