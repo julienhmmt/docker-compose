@@ -86,7 +86,7 @@ services:
     mem_reservation: 64m
 
   plausible_db:
-    image: postgres:14-alpine
+    image: postgres:16-alpine
     container_name: plausible_db
     restart: unless-stopped
     volumes:
@@ -99,7 +99,7 @@ services:
       TZ: Europe/Paris
 
   plausible_events_db:
-    image: clickhouse/clickhouse-server:22.6-alpine
+    image: clickhouse/clickhouse-server:25.8-alpine
     container_name: plausible_events_db
     restart: unless-stopped
     volumes:
@@ -115,7 +115,7 @@ services:
         hard: 262144
 
   plausible:
-    image: plausible/analytics:latest
+    image: ghcr.io/plausible/community-edition:v3.1
     container_name: plausible
     restart: unless-stopped
     command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin && /entrypoint.sh run"
