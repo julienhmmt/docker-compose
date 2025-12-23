@@ -13,7 +13,7 @@
 Clone this repository :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:freeipa
+git clone https://github.com/julienhmmt/docker-compose.git:freeipa
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars, including `FREEIPA_VERSION` if you want to pin to a different image tag. After that when you're all set, press the red button to initiate :fire: !
@@ -26,8 +26,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 

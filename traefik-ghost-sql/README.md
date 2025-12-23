@@ -16,7 +16,7 @@ A fast and prod oriented stack to have your own and easy hackable CMS with Ghost
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:traefik-ghost-sql/
+git clone https://github.com/julienhmmt/docker-compose.git:traefik-ghost-sql/
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars.
@@ -43,8 +43,7 @@ Varnish is used to cache static files nor the preview and admin pages. Be aware 
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 
@@ -56,5 +55,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## :anchor: Misc
 
-- Varnish (configuration file) : inspiration from "https://github.com/studplus/wordpress_docker/blob/main/custom-varnish/wordpress.vcl"
-- Docker Compose (anchor) : inspiration from "https://infos.zogg.fr/traefik-crowdsec"
+* Varnish (configuration file) : inspiration from "<https://github.com/studplus/wordpress_docker/blob/main/custom-varnish/wordpress.vcl>"
+* Docker Compose (anchor) : inspiration from "<https://infos.zogg.fr/traefik-crowdsec>"

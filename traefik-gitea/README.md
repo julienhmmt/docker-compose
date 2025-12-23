@@ -12,7 +12,7 @@ Gitea a simple self-hosted and ready-to-use git server with CI/CD. Simpler and l
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:traefik-gitea
+git clone https://github.com/julienhmmt/docker-compose.git:traefik-gitea
 ```
 
 You need to edit files in the folder `.secrets` with your own values.
@@ -27,8 +27,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 

@@ -15,7 +15,7 @@ It's easy to manage for all your containers and no need to refresh/reload your c
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:traefik-dynamic
+git clone https://github.com/julienhmmt/docker-compose.git:traefik-dynamic
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars.
@@ -30,8 +30,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 

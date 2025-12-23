@@ -14,23 +14,23 @@ Configurations provided are tested on a private environment (QEMU and VirtualBox
 
 Some usefull applications, used on homelab.
 
-* [**FreeIPA**](<https://www.freeipa.org/page/Main_Page>) : <https://github.com/Mettmett/docker-compose/tree/master/freeipa>
+* [**FreeIPA**](<https://www.freeipa.org/page/Main_Page>) : <https://github.com/julienhmmt/docker-compose/tree/master/freeipa>
 
-* [**Portainer**](<https://www.portainer.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/portainer>
+* [**Portainer**](<https://www.portainer.io/>) : <https://github.com/julienhmmt/docker-compose/tree/master/portainer>
 
-* [**Ghost**](<https://ghost.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-ghost-sql> for a website with Ghost and its SQL server [**MariaDB**](<https://mariadb.org/>) behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+* [**Ghost**](<https://ghost.org/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-ghost-sql> for a website with Ghost and its SQL server [**MariaDB**](<https://mariadb.org/>) behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
-* [**Linkwarden**](<https://linkwarden.app/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-linkwarden> to store your links, a ne way for bookmarking and sharing links, with a PostgreSQL base, behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+* [**Linkwarden**](<https://linkwarden.app/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-linkwarden> to store your links, a ne way for bookmarking and sharing links, with a PostgreSQL base, behind the marvelous reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
-* [**WordPress**](<https://wordpress.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-wordpress-sql-redis> for a website with WordPress with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**WordPress**](<https://wordpress.com/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-nginx-wordpress-sql-redis> for a website with WordPress with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-* [**Nextcloud**](<https://nextcloud.com/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-nextcloud-sql-redis> for a private cloud with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Nextcloud**](<https://nextcloud.com/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-nginx-nextcloud-sql-redis> for a private cloud with its [**Redis**](<https://redis.io/>) cache object powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-* [**Matomo**](<https://fr.matomo.org/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-nginx-matomo-sql> for a private analytics powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Matomo**](<https://fr.matomo.org/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-nginx-matomo-sql> for a private analytics powered by [**Nginx**](<https://www.nginx.com/>) and [**PHP-FPM**](<https://www.php.net/manual/fr/install.fpm.php>), a SQL server [**MariaDB**](<https://mariadb.org/>) behind [**Traefik**](<https://containo.us/traefik/>)
 
-* [**Grafana**](<https://grafana.com/>) and [**Prometheus**](<https://prometheus.io/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-prometheus-grafana> for a monitoring stack behind [**Traefik**](<https://containo.us/traefik/>)
+* [**Grafana**](<https://grafana.com/>) and [**Prometheus**](<https://prometheus.io/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-prometheus-grafana> for a monitoring stack behind [**Traefik**](<https://containo.us/traefik/>)
 
-* [**PiHole**](<https://pi-hole.net/>) : <https://github.com/Mettmett/docker-compose/tree/master/traefik-pihole> for a DNS server with adblocker, with a configuration behind the reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+* [**PiHole**](<https://pi-hole.net/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-pihole> for a DNS server with adblocker, with a configuration behind the reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
 
 * Misc repo with Traefik inside...
 
@@ -41,8 +41,8 @@ All scripts are "as it", and can be updated without consent.
 Clone this repo where you want with this line :
 
 ```bash
-# git clone https://github.com/Mettmett/docker-compose.git:folder-name
-e.q. : git clone https://github.com/Mettmett/docker-compose.git:traefik-ghost-sql
+# git clone https://github.com/julienhmmt/docker-compose.git:folder-name
+e.q. : git clone https://github.com/julienhmmt/docker-compose.git:traefik-ghost-sql
 ```
 
 You need to edit the file `.env` at the source folder to modify the values of some vars.
@@ -57,8 +57,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 Made by Julien HOMMET :fr: for [my personal purposes](https://j.hommet.net/) - This is my homelab
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 

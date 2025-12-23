@@ -12,7 +12,7 @@ LinkWarden is a tool used for managing and organizing links. It allows users to 
 Clone this repo where you want with this line :
 
 ```bash
-git clone https://github.com/Mettmett/docker-compose.git:traefik-linkwarden
+git clone https://github.com/julienhmmt/docker-compose.git:traefik-linkwarden
 ```
 
 Don't forget to change `NEXTAUTH_SECRET`, `NEXTAUTH_URL` vars of the `linkwarden.env` file. PGSQL password is in the `.secrets` folder, change it and update the var `DATABASE_URL` of the `linkwarden.env` file.
@@ -25,8 +25,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 Made by Julien HOMMET :fr: for [my personnal website](https://j.hommet.net)
 
-* Twitter: [@mettmettz](https://twitter.com/mettmettz)
-* GitHub: [Mettmett](https://github.com/Mettmett)
+* GitHub: [julienhmmt](https://github.com/julienhmmt)
 
 ## :wrench: Support & Contribution
 
