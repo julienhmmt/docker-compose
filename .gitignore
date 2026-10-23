@@ -1,0 +1,5 @@
+/stalwart/.env
+/home-assistant-mqtt-zigbee2mqtt/.env
+/paperless-ngx/.env
+/restic-garage/.env
+/uptime-kuma-ntfy/.env

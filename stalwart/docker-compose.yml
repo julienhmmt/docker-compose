@@ -1,0 +1,28 @@
+---
+
+services:
+  stalwart:
+    image: stalwartlabs/stalwart:v0.16.27
+    container_name: stalwart
+    restart: unless-stopped
+    environment:
+      STALWART_RECOVERY_ADMIN: ${STALWART_RECOVERY_ADMIN:?Set STALWART_RECOVERY_ADMIN in .env}
+    ports:
+      - "25:25"
+      - "8081:80"
+      - "110:110"
+      - "143:143"
+      - "8443:443"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+      - "4190:4190"
+      - "8080:8080"
+    volumes:
+      - stalwart-data:/var/lib/stalwart
+      - stalwart-etc:/etc/stalwart
+
+volumes:
+  stalwart-data:
+  stalwart-etc:
