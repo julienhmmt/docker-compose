@@ -1,6 +1,6 @@
 # docker compose stack examples, for Traefik
 
-This is some examples used at home on my homelab. Many stacks are production-ready and daily used. Folders got a Traefik dynamic configuration, with a docker socket proxy. There are many tweaks to provide a ready-to-use environment.
+These are Compose examples used at home on my homelab. Many stacks are production-ready and in daily use. Most stack folders include a Traefik dynamic configuration and a restricted Docker socket proxy; hardware- and network-specific stacks may expose their services directly.
 
 Configurations provided are tested on a private environment (QEMU and VirtualBox). Maybe in few months I'll test it on GCP, Azure or AWS (if there's free month subscription).
 
@@ -31,6 +31,18 @@ Some usefull applications, used on homelab.
 * [**Grafana**](<https://grafana.com/>) and [**Prometheus**](<https://prometheus.io/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-prometheus-grafana> for a monitoring stack behind [**Traefik**](<https://containo.us/traefik/>)
 
 * [**PiHole**](<https://pi-hole.net/>) : <https://github.com/julienhmmt/docker-compose/tree/master/traefik-pihole> for a DNS server with adblocker, with a configuration behind the reverse-proxy [**Traefik**](<https://containo.us/traefik/>)
+
+* [**AdGuard Home**](<https://adguard.com/adguard-home/overview.html>) : [standalone Compose stack](./adguard-home) for network-wide DNS filtering
+
+* [**Stalwart**](<https://stalw.art/>) : [standalone Compose stack](./stalwart) for self-hosted email and collaboration
+
+* [**Home Assistant**](<https://www.home-assistant.io/>) : [Home Assistant, Mosquitto, and Zigbee2MQTT stack](./home-assistant-mqtt-zigbee2mqtt) for home automation
+
+* [**Paperless-ngx**](<https://docs.paperless-ngx.com/>) : [standalone Compose stack](./paperless-ngx) for searchable document archiving
+
+* [**Restic**, **Backrest**, and **Garage**](<https://restic.net/>) : [backup stack](./restic-garage) with a web UI and S3-compatible storage
+
+* [**Uptime Kuma**](<https://uptime.kuma.pet/>) and [**ntfy**](<https://ntfy.sh/>) : [monitoring and notifications stack](./uptime-kuma-ntfy)
 
 * Misc repo with Traefik inside...
 

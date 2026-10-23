@@ -1,0 +1,52 @@
+---
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.10.3
+    container_name: homeassistant
+    restart: unless-stopped
+    network_mode: host
+    stop_grace_period: 60s
+    environment:
+      TZ: Europe/Paris
+    volumes:
+      - ./homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mosquitto
+
+  mosquitto:
+    image: eclipse-mosquitto:2.1.2-alpine
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:ro
+      - mosquitto-data:/mosquitto/data
+    networks:
+      - mqtt
+
+  zigbee2mqtt:
+    image: ghcr.io/koenkk/zigbee2mqtt:2.14.2
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - ${ZIGBEE_ADAPTER_DEVICE:-/dev/ttyUSB0}:/dev/ttyUSB0
+    environment:
+      TZ: Europe/Paris
+    depends_on:
+      - mosquitto
+    networks:
+      - mqtt
+
+networks:
+  mqtt:
+
+volumes:
+  mosquitto-data:

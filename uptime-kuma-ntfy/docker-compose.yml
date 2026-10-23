@@ -1,0 +1,39 @@
+---
+
+services:
+  ntfy:
+    image: binwiederhier/ntfy:v2.33.1
+    container_name: ntfy
+    restart: unless-stopped
+    command: ["serve"]
+    ports:
+      - "8088:80"
+    environment:
+      NTFY_BASE_URL: ${NTFY_BASE_URL:-http://localhost:8088}
+      NTFY_CACHE_FILE: /var/cache/ntfy/cache.db
+      NTFY_AUTH_FILE: /var/cache/ntfy/user.db
+      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+    volumes:
+      - ntfy-cache:/var/cache/ntfy
+    networks:
+      - notifications
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:2.5.7
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "3002:3001"
+    volumes:
+      - uptime-kuma-data:/app/data
+    depends_on:
+      - ntfy
+    networks:
+      - notifications
+
+networks:
+  notifications:
+
+volumes:
+  ntfy-cache:
+  uptime-kuma-data:
