@@ -20,7 +20,6 @@ providers:
     network: dockerproxynet
     exposedByDefault: false
     watch: true
-    swarmMode: false
   file:
     directory: "/etc/traefik/dynamic"
     watch: true

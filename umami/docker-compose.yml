@@ -19,13 +19,13 @@ services:
     container_name: umami
     <<: *x-common
     restart: unless-stopped
-    image: ghcr.io/umami-software/umami:postgresql-v2.18
+    image: ghcr.io/umami-software/umami:3.4.1
     networks:
       - backendumami
       - front
+    # umami has no *_FILE support: load the secret, then hand over to the image's own entrypoint + cmd
+    entrypoint: ["/bin/sh", "-c", "APP_SECRET=$$(cat /run/secrets/umami_app_secret) exec docker-entrypoint.sh sh scripts/start-docker.sh"]
     environment:
-      APP_SECRET: /run/secrets/umami_app_secret
-      DATABASE_TYPE: postgresql
       DATABASE_URL: ${UMAMI_DB_URI}
       IGNORE_IP: 82.66.236.6
       TRACKER_SCRIPT_NAME: compteurvisites.js
@@ -40,7 +40,7 @@ services:
     container_name: umami_pgsql
     <<: *x-common
     restart: unless-stopped
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     networks:
       - backendumami
     environment:
@@ -48,7 +48,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/pgsql_password_umami
       TZ: Europe/Paris
     volumes:
-      - umami_pgsql_data:/var/lib/postgresql/data
+      - umami_pgsql_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d $${POSTGRES_DB}"]
       interval: 5s
@@ -59,7 +59,7 @@ services:
 
   umami_pgsql_exporter:
     <<: *x-common
-    image: quay.io/prometheuscommunity/postgres-exporter
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.20.1
     container_name: umami_pgsql_exporter
     restart: unless-stopped
     networks:
@@ -77,7 +77,7 @@ services:
 
   umami_pgsql_backuper:
     <<: *x-common
-    image: prodrigestivill/postgres-backup-local:16
+    image: prodrigestivill/postgres-backup-local:18
     container_name: umami_pgsql_backuper
     restart: unless-stopped
     networks:

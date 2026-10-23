@@ -17,7 +17,7 @@ x-common: &x-common
 services:
   dockerproxy:
     <<: *x-common
-    image: tecnativa/docker-socket-proxy:edge
+    image: tecnativa/docker-socket-proxy:v0.5.0
     restart: always
     container_name: dockerproxy
     networks:
@@ -52,7 +52,7 @@ services:
       TZ: "Europe/Paris"
 
   traefik:
-    image: traefik:ramequin
+    image: traefik:langres
     restart: unless-stopped
     container_name: traefik
     networks:
@@ -85,36 +85,24 @@ services:
     depends_on:
       - dockerproxy
 
-  plausible_mail:
-    image: bytemark/smtp
-    container_name: plausible_mail
-    restart: unless-stopped
-    environment:
-      RELAY_HOST: mail.domain.local
-      RELAY_PORT: 587
-      RELAY_USERNAME: changeme@domain.local
-      RELAY_PASSWORD: changeme
-      TZ: Europe/Paris
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    mem_limit: 128m
-    mem_reservation: 64m
-
   plausible_db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: plausible_db
     restart: unless-stopped
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql
       - /etc/localtime:/etc/localtime:ro
     environment:
       POSTGRES_USER: plausibledbuser
       POSTGRES_PASSWORD: plausibledbpassword
       POSTGRES_DB: plausibledb
       TZ: Europe/Paris
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plausibledbuser -d plausibledb"]
+      start_period: 1m
 
   plausible_events_db:
-    image: clickhouse/clickhouse-server:25.8-alpine
+    image: clickhouse/clickhouse-server:26.3-alpine
     container_name: plausible_events_db
     restart: unless-stopped
     volumes:
@@ -123,27 +111,38 @@ services:
       - ./clickhouse/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
+      CLICKHOUSE_SKIP_USER_SETUP: 1
       TZ: Europe/Paris
     ulimits:
       nofile:
         soft: 262144
         hard: 262144
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 -O - http://127.0.0.1:8123/ping || exit 1"]
+      start_period: 1m
 
   plausible:
-    image: ghcr.io/plausible/community-edition:v3.1
+    image: ghcr.io/plausible/community-edition:v3.2.1
     container_name: plausible
     restart: unless-stopped
-    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin && /entrypoint.sh run"
+    command: sh -c "/entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
     depends_on:
-      - plausible_db
-      - plausible_events_db
-      - plausible_mail
+      plausible_db:
+        condition: service_healthy
+      plausible_events_db:
+        condition: service_healthy
     env_file:
       - plausible-conf.env
     volumes:
+      - plausible-data:/var/lib/plausible
       - /etc/localtime:/etc/localtime:ro
     environment:
+      TMPDIR: /var/lib/plausible/tmp
       TZ: Europe/Paris
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
 
 volumes:
   db-data:
@@ -151,6 +150,8 @@ volumes:
   event-data:
     driver: local
   geoip:
+    driver: local
+  plausible-data:
     driver: local
 
 networks:

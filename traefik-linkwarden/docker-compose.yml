@@ -17,7 +17,7 @@ x-common: &x-common
 services:
   traefik:
     <<: *x-common
-    image: traefik:ramequin
+    image: traefik:langres
     restart: unless-stopped
     container_name: traefik
     networks:
@@ -50,7 +50,7 @@ services:
 
   linkwarden_pgsql:
     <<: *x-common
-    image: rapidfort/postgresql-official:15.5-bullseye
+    image: postgres:18-alpine
     container_name: linkwarden_pgsql
     restart: unless-stopped
     environment:
@@ -70,12 +70,12 @@ services:
     secrets:
       - pgsql_linkwarden_password
     volumes:
-      - linkwarden_pgdata:/var/lib/postgresql/data
+      - linkwarden_pgdata:/var/lib/postgresql
 
   linkwarden_pgsql_exporter:
     <<: *x-common
     container_name: linkwarden_pgsql_exporter
-    image: quay.io/prometheuscommunity/postgres-exporter:v0.13.2
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.20.1
     restart: unless-stopped
     networks:
       - backendlinkwarden
@@ -95,7 +95,7 @@ services:
   linkwarden:
     <<: *x-common
     env_file: ./linkwarden.env
-    image: ghcr.io/linkwarden/linkwarden:latest
+    image: ghcr.io/linkwarden/linkwarden:v2.16.3
     restart: unless-stopped
     container_name: linkwarden
     networks:
