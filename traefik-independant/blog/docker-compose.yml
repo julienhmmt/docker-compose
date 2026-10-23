@@ -17,7 +17,7 @@ x-common: &x-common
 services:
   sqlwp:
     <<: *x-common
-    image: mariadb:${MARIADB_VERSION:-lts}
+    image: mariadb:${MARIADB_VERSION:-12.3}
     restart: unless-stopped
     container_name: sqlwp
     networks:

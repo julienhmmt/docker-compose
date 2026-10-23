@@ -16,7 +16,7 @@ x-common: &x-common
 
 services:
   dockerproxy:
-    image: tecnativa/docker-socket-proxy:edge
+    image: tecnativa/docker-socket-proxy:v0.5.0
     restart: always
     container_name: dockerproxy
     networks:
@@ -56,7 +56,7 @@ services:
 
   traefik:
     <<: *x-common
-    image: traefik:ramequin
+    image: traefik:langres
     restart: unless-stopped
     container_name: traefik
     networks:
@@ -91,7 +91,7 @@ services:
 
   giteadb:
     <<: *x-common
-    image: rapidfort/postgresql-official:15.5-bullseye
+    image: postgres:18-alpine
     container_name: giteadb
     restart: unless-stopped
     environment:
@@ -100,7 +100,7 @@ services:
     networks:
       - backendgitea
     volumes:
-      - giteadbdata:/var/lib/postgresql/data
+      - giteadbdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d giteabase -U postgres"]
       start_period: 20s
@@ -116,7 +116,7 @@ services:
   giteadb-pgsql_exporter:
     <<: *x-common
     container_name: giteadb-pgsql_exporter
-    image: quay.io/prometheuscommunity/postgres-exporter:v0.13.2
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.20.1
     restart: unless-stopped
     networks:
       - backendgitea
@@ -136,7 +136,7 @@ services:
   gitea:
     <<: *x-common
     container_name: gitea
-    image: gitea/gitea:1.21-rootless
+    image: gitea/gitea:28.2-rootless
     restart: unless-stopped
     environment:
       GITEA__database__DB_TYPE: postgres
@@ -146,9 +146,8 @@ services:
       GITEA__database__PASSWD__FILE: /run/secrets/pgsql_password
       GITEA__mailer__ENABLED: true
       GITEA__mailer__FROM: no-reply@your-domain.net
-      GITEA__mailer__MAILER_TYPE: smtp
       GITEA__mailer__SMTP_ADDR: mail.domain.com
-      GITEA__mailer__IS_TLS_ENABLED: true
+      GITEA__mailer__PROTOCOL: smtps
       GITEA__mailer__USER: no-reply@your-domain.net
       GITEA__mailer__PASSWD__FILE: /run/secrets/smtp_password
       USER_UID: 1000

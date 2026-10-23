@@ -38,6 +38,8 @@ All scripts are "as it", and can be updated without consent.
 
 ## :rocket: How to use
 
+Stacks target **fresh installs** on the versions pinned in each compose file. Major versions (databases included) are bumped without a data migration path: start from empty volumes (`docker compose down -v` deletes the old ones), or migrate your data yourself.
+
 Clone this repo where you want with this line :
 
 ```bash

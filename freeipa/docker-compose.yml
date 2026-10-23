@@ -2,7 +2,7 @@
 
 services:
   freeipa:
-    image: quay.io/freeipa/freeipa-server:${FREEIPA_VERSION:-almalinux-10-4.12.2}
+    image: quay.io/freeipa/freeipa-server:${FREEIPA_VERSION:-almalinux-10-4.13.4}
     restart: unless-stopped
     hostname: freeipa.yourhome.local
     environment:

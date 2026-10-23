@@ -1,0 +1,32 @@
+loki.source.file "system" {
+	targets = [{
+		__address__ = "host",
+		__path__    = "/var/log/*log",
+		job         = "varlogs",
+	}]
+	forward_to = [loki.write.default.receiver]
+
+	file_match {
+		enabled = true
+	}
+}
+
+loki.source.file "traefik" {
+	targets = [{
+		__address__ = "traefik",
+		__path__    = "/logs/traefik/*log",
+		job         = "traefiklogs",
+	}]
+	forward_to = [loki.write.default.receiver]
+
+	file_match {
+		enabled = true
+	}
+}
+
+loki.write "default" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+	external_labels = {}
+}

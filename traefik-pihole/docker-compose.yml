@@ -17,7 +17,7 @@ x-common: &x-common
 services:
   dockerproxy:
     <<: *x-common
-    image: tecnativa/docker-socket-proxy:edge
+    image: tecnativa/docker-socket-proxy:v0.5.0
     restart: always
     container_name: dockerproxy
     networks:
@@ -57,7 +57,7 @@ services:
 
   traefik:
     <<: *x-common
-    image: traefik:${TRAEFIK_VERSION:-ramequin}
+    image: traefik:${TRAEFIK_VERSION:-langres}
     restart: unless-stopped
     container_name: traefik
     networks:
@@ -102,7 +102,7 @@ services:
     environment:
       TZ: "Europe/Paris"
       VIRTUAL_HOST: pihole.yourhome.local
-      WEBPASSWORD: ${PIHOLEWEBPWD}
+      FTLCONF_webserver_api_password: ${PIHOLEWEBPWD}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - datadnsmasqd:/etc/dnsmasq.d/

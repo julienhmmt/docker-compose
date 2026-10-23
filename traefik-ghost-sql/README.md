@@ -33,7 +33,7 @@ docker compose pull && docker compose up -d && docker compose logs -f
 
 This is a production-ready stack for Ghost CMS. It's using Traefik and a docker proxy container. Traefik is used to be the reverse-proxy, in front of Ghost. Usage of docker secrets, bind mounts and docker volumes...
 
-A SQL server is used (MySQL 8), but with a different flavour. To be robust and more secure, I'm using RapidFort container, which is a base of MySQL 8 from Bitnami (VMware). There's also an SQL exporter container for prometheus.
+A SQL server is used (MySQL 8), but with a different flavour. To be robust and more secure, I was using RapidFort container (MySQL 8 from Bitnami), now gone: the official `mysql:8.4` (LTS) image is used. There's also an SQL exporter container for prometheus.
 
 Ghost version is stock and works perfectly.
 
